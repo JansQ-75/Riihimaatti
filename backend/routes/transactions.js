@@ -1,11 +1,15 @@
 const express = require('express');
 const router = express.Router();
+const transaction = require('../models/transaction_model');
 
-/* GET resource. */
+/* GET all transactions
+  ONLY FOR INITIAL DB DEBUG PURPOSES
+  MUST BE DELETED, SOON(TM)
+ */
 router.get('/', function (req, res, next) {
-  const transactions = db.query('SELECT * FROM student', callback);
-
-  res.send(transactions);
+  transaction.getAll((err, result) => {
+    res.send(result);
+  });
 });
 
 module.exports = router;
