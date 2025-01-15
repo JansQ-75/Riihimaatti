@@ -1,9 +1,9 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 
 /* GET resource. */
-router.get("/", function (req, res, next) {
-  const transactions = db.query("SELECT * FROM student", callback);
+router.get('/', function (req, res, next) {
+  const transactions = db.query('SELECT * FROM student', callback);
 
   res.send(transactions);
 });
