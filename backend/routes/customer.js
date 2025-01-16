@@ -19,7 +19,7 @@ const customer = require('../models/customer_model');
            response.json(err);
         }
         else {
-            response.json(result.fname);
+            response.json(result[0]);
         }
     })
   });
