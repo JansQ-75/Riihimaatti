@@ -1,5 +1,4 @@
 const db = require('../database');
-//const brycpt=require('bryptjs');
 
 const customer = {
     //Get all customer data
