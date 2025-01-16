@@ -8,3 +8,9 @@ cd backend
 npm install
 npm run dev
 ```
+
+### Database
+
+ER-diagram:
+
+<img src="ERdiagram.png">
