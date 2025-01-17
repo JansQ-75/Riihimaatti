@@ -2,11 +2,13 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const authenticateToken = require('./authentication');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const transactionsRouter = require('./routes/transactions');
 const customerRouter = require('./routes/customer');
+const loginRouter = require('./routes/login');
 
 const app = express();
 
@@ -21,6 +23,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/transactions', transactionsRouter);
 app.use('/customer', customerRouter);
+app.use('/login', loginRouter);
 
 app.listen(3000);
 
