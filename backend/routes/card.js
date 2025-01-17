@@ -61,4 +61,3 @@ router.delete('/:idcard',function(request, response){
 
 
 module.exports = router;
-
