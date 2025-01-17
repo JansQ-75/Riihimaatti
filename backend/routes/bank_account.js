@@ -58,8 +58,30 @@ router.put('/by-id/:idbank_account', function (request, response) {
     })
 });
 
-router.put('/by-account-nbr/:bank_account_number', function (request, response) {
-    bank_account.update2(request.params.bank_account_number, request.body, function (err, result) {
+router.patch('/by-id/balance/:idbank_account', function (request, response) {
+    bank_account.updateBalance(request.params.idbank_account, request.body, function (err, result) {
+        if (err) {
+            response.json(err);
+        }
+        else {
+            response.json(result.affectedRows);
+        }
+    })
+});
+
+router.patch('/by-id/credit/:idbank_account', function (request, response) {
+    bank_account.updateCredit(request.params.idbank_account, request.body, function (err, result) {
+        if (err) {
+            response.json(err);
+        }
+        else {
+            response.json(result.affectedRows);
+        }
+    })
+});
+
+router.delete('/:idbank_account', function (request, response) {
+    bank_account.delete(request.params.idbank_account, function (err, result) {
         if (err) {
             response.json(err);
         }

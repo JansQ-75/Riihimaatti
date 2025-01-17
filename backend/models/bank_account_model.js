@@ -16,21 +16,30 @@ const bank_account = {
         return db.query('SELECT * FROM bank_account WHERE bank_account_number=?', [bank_account_number], callback);
     },
 
-    // Add a bank account
+    // Add bank account
     add: function (bank_account_data, callback) {
         return db.query('INSERT INTO bank_account(bank_account_number, account_type, balance, credit_limit, idcustomer) values (?,?,?,?,?)', [bank_account_data.bank_account_number, bank_account_data.account_type, bank_account_data.balance, bank_account_data.credit_limit, bank_account_data.idcustomer], callback);
     },
 
-    // Update a bank account
-    // TÄÄ EI VARMAAN OO HYVÄ???
+    // Update bank account. Replace entire data
     update: function (idbank_account, bank_account_data, callback) {
         return db.query('UPDATE bank_account SET bank_account_number=?, account_type=?, balance=?, credit_limit=?, idcustomer=? WHERE idbank_account=?', [bank_account_data.bank_account_number, bank_account_data.account_type, bank_account_data.balance, bank_account_data.credit_limit, bank_account_data.idcustomer, idbank_account], callback);
     },
 
-    // Update bank account info. vaihtaa muut paitsi tilinron.
-    update2: function (bank_account_number, bank_account_data, callback) {
-        return db.query('UPDATE bank_account SET account_type=?, balance=?, credit_limit=?, idcustomer=? WHERE bank_account_number=?', [bank_account_data.account_type, bank_account_data.balance, bank_account_data.credit_limit, bank_account_data.idcustomer, bank_account_number], callback);
-    }
+    // Change balance
+    updateBalance: function (idbank_account, bank_account_data, callback) {
+        return db.query('UPDATE bank_account SET balance=? WHERE idbank_account=?', [bank_account_data.balance, idbank_account], callback);
+    },
+
+    // Change credit_limit
+    updateCredit: function (idbank_account, bank_account_data, callback) {
+        return db.query('UPDATE bank_account SET credit_limit=? WHERE idbank_account=?', [bank_account_data.credit_limit, idbank_account], callback);
+    },
+
+    //Delete bank account
+    delete: function (idbank_account, callback) {
+        return db.query('DELETE FROM bank_account WHERE idbank_account=?', [idbank_account], callback);
+    },
 }
 
 module.exports = bank_account;
