@@ -1,7 +1,14 @@
 const db = require('../database');
-const bcrycpt = require('bcryptjs');
+const bcrypt = require('bcryptjs');
 
 const card = {
+  checkPassword: function (cardnum, callback) {
+    return db.query(
+      'SELECT pin FROM card WHERE cardnumber=?',
+      [cardnum],
+      callback,
+    );
+    
   //Get all card data
   getAll: function (callback) {
     return db.query('SELECT * FROM card;', callback);
