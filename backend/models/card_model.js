@@ -8,7 +8,8 @@ const card = {
       [cardnum],
       callback,
     );
-    
+  },
+
   //Get all card data
   getAll: function (callback) {
     return db.query('SELECT * FROM card;', callback);
