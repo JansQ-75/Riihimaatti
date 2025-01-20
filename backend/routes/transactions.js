@@ -8,9 +8,57 @@ const transaction = require('../models/transaction_model');
  */
 router.get('/', function (req, res, next) {
   transaction.getAll((err, result) => {
-    res.send(result);
+    if (err) {
+      res.json(err);
+    } else {
+      res.json(result);
+    }
   });
 });
 
+
+//td
+router.get('/:transaction_date', function (request, response) {
+  transaction.getTransaction_date(request.params.transaction_date, request.body, function (err, result) {
+    if (err) {
+      response.json(err);
+    } else {
+      response.json(result.affectedRows);
+    }
+  });
+});
+
+//wm
+router.put('/:transaction', function (request, response) {
+  balance.update(request.params.transaction, request.body, function (err, result) {
+    if (err) {
+      response.json(err);
+    } else {
+      response.json(result.affectedRows);
+    }
+  });
+});
+
+//p10
+router.get('/:transaction', function (request, response) {
+  transaction.showPreviousTransactions(request.params.transaction, request.body, function (err, result) {
+    if (err) {
+      response.json(err);
+    } else {
+      response.json(result.affectedRows);
+    }
+  });
+});
+
+//n10
+router.get('/:transaction', function (request, response) {
+  transaction.showNextTransactions(request.params.transaction, request.body, function (err, result) {
+    if (err) {
+      response.json(err);
+    } else {
+      response.json(result.affectedRows);
+    }
+  });
+});
 
 module.exports = router;
