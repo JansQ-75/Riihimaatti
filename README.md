@@ -1,5 +1,5 @@
 # ATM - Riihimaatti
-#### *Group 17 (TVT24KMO)*
+*Group 17 (TVT24KMO)*
 
 ---
 
@@ -39,6 +39,7 @@ npm run dev
 For this project we created SQL database with MySQLWorkbench
 
 **ER-diagram:**
+
 <img src="ERdiagram.png">
 
 **Design for our database:**
