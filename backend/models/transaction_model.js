@@ -13,7 +13,7 @@ getTransaction_date: function (transaction_date, callback){
 
 // Withdraw money, 20, 40, 50, 100
 withdrawal: function (idbank_account, amountToWithdraw, callback) {
-  return db.query('UPDATE idbank_account SET balance = balance - ? WHERE idbank_account=? AND balance >= ?',
+  return db.query('UPDATE bank_account SET balance = balance - ? WHERE idbank_account=? AND balance >= ?',
      [amountToWithdraw, idbank_account, amountToWithdraw], callback);
 },
 
