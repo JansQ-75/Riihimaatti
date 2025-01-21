@@ -66,7 +66,7 @@ router.post('/', function (request, response) {
     if (err) {
       response.json(err);
     } else {
-      response.json(result);
+      response.json(result.affectedRows);
     }
   });
 });
@@ -76,17 +76,17 @@ router.post('/', function (request, response) {
     if (err) {
       response.json(err);
     } else {
-      response.json(result);
+      response.json(result.affectedRows);
     }
   });
 });
 
-router.post('/', function (request, response) {
+router.get('/', function (request, response) {
   transaction.atm_transactions(request.body, function (err, result) {
     if (err) {
       response.json(err);
     } else {
-      response.json(result);
+      response.json(result.affectedRows);
     }
   });
 });

@@ -29,6 +29,8 @@ showNextTransactions: function (transaction, callback){
     [transaction], callback)
 },
 
+
+//Do a debit withdrawal
 makeDebitWithdrawal: function (transaction_data, callback) {
     return db.query(
       'CALL makeDebitWithdrawal (?, ?, ?)',
@@ -41,6 +43,7 @@ makeDebitWithdrawal: function (transaction_data, callback) {
     );
 },
 
+//Do a credit withdrawal
 makeCreditWithdrawal: function (transaction_data, callback) {
   return db.query(
     'CALL makeCreditWithdrawal (?, ?, ?)',
@@ -53,6 +56,7 @@ makeCreditWithdrawal: function (transaction_data, callback) {
   );
 },
 
+//Get all
 atm_transactions: function (transaction_data, callback) {
   return db.query(
     'CALL atm_transactions (?)',
