@@ -29,7 +29,39 @@ showNextTransactions: function (transaction, callback){
     [transaction], callback)
 },
 
+makeDebitWithdrawal: function (transaction_data, callback) {
+    return db.query(
+      'CALL makeDebitWithdrawal (?, ?, ?)',
+      [
+        transaction_data.idbank_account,
+        transaction_data.idcard,
+        transaction_data.withdrawal,
+      ],
+      callback,
+    );
+},
 
+makeCreditWithdrawal: function (transaction_data, callback) {
+  return db.query(
+    'CALL makeCreditWithdrawal (?, ?, ?)',
+    [
+      transaction_data.idbank_account,
+      transaction_data.idcard,
+      transaction_data.withdrawal,
+    ],
+    callback,
+  );
+},
+
+atm_transactions: function (transaction_data, callback) {
+  return db.query(
+    'CALL atm_transactions (?)',
+    [
+      transaction_data.idbank_account
+    ],
+    callback,
+  );
+}
 
 };
 

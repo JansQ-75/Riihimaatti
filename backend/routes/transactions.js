@@ -61,4 +61,34 @@ router.get('/:transaction', function (request, response) {
   });
 });
 
+router.post('/', function (request, response) {
+  transaction.makeDebitWithdrawal(request.body, function (err, result) {
+    if (err) {
+      response.json(err);
+    } else {
+      response.json(result);
+    }
+  });
+});
+
+router.post('/', function (request, response) {
+  transaction.makeCreditWithdrawal(request.body, function (err, result) {
+    if (err) {
+      response.json(err);
+    } else {
+      response.json(result);
+    }
+  });
+});
+
+router.post('/', function (request, response) {
+  transaction.atm_transactions(request.body, function (err, result) {
+    if (err) {
+      response.json(err);
+    } else {
+      response.json(result);
+    }
+  });
+});
+
 module.exports = router;
