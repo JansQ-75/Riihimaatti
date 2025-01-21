@@ -59,7 +59,7 @@ For this project we created SQL database with MySQLWorkbench
     - Bank account can grant multiple access rights to cards
 - Transaction
     - Columns: transaction date, withdrawal amount, foreign keys for bank account and card
-    - One transaction must have one card
+    - One transaction can have one card
     - One transaction must have one bank account
 - Access rights
     - Columns: foreign keys for card and bank account
