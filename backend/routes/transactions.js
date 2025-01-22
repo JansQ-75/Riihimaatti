@@ -61,24 +61,18 @@ router.get('/:transaction', function (request, response) {
   });
 });
 
-router.post('/', function (request, response) {
-  transaction.makeDebitWithdrawal(request.body, function (err, result) {
-    if (err) {
-      response.json(err);
-    } else {
-      response.json(result.affectedRows);
-    }
-  });
-});
-
-router.post('/', function (request, response) {
-  transaction.makeCreditWithdrawal(request.body, function (err, result) {
-    if (err) {
-      response.json(err);
-    } else {
-      response.json(result.affectedRows);
-    }
-  });
+router.post('/:account_type', function (request, response) {
+  transaction.makeDrawal(
+    request.params.account_type,
+    request.body,
+    function (err, result) {
+      if (err) {
+        response.json(err);
+      } else {
+        response.json(result.affectedRows);
+      }
+    },
+  );
 });
 
 router.get('/', function (request, response) {

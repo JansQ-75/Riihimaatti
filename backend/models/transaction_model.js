@@ -29,9 +29,9 @@ showNextTransactions: function (transaction, callback){
     [transaction], callback)
 },
 
-
-//Do a debit withdrawal
-makeDebitWithdrawal: function (transaction_data, callback) {
+//Do a withdrawal
+makeDrawal: function (account_type, transaction_data, callback) {
+  if(account_type == "debit"){
     return db.query(
       'CALL makeDebitWithdrawal (?, ?, ?)',
       [
@@ -41,19 +41,17 @@ makeDebitWithdrawal: function (transaction_data, callback) {
       ],
       callback,
     );
-},
-
-//Do a credit withdrawal
-makeCreditWithdrawal: function (transaction_data, callback) {
-  return db.query(
-    'CALL makeCreditWithdrawal (?, ?, ?)',
-    [
-      transaction_data.idbank_account,
-      transaction_data.idcard,
-      transaction_data.withdrawal,
-    ],
-    callback,
-  );
+  } else if (account_type == "credit"){
+    return db.query(
+      'CALL makeCreditWithdrawal (?, ?, ?)',
+      [
+        transaction_data.idbank_account,
+        transaction_data.idcard,
+        transaction_data.withdrawal,
+      ],
+      callback,
+    );
+  }
 },
 
 //Get all
