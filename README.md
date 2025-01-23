@@ -15,6 +15,19 @@
 
 ---
 
+
+## Project goals
+
+ :star: Our goal was to create an ATM application which combines SQL database, REST API, Linux server and Qt Creator.
+ :star: Our goal was to become confident users of technologies, which we used in the project.
+ :star: Our aim was to use the knowledge, which we learnt in previous courses at the Oulu University of Applied Sciences, and apply our knowledge. Moreover, to expand our knowledge in given fields and technologies. 
+
+---
+
+## Usage instructions
+
+*Jotain fiksua tähän* 
+=======
 ## Usage instructions
 
 *Jotain fiksua tähän*
@@ -69,6 +82,21 @@ For this project we created SQL database with MySQLWorkbench
 
 #### User interface (QT)
 
+
+First, the app opens a login interface. The ATM app asks customer's card number and pin code. After succeccfull authentification, it opens the main interface of the ATM app. There are four buttons in the ATM app's main interface. 
+- The "Show balance" button shows the balance of the logged in customer's bank account. 
+- The "Make a withdrawal" button opens a new interface where customer can choose the desired amount for withdrawal.
+- The "Browse transactions" button lists 10 transactions to a new interface where customer can browse previous transactions.
+- The button for logout.
+
+---
+
+## Project outcome
+
+---
+
+## Contributors
+=======
 ---
 
 ## Project outcome
