@@ -8,9 +8,9 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const transactionsRouter = require('./routes/transactions');
 const customerRouter = require('./routes/customer');
+const bank_accountRouter = require('./routes/bank_account');
 const loginRouter = require('./routes/login');
 const cardRouter = require('./routes/card');
-
 
 const app = express();
 
@@ -25,6 +25,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/transactions', transactionsRouter);
 app.use('/customer', customerRouter);
+app.use('/bank_account', bank_accountRouter);
 app.use('/login', loginRouter);
 app.use('/card', cardRouter);
 

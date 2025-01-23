@@ -31,20 +31,10 @@ CREATE TABLE `access_rights` (
   PRIMARY KEY (`idaccess_rights`),
   KEY `fk_access2card_idx` (`idcard`),
   KEY `fk_access2account_idx` (`idbank_account`),
-  CONSTRAINT `fk_access2account` FOREIGN KEY (`idbank_account`) REFERENCES `bank_account` (`idbank_account`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_access2account` FOREIGN KEY (`idbank_account`) REFERENCES `bank_account` (`idbank_account`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_access2card` FOREIGN KEY (`idcard`) REFERENCES `card` (`idcard`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `access_rights`
---
-
-LOCK TABLES `access_rights` WRITE;
-/*!40000 ALTER TABLE `access_rights` DISABLE KEYS */;
-INSERT INTO `access_rights` VALUES (1,1,1),(2,2,2),(3,3,3),(4,3,4),(5,4,5),(6,5,6),(7,6,7);
-/*!40000 ALTER TABLE `access_rights` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `bank_account`
@@ -68,16 +58,6 @@ CREATE TABLE `bank_account` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `bank_account`
---
-
-LOCK TABLES `bank_account` WRITE;
-/*!40000 ALTER TABLE `bank_account` DISABLE KEYS */;
-INSERT INTO `bank_account` VALUES (1,'FI11221122','debit',1200.00,0.00,1),(2,'FI44556644','credit',1000.00,1000.00,2),(3,'FI66778899','debit',2120.00,0.00,3),(4,'FI55885588','credit',2000.00,2000.00,3),(5,'FI45645645','credit',3000.00,3000.00,4),(6,'FI44664466','debit',3670.00,0.00,5),(7,'FI99449944','debit',83450.00,0.00,6);
-/*!40000 ALTER TABLE `bank_account` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `card`
 --
 
@@ -90,22 +70,13 @@ CREATE TABLE `card` (
   `pin` varchar(255) NOT NULL,
   `idcustomer` int NOT NULL,
   `type` varchar(15) NOT NULL,
+  `locked_status` tinyint NOT NULL,
   PRIMARY KEY (`idcard`),
   UNIQUE KEY `cardnumber_UNIQUE` (`cardnumber`),
   KEY `fk_card2customer_idx` (`idcustomer`),
   CONSTRAINT `fk_card2customer` FOREIGN KEY (`idcustomer`) REFERENCES `customer` (`idcustomer`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `card`
---
-
-LOCK TABLES `card` WRITE;
-/*!40000 ALTER TABLE `card` DISABLE KEYS */;
-INSERT INTO `card` VALUES (1,664488,'1234',1,'debit'),(2,254488,'1212',2,'credit'),(3,559188,'2323',3,'debit/credit'),(4,548988,'4545',4,'credit'),(5,656565,'6565',5,'debit'),(6,787878,'8787',6,'debit');
-/*!40000 ALTER TABLE `card` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `customer`
@@ -121,18 +92,8 @@ CREATE TABLE `customer` (
   `address` varchar(45) NOT NULL,
   `phone` varchar(15) NOT NULL,
   PRIMARY KEY (`idcustomer`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `customer`
---
-
-LOCK TABLES `customer` WRITE;
-/*!40000 ALTER TABLE `customer` DISABLE KEYS */;
-INSERT INTO `customer` VALUES (1,'Liisa','Lamminen','Kotikatu 5','0405678673'),(2,'Tiina','Tamminen','Hetkosenkatu 5','040055673'),(3,'Teuvo','Tepponen','Tavistie 15','0507845123'),(4,'Leo','Keihäs','Koivukatu 2','0401245673'),(5,'Hemmo','Kuussalo','Tähtitie 6 B1','0407788673'),(6,'Henna','Himanen','Vilkaskatu 45','05012478673');
-/*!40000 ALTER TABLE `customer` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `transaction`
@@ -146,28 +107,99 @@ CREATE TABLE `transaction` (
   `transaction_date` datetime NOT NULL,
   `withdrawal` decimal(10,2) NOT NULL,
   `idbank_account` int NOT NULL,
-  `idcard` int NOT NULL,
+  `idcard` int DEFAULT NULL,
   PRIMARY KEY (`idtransaction`),
-  KEY `fk_transaction2card_idx` (`idcard`),
   KEY `fk_transaction2account_idx` (`idbank_account`),
+  KEY `fk_transaction2card_idx` (`idcard`),
   CONSTRAINT `fk_transaction2account` FOREIGN KEY (`idbank_account`) REFERENCES `bank_account` (`idbank_account`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `fk_transaction2card` FOREIGN KEY (`idcard`) REFERENCES `card` (`idcard`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `transaction`
---
-
-LOCK TABLES `transaction` WRITE;
-/*!40000 ALTER TABLE `transaction` DISABLE KEYS */;
-INSERT INTO `transaction` VALUES (1,'2025-01-15 20:34:18',20.00,1,1);
-/*!40000 ALTER TABLE `transaction` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Dumping routines for database 'riihimaattidb'
 --
+/*!50003 DROP PROCEDURE IF EXISTS `atm_transactions` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `atm_transactions`(IN account INT)
+BEGIN
+SELECT transaction.transaction_date, transaction.withdrawal, bank_account.bank_account_number, card.cardnumber 
+FROM transaction 
+JOIN bank_account ON transaction.idbank_account=bank_account.idbank_account 
+LEFT JOIN card ON transaction.idcard=card.idcard 
+WHERE bank_account.idbank_account=account;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `makeCreditWithdrawal` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `makeCreditWithdrawal`(IN accountId INT, IN cardId INT, IN amount DOUBLE)
+BEGIN
+DECLARE test1 INT DEFAULT 0;
+START TRANSACTION;
+UPDATE bank_account SET balance=balance+amount WHERE idbank_account=accountId AND (balance+amount) <= credit_limit;
+SET test1=ROW_COUNT();
+	IF (test1=1) THEN
+		COMMIT;
+		INSERT INTO transaction (transaction_date, withdrawal, idbank_account, idcard)
+		VALUES (NOW(), amount, accountId, cardId);
+	ELSE
+		ROLLBACK;
+	END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `makeDebitWithdrawal` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `makeDebitWithdrawal`(IN accountId INT, IN cardId INT, IN amount DOUBLE)
+BEGIN
+DECLARE test1 INT DEFAULT 0;
+START TRANSACTION;
+UPDATE bank_account SET balance=balance-amount WHERE idbank_account=accountId AND balance >= amount;
+SET test1=ROW_COUNT();
+	IF (test1=1) THEN
+		COMMIT;
+		INSERT INTO transaction (transaction_date, withdrawal, idbank_account, idcard)
+		VALUES (NOW(), amount, accountId, cardId);
+	ELSE
+		ROLLBACK;
+	END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -178,4 +210,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-01-15 20:48:18
+-- Dump completed on 2025-01-21 11:34:50

@@ -15,6 +15,7 @@
 
 ---
 
+
 ## Project goals
 
  :star: Our goal was to create an ATM application which combines SQL database, REST API, Linux server and Qt Creator.
@@ -26,6 +27,10 @@
 ## Usage instructions
 
 *Jotain fiksua tähän* 
+=======
+## Usage instructions
+
+*Jotain fiksua tähän*
 
 ---
 
@@ -77,6 +82,7 @@ For this project we created SQL database with MySQLWorkbench
 
 #### User interface (QT)
 
+
 First, the app opens a login interface. The ATM app asks customer's card number and pin code. After succeccfull authentification, it opens the main interface of the ATM app. There are four buttons in the ATM app's main interface. 
 - The "Show balance" button shows the balance of the logged in customer's bank account. 
 - The "Make a withdrawal" button opens a new interface where customer can choose the desired amount for withdrawal.
@@ -90,3 +96,12 @@ First, the app opens a login interface. The ATM app asks customer's card number 
 ---
 
 ## Contributors
+=======
+---
+
+## Project outcome
+
+---
+
+## Contributors
+
