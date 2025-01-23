@@ -29,7 +29,41 @@ showNextTransactions: function (transaction, callback){
     [transaction], callback)
 },
 
+//Do a withdrawal
+makeDrawal: function (account_type, transaction_data, callback) {
+  if(account_type == "debit"){
+    return db.query(
+      'CALL makeDebitWithdrawal (?, ?, ?)',
+      [
+        transaction_data.idbank_account,
+        transaction_data.idcard,
+        transaction_data.withdrawal,
+      ],
+      callback,
+    );
+  } else if (account_type == "credit"){
+    return db.query(
+      'CALL makeCreditWithdrawal (?, ?, ?)',
+      [
+        transaction_data.idbank_account,
+        transaction_data.idcard,
+        transaction_data.withdrawal,
+      ],
+      callback,
+    );
+  }
+},
 
+//Get all
+atm_transactions: function (transaction_data, callback) {
+  return db.query(
+    'CALL atm_transactions (?)',
+    [
+      transaction_data.idbank_account
+    ],
+    callback,
+  );
+}
 
 };
 
