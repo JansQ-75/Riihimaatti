@@ -5,7 +5,6 @@
 
 ## Table of contents
 
-*sisällysluettelo tähän*
 - *Project introduction*
 - *Project goals*
 - *Usage instructions*
@@ -15,12 +14,15 @@
 
 ---
 
+## Project introduction
+
+The aim of this project was to develop an ATM application, using the knowledge the student-developers learned on previous courses while studying software development at Oulu University of Applied Scienses.
 
 ## Project goals
 
- :star: Our goal was to create an ATM application which combines SQL database, REST API, Linux server and Qt Creator.
+ :star: The purpose of this project was to create an ATM application which combines SQL database, REST API, Linux server and Qt Creator.
  :star: Our goal was to become confident users of technologies, which we used in the project.
- :star: Our aim was to use the knowledge, which we learnt in previous courses at the Oulu University of Applied Sciences, and apply our knowledge. Moreover, to expand our knowledge in given fields and technologies. 
+ :star: We aimed to use the knowledge, which we learnt in previous courses at the Oulu University of Applied Sciences, and apply our knowledge. Moreover, we wanted to expand our knowledge in given fields and technologies. 
 
 ---
 
@@ -58,8 +60,7 @@ For this project we created SQL database with MySQLWorkbench
 **Design for our database:**
 - Customer
     - Columns: firstname, lastname, address, phonenumber
-    - Customer can have many accounts
-    - Customer can have multiple cards
+    - Customer can have multiple accounts and/or cards
 - Card
     - Columns: cardnumber, pin-number, card type, locked status and foreign key for customer
     - Card can have multiple access right to different accounts (debit, credit, debit/credit)
@@ -83,7 +84,7 @@ For this project we created SQL database with MySQLWorkbench
 #### User interface (QT)
 
 
-First, the app opens a login interface. The ATM app asks customer's card number and pin code. After succeccfull authentification, it opens the main interface of the ATM app. There are four buttons in the ATM app's main interface. 
+First, the app opens a login interface. The ATM app asks customer's card number and pin code. After successful authentification, it opens the main interface of the ATM app. There are four buttons in the ATM app's main interface. 
 - The "Show balance" button shows the balance of the logged in customer's bank account. 
 - The "Make a withdrawal" button opens a new interface where customer can choose the desired amount for withdrawal.
 - The "Browse transactions" button lists 10 transactions to a new interface where customer can browse previous transactions.
@@ -105,3 +106,4 @@ First, the app opens a login interface. The ATM app asks customer's card number 
 
 ## Contributors
 
+This project was constructed by four students: Atte Perämäki, Paula Kaartinen, Janina Niemelä and Satu Palviainen. 
