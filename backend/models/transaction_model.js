@@ -31,7 +31,7 @@ showNextTransactions: function (transaction, callback){
 
 //Do a withdrawal
 makeDrawal: function (account_type, transaction_data, callback) {
-  if(account_type == "debit"){
+  if(account_type === "debit"){
     return db.query(
       'CALL makeDebitWithdrawal (?, ?, ?)',
       [
@@ -41,7 +41,7 @@ makeDrawal: function (account_type, transaction_data, callback) {
       ],
       callback,
     );
-  } else if (account_type == "credit"){
+  } else if (account_type === "credit"){
     return db.query(
       'CALL makeCreditWithdrawal (?, ?, ?)',
       [

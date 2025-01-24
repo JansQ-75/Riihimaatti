@@ -30,6 +30,7 @@ const card = {
           hashed_pin,
           card_data.idcustomer,
           card_data.type,
+          card_data.locked_status,
         ],
         callback,
       );
