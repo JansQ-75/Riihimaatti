@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bank_account = require('../models/bank_account_model');
-const { response } = require('../app');
+
 
 // Route handler for GET request to get info of all bank accounts
 router.get('/', function (request, response) {
