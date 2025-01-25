@@ -22,11 +22,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/login', loginRouter);
 app.use('/users', usersRouter);
 app.use('/transactions', transactionsRouter);
-app.use('/customer', customerRouter);
+app.use('/customer', authenticateToken, customerRouter);
 app.use('/bank_account', bank_accountRouter);
-app.use('/login', loginRouter);
 app.use('/card', authenticateToken, cardRouter);
 app.use((req, res) => {
   console.log(`No route matched: ${req.method} ${req.url}`);

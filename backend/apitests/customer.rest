@@ -1,0 +1,69 @@
+# @name login
+# @prompt cardnumber
+# @prompt pin
+POST http://localhost:3000/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "cardnumber": "{{cardnumber}}",
+  "pin": "{{pin}}"
+}
+
+###
+@token = {{login.response.body.token}}
+
+### Get all customers - Admin only
+GET http://localhost:3000/customer HTTP/1.1
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+
+### Get user data by id - Admin & User
+# @prompt customerid
+GET http://localhost:3000/customer/{{customerid}} HTTP/1.1
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+
+### Create new customer
+# @prompt firstname
+# @prompt lastname
+# @prompt address
+# @prompt phonenumber
+POST http://localhost:3000/customer HTTP/1.1
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+  "fname": "{{firstname}}",
+  "lname": "{{lastname}}",
+  "address": "{{address}}",
+  "phone": "{{phonenumber}}"
+}
+
+
+### Update customer data. Requires admin priviledges
+### Empty parameters not updated
+# @prompt customerid
+# @prompt firstname
+# @prompt lastname
+# @prompt address
+# @prompt phonenumber
+PUT http://localhost:3000/customer/{{customerid}} HTTP/1.1
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+  "fname": "{{firstname}}",
+  "lname": "{{lastname}}",
+  "address": "{{address}}",
+  "phone": "{{phonenumber}}"
+}
+
+### Remove single customer. Requires admin priviledges
+# @prompt customerid
+DELETE http://localhost:3000/customer/{{customerid}} HTTP/1.1
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+
