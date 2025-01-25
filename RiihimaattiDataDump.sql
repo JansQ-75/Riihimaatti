@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.40, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: riihimaattidb
+-- Host: 192.168.1.107    Database: riihimaattidb
 -- ------------------------------------------------------
--- Server version	8.0.30
+-- Server version	8.3.0
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -41,7 +41,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `card` WRITE;
 /*!40000 ALTER TABLE `card` DISABLE KEYS */;
-INSERT INTO `card` VALUES (1,664488,'1234',1,'debit',0),(2,254488,'1212',2,'credit',0),(3,559188,'2323',3,'debit/credit',0),(4,548988,'4545',4,'credit',0),(5,656565,'6565',5,'debit',0),(6,787878,'8787',6,'debit',0),(7,664496,'1224',7,'debit',0);
+INSERT INTO `card` VALUES (0,0,'$2a$10$Ua1Dr2Cfau8bfv/Q1CdmTeSK/fLYy3m6wN/W5MYvu6rSioVfaVmjm',0,'debit',0),(1,664488,'$2a$10$LJcQBX7QLOmg03lSpoWQhu63N2ADU.s7ozZnj/qtnvIzU83FpyuDa',1,'debit',0),(2,254488,'$2a$10$76wov5DTNrlJNzLPm3sYGepidoOmFitNgiYdv7.bWgJevGxSlSKLi',2,'credit',0),(3,559188,'$2a$10$O8.er0h8bg4NY.S8XWrr5uMT/.5v1Zht7dbqrwrGxQLwyp6kEflIG',3,'debit/credit',0),(4,548988,'$2a$10$MbB3Ki6PvNx1rBqqo.PE7ukrQYMvNf5H5kNF3Uzs6Pb02MQgqcvXO',4,'credit',0),(5,656565,'$2a$10$0r0CWLvTK08HKlguCu2RtOpXnTBdqb2x4v/zs.fkYG9fwVjGWufam',5,'debit',0),(6,787878,'$2a$10$d5osoRsshO6JVibQxxehwe/E8ymXkZi.kCcsvTsXx.TAtpWG17UyG',6,'debit',0);
 /*!40000 ALTER TABLE `card` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -51,7 +51,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `customer` WRITE;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
-INSERT INTO `customer` VALUES (1,'Liisa','Lamminen','Kotikatu 5','0405678673'),(2,'Tiina','Tamminen','Hetkosenkatu 5','040055673'),(3,'Teuvo','Tepponen','Tavistie 15','0507845123'),(4,'Leo','Keihäs','Koivukatu 2','0401245673'),(5,'Hemmo','Kuussalo','Tähtitie 6 B1','0407788673'),(6,'Henna','Himanen','Vilkaskatu 45','05012478673'),(7,'Pekka','Eversti','Uppotukintie 6','0401245787');
+INSERT INTO `customer` VALUES (0,'Super','Admin','Tiedonvaltatie 1','020202'),(1,'Liisa','Lamminen','Kotikatu 5','0405678673'),(2,'Tiina','Tamminen','Hetkosenkatu 5','040055673'),(3,'Teuvo','Tepponen','Tavistie 15','0507845123'),(4,'Leo','Keihäs','Koivukatu 2','0401245673'),(5,'Hemmo','Kuussalo','Tähtitie 6 B1','0407788673'),(6,'Henna','Himanen','Vilkaskatu 45','05012478673'),(7,'Pekka','Eversti','Uppotukintie 6','0401245787');
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -74,4 +74,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-01-21 11:35:49
+-- Dump completed on 2025-01-25 23:39:51
