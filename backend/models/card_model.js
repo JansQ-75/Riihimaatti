@@ -54,7 +54,7 @@ const card = {
   add: function (card_data, callback) {
     bcrypt.hash(card_data.pin, 10, function (err, hashed_pin) {
       return db.query(
-        'INSERT INTO card(cardnumber, pin, idcustomer, type) VALUES(?,?,?,?)',
+        'INSERT INTO card(cardnumber, pin, idcustomer, type, locked_status) VALUES(?,?,?,?,?)',
         [
           card_data.cardnumber,
           hashed_pin,

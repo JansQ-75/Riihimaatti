@@ -1,0 +1,68 @@
+# @name login
+# @prompt cardnumber
+# @prompt pin
+POST http://localhost:3000/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "cardnumber": "{{cardnumber}}",
+  "pin": "{{pin}}"
+}
+
+###
+@token = {{login.response.body.token}}
+
+
+### Get card by ID - Admin or Card access
+# @prompt cardid
+GET http://localhost:3000/card/bycardnumber/{{cardid}} HTTP/1.1
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+
+### Create new card - Admin access only
+# @prompt cardnumber
+# @prompt pin
+# @prompt idcustomer
+POST http://localhost:3000/card HTTP/1.1
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+  "cardnumber": "{{cardnumber}}",
+  "pin": "{{pin}}",
+  "idcustomer": "{{idcustomer}}",
+  "type": "credit/debit",
+  "locked_status": 0
+}
+
+
+### Update card. Requires admin priviledges
+GET http://localhost:3000/card HTTP/1.1
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+
+### Update card. Requires admin priviledges
+# @prompt cardid
+# @prompt cardnumber
+# @prompt pin
+# @prompt idcustomer
+# @prompt type
+PUT http://localhost:3000/card/{{cardid}} HTTP/1.1
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+  "cardnumber": "{{cardnumber}}",
+  "pin": "{{pin}}",
+  "idcustomer": "{{idcustomer}}",
+  "type": "{{type}}"
+}
+
+
+### Delete card. Admin access only
+# @prompt cardid
+DELETE http://localhost:3000/card/{{cardid}} HTTP/1.1
+Content-Type: application/json
+Authorization: bearer {{token}}
