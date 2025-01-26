@@ -18,7 +18,7 @@ router.get('/', function (req, res, next) {
 
 
 //td
-router.get('/:transaction_date', function (request, response) {
+router.get('/transaction_date', function (request, response) {
   transaction.getTransaction_date(request.params.transaction_date, request.body, function (err, result) {
     if (err) {
       response.json(err);
@@ -29,7 +29,7 @@ router.get('/:transaction_date', function (request, response) {
 });
 
 //wm
-router.put('/:transaction', function (request, response) {
+router.put('/transaction', function (request, response) {
   balance.update(request.params.transaction, request.body, function (err, result) {
     if (err) {
       response.json(err);
@@ -39,20 +39,9 @@ router.put('/:transaction', function (request, response) {
   });
 });
 
-//p10
-router.get('/:transaction', function (request, response) {
-  transaction.showPreviousTransactions(request.params.transaction, request.body, function (err, result) {
-    if (err) {
-      response.json(err);
-    } else {
-      response.json(result.affectedRows);
-    }
-  });
-});
-
-//n10
-router.get('/:transaction', function (request, response) {
-  transaction.showNextTransactions(request.params.transaction, request.body, function (err, result) {
+//showTransacs
+router.get('/gettransaction/', function (request, response) {
+  transaction.showTransactions(request.params.transaction, request.body, function (err, result) {
     if (err) {
       response.json(err);
     } else {
@@ -62,7 +51,7 @@ router.get('/:transaction', function (request, response) {
 });
 
 router.post('/:account_type', function (request, response) {
-  transaction.makeDrawal(
+  transaction.makeWithdrawal(
     request.params.account_type,
     request.body,
     function (err, result) {

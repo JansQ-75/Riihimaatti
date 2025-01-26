@@ -17,20 +17,18 @@ withdrawal: function (idbank_account, amountToWithdraw, callback) {
      [amountToWithdraw, idbank_account, amountToWithdraw], callback);
 },
 
-// Show previous 10 transactions
-showPreviousTransactions: function (transaction, callback){
-  return db.query('SELECT * FROM transaction ORDER BY transaction_date DESC LIMIT 10',
-     [transaction], callback)
-},
-
-// Show next 10 transactions
-showNextTransactions: function (transaction, callback){
-  return db.query('SELECT * FROM transaction ORDER BY transaction_date ASC LIMIT 10', 
-    [transaction], callback)
+// Show transactions
+showTransactions: function (transaction, callback){
+  return db.query('CALL showTransactions (?, ?)',
+     [
+      transaction.idbank_account, 
+      transaction.offsetValue,
+      ], 
+    callback)
 },
 
 //Do a withdrawal
-makeDrawal: function (account_type, transaction_data, callback) {
+makeWithdrawal: function (account_type, transaction_data, callback) {
   if(account_type === "debit"){
     return db.query(
       'CALL makeDebitWithdrawal (?, ?, ?)',
@@ -39,7 +37,7 @@ makeDrawal: function (account_type, transaction_data, callback) {
         transaction_data.idcard,
         transaction_data.withdrawal,
       ],
-      callback,
+      callback
     );
   } else if (account_type === "credit"){
     return db.query(
@@ -49,7 +47,7 @@ makeDrawal: function (account_type, transaction_data, callback) {
         transaction_data.idcard,
         transaction_data.withdrawal,
       ],
-      callback,
+      callback
     );
   }
 },
@@ -61,7 +59,7 @@ atm_transactions: function (transaction_data, callback) {
     [
       transaction_data.idbank_account
     ],
-    callback,
+    callback
   );
 }
 
