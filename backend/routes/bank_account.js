@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const bank_account = require('../models/bank_account_model');
-
+const { checkAdmin } = require('../authentication');
 
 // Route handler for GET request to get info of all bank accounts
-router.get('/', function (request, response) {
+// Only for Admin
+router.get('/', checkAdmin, function (request, response) {
     bank_account.getAll(function (err, result) {
         if (err) {
             response.json(err);
@@ -15,29 +16,37 @@ router.get('/', function (request, response) {
     })
 });
 
-// Route handler for GET request to get info of a specific bank account (via idnumber)
-router.get('/by-id/:idbank_account', function (request, response) {
-    bank_account.getById(request.params.idbank_account, function (err, result) {
-        if (err) {
-            response.json(err);
-        }
-        else {
-            response.json(result[0]);
-        }
-    })
-});
+// Route handler for GET request to get info of a specific bank account (via accountId)
+// Admin or validated user
+router.get(
+    '/by-id/:idbank_account',
+    bank_account.validateAccountIdAccess,
+    function (request, response) {
+        bank_account.getById(request.params.idbank_account, function (err, result) {
+            if (err) {
+                response.json(err);
+            }
+            else {
+                response.json(result[0]);
+            }
+        })
+    });
 
 // Route handler for GET request to get info of a specific bank account (via accountnumber)
-router.get('/by-account-nbr/:bank_account_number', function (request, response) {
-    bank_account.getByAccountNbr(request.params.bank_account_number, function (err, result) {
-        if (err) {
-            response.json(err);
-        }
-        else {
-            response.json(result[0]);
-        }
-    })
-});
+// Admin or validated user
+router.get(
+    '/by-account-nbr/:bank_account_number',
+    bank_account.validateAccountNumberAccess,
+    function (request, response) {
+        bank_account.getByAccountNbr(request.params.bank_account_number, function (err, result) {
+            if (err) {
+                response.json(err);
+            }
+            else {
+                response.json(result[0]);
+            }
+        })
+    });
 
 // Route handler for POST request to add bank account to database
 router.post('/', function (request, response) {

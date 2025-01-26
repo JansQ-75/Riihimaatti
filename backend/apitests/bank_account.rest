@@ -1,0 +1,30 @@
+# @name login
+# @prompt cardnumber
+# @prompt pin
+POST http://localhost:3000/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "cardnumber": "{{cardnumber}}",
+  "pin": "{{pin}}"
+}
+
+###
+@token = {{login.response.body.token}}
+
+### Get account data from all accounts - Admin only
+GET http://localhost:3000/bank_account HTTP/1.1
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+### Get account data by id - Admin & User
+# @prompt accountid
+GET http://localhost:3000/bank_account/by-id/{{accountid}} HTTP/1.1
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+### Get account data by accountnumber - Admin & User
+# @prompt accountnumber
+GET http://localhost:3000/bank_account/by-account-nbr/{{accountnumber}} HTTP/1.1
+Content-Type: application/json
+Authorization: bearer {{token}}

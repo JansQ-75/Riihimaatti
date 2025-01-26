@@ -9,7 +9,6 @@ const bank_account = {
             );
     },
 
-    // Get all bank account data by id
     getById: function (idbank_account, callback) {
         return db.query
             (
@@ -103,6 +102,71 @@ const bank_account = {
                 callback
             );
     },
+
+    // validate bank account id
+    validateAccountIdAccess: function (req, res, next) {
+        if (req.isAdmin) {
+            return next();
+        }
+        const query = `
+            SELECT b.idbank_account
+            FROM bank_account b 
+            JOIN access_rights a ON b.idbank_account=a.idbank_account 
+            JOIN card c ON a.idcard=c.idcard 
+            WHERE b.idbank_account=? AND c.cardnumber=?;
+          `;
+
+        db.query(query, [req.params.idbank_account, req.cardnumber], (err, result) => {
+            if (err)
+                return res
+                    .status(500)
+                    .json({ error: `500: It's not you, it's me problem` });
+            console.log(req.isAdmin);
+
+            if (!result.length)
+                return res.status(403).json({ error: `Access denied! Stop snooping!` });
+
+            next();
+        });
+    },
+
+    // validate bank account accountnumber
+    validateAccountNumberAccess: function (req, res, next) {
+        if (req.isAdmin) {
+            return next();
+        }
+        const query = `
+           SELECT b.bank_account_number
+            FROM bank_account b 
+            JOIN access_rights a ON b.idbank_account=a.idbank_account 
+            JOIN card c ON a.idcard=c.idcard 
+            WHERE b.bank_account_number=? AND c.cardnumber=?;
+          `;
+
+        db.query(query, [req.params.bank_account_number, req.cardnumber], (err, result) => {
+            if (err)
+                return res
+                    .status(500)
+                    .json({ error: `500: It's not you, it's me problem` });
+            console.log(req.isAdmin);
+
+            if (!result.length)
+                return res.status(403).json({ error: `Access denied! Stop snooping!` });
+
+            next();
+        });
+    },
 }
+
+/*
+ `
+            SELECT b.bank_account_number
+            FROM bank_account b 
+            JOIN access_rights a ON b.idbank_account=a.idbank_account 
+            JOIN card c ON a.idcard=c.idcard 
+            WHERE b.bank_account_number=? AND c.cardnumber=?;
+
+          `
+*/
 
 module.exports = bank_account;
