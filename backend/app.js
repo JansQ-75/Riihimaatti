@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const authenticateToken = require('./authentication');
+const { authenticateToken } = require('./authentication');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -22,13 +22,16 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/login', loginRouter);
 app.use('/users', usersRouter);
 app.use('/transactions', transactionsRouter);
-app.use('/customer', customerRouter);
+app.use('/customer', authenticateToken, customerRouter);
 app.use('/bank_account', bank_accountRouter);
-app.use('/login', loginRouter);
-app.use('/card', cardRouter);
-
+app.use('/card', authenticateToken, cardRouter);
+app.use((req, res) => {
+  console.log(`No route matched: ${req.method} ${req.url}`);
+  res.status(404).json({ error: 'Not Found' });
+});
 app.listen(3000);
 
 module.exports = app;

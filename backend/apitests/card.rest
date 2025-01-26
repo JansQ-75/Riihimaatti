@@ -12,20 +12,15 @@ Content-Type: application/json
 ###
 @token = {{login.response.body.token}}
 
-### Get all customers
-GET http://localhost:3000/customer HTTP/1.1
-Content-Type: application/json
-Authorization: bearer {{token}}
 
-
-### Get card by ID
+### Get card by ID - Admin or Card access
 # @prompt cardid
 GET http://localhost:3000/card/bycardnumber/{{cardid}} HTTP/1.1
 Content-Type: application/json
 Authorization: bearer {{token}}
 
 
-### Uuden kortin luonti
+### Create new card - Admin access only
 # @prompt cardnumber
 # @prompt pin
 # @prompt idcustomer
@@ -37,22 +32,8 @@ Authorization: bearer {{token}}
   "cardnumber": "{{cardnumber}}",
   "pin": "{{pin}}",
   "idcustomer": "{{idcustomer}}",
-  "type": "credit/debit"
-}
-
-### Uuden käyttäjän luonti
-# @prompt cardnumber
-# @prompt pin
-# @prompt idcustomer
-POST http://localhost:3000/card HTTP/1.1
-Content-Type: application/json
-Authorization: bearer {{token}}
-
-{
-  "cardnumber": "{{cardnumber}}",
-  "pin": "{{pin}}",
-  "idcustomer": "{{idcustomer}}",
-  "type": "credit/debit"
+  "type": "credit/debit",
+  "locked_status": 0
 }
 
 
@@ -79,3 +60,9 @@ Authorization: bearer {{token}}
   "type": "{{type}}"
 }
 
+
+### Delete card. Admin access only
+# @prompt cardid
+DELETE http://localhost:3000/card/{{cardid}} HTTP/1.1
+Content-Type: application/json
+Authorization: bearer {{token}}
