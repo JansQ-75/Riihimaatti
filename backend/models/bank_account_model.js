@@ -48,21 +48,41 @@ const bank_account = {
             );
     },
 
-    // Update bank account. Replace entire data
+    // Update bank account. Replace or modify entire data
     update: function (idbank_account, bank_account_data, callback) {
-        return db.query
-            (
-                'UPDATE bank_account SET bank_account_number=?, account_type=?, balance=?, credit_limit=?, idcustomer=? WHERE idbank_account=?',
-                [
-                    bank_account_data.bank_account_number,
-                    bank_account_data.account_type,
-                    bank_account_data.balance,
-                    bank_account_data.credit_limit,
-                    bank_account_data.idcustomer,
-                    idbank_account
-                ],
-                callback
-            );
+        // Query to get wanted account data
+        db.query('SELECT * FROM bank_account WHERE idbank_account=?', [idbank_account], (err, result) => {
+            if (err) {
+                return callback(err);
+            }
+            if (!result.length) {
+                return callback({ error: 'Account not found' });
+            }
+            // Sets current account data values to "previous values"
+            const previous = result[0];
+
+            // Query to update account data
+            // if new value isn't set, then previous value remains
+            return db.query
+                (
+                    'UPDATE bank_account SET bank_account_number=?, account_type=?, balance=?, credit_limit=?, idcustomer=? WHERE idbank_account=?',
+                    [
+                        bank_account_data.bank_account_number || previous.bank_account_number,
+                        bank_account_data.account_type || previous.account_type,
+                        bank_account_data.balance || previous.balance,
+                        bank_account_data.credit_limit || previous.credit_limit,
+                        bank_account_data.idcustomer || previous.idcustomer,
+                        idbank_account
+                    ],
+                    function (err, result) {
+                        if (err) {
+                            return callback(err);
+                        }
+
+                        callback(null, result);
+                    },
+                );
+        });
     },
 
     // Change balance

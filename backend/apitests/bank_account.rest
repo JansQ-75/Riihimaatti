@@ -28,3 +28,68 @@ Authorization: bearer {{token}}
 GET http://localhost:3000/bank_account/by-account-nbr/{{accountnumber}} HTTP/1.1
 Content-Type: application/json
 Authorization: bearer {{token}}
+
+### Add new bank account - Admin only
+# @prompt accountnumber
+# @prompt accountType
+# @prompt balance
+# @prompt creditLimit
+# @prompt customerId
+POST http://localhost:3000/bank_account HTTP/1.1
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+"bank_account_number": "{{accountnumber}}",
+"account_type": "{{accountType}}",
+"balance": "{{balance}}",
+"credit_limit": "{{creditLimit}}",
+"idcustomer": "{{customerId}}"
+}
+
+### Update bank account data - Admin only
+# @prompt accountId
+# @prompt accountnumber
+# @prompt accountType
+# @prompt balance
+# @prompt creditLimit
+# @prompt customerId
+PUT http://localhost:3000/bank_account/by-id/{{accountId}} HTTP/1.1
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+"bank_account_number": "{{accountnumber}}",
+"account_type": "{{accountType}}",
+"balance": "{{balance}}",
+"credit_limit": "{{creditLimit}}",
+"idcustomer": "{{customerId}}"
+}
+
+### Update balance - Admin only
+# @prompt accountId
+# @prompt balance
+PATCH http://localhost:3000/bank_account/by-id/balance/{{accountId}} HTTP/1.1
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+"balance": "{{balance}}"
+}
+
+### Update balance - Admin only
+# @prompt accountId
+# @prompt creditLimit
+PATCH http://localhost:3000/bank_account/by-id/credit/{{accountId}} HTTP/1.1
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+"credit_limit": "{{creditLimit}}"
+}
+
+### Delete account - Admin only
+# @prompt accountId
+DELETE http://localhost:3000/bank_account/{{accountId}} HTTP/1.1
+Content-Type: application/json
+Authorization: bearer {{token}}

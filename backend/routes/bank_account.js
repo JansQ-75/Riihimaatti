@@ -49,61 +49,66 @@ router.get(
     });
 
 // Route handler for POST request to add bank account to database
-router.post('/', function (request, response) {
+// Admin only
+router.post('/', checkAdmin, function (request, response) {
     bank_account.add(request.body, function (err, result) {
         if (err) {
             response.json(err);
         }
         else {
-            response.json(result.affectedRows);
+            response.json('A new account added to database');
         }
     })
 });
 
-// Route handler for PUT request to update account info
-router.put('/by-id/:idbank_account', function (request, response) {
+// Route handler for PUT request to update account data
+// Admin only
+router.put('/by-id/:idbank_account', checkAdmin, function (request, response) {
     bank_account.update(request.params.idbank_account, request.body, function (err, result) {
         if (err) {
             response.json(err);
         }
         else {
-            response.json(result.affectedRows);
+            response.json('Account data updated successfully');
         }
     })
 });
 
 // Route handler for PATCH request to update only balance of a bank account
-router.patch('/by-id/balance/:idbank_account', function (request, response) {
+// Admin only
+router.patch('/by-id/balance/:idbank_account', checkAdmin, function (request, response) {
     bank_account.updateBalance(request.params.idbank_account, request.body, function (err, result) {
         if (err) {
             response.json(err);
         }
         else {
-            response.json(result.affectedRows);
+            response.json('Balance updated successfully');
         }
     })
 });
 
 // Route handler for PATCH request to update only credit of a bank account
-router.patch('/by-id/credit/:idbank_account', function (request, response) {
+// Admin only
+router.patch('/by-id/credit/:idbank_account', checkAdmin, function (request, response) {
     bank_account.updateCredit(request.params.idbank_account, request.body, function (err, result) {
         if (err) {
             response.json(err);
         }
         else {
-            response.json(result.affectedRows);
+            response.json('Credit limit updated successfully');
         }
     })
 });
 
 // Route handler for DELETE request to delete account from database
-router.delete('/:idbank_account', function (request, response) {
+// Admin only
+router.delete('/:idbank_account', checkAdmin, function (request, response) {
     bank_account.delete(request.params.idbank_account, function (err, result) {
         if (err) {
             response.json(err);
         }
         else {
-            response.json(result.affectedRows);
+            response.json('Bank account has been deleted successfully');
         }
     })
 });
