@@ -3,6 +3,12 @@
 
 #include <QMainWindow>
 
+//For http
+#include <QDialog>
+#include <QtNetwork>
+#include <QNetworkAccessManager>
+#include <QJsonDocument>
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -31,7 +37,17 @@ private slots:
     void on_btnLogout_clicked();
 
 
+    void on_btnStart_clicked();
+
+    void loginSlot(QNetworkReply *reply);
+
 private:
     Ui::MainWindow *ui;
+
+    //For http
+    QNetworkAccessManager *loginManager;
+    QNetworkReply *reply;
+    QByteArray response_data;
+
 };
 #endif // MAINWINDOW_H

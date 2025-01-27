@@ -14,8 +14,8 @@ Content-Type: application/json
 
 
 ### Get card by ID - Admin or Card access
-# @prompt cardid
-GET http://localhost:3000/card/bycardnumber/{{cardid}} HTTP/1.1
+# @prompt cardnumber
+GET http://localhost:3000/card/bycardnumber/{{cardnumber}} HTTP/1.1
 Content-Type: application/json
 Authorization: bearer {{token}}
 
