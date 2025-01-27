@@ -132,6 +132,19 @@
        </rect>
       </property>
      </widget>
+     <widget class="QLabel" name="labelInfo">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>440</y>
+        <width>221</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="page_2">
      <widget class="QPushButton" name="btnBalance">

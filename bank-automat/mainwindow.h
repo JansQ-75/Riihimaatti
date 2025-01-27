@@ -36,7 +36,6 @@ private slots:
 
     void on_btnLogout_clicked();
 
-
     void on_btnStart_clicked();
 
     void loginSlot(QNetworkReply *reply);

@@ -1,3 +1,4 @@
+#include "environment.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -60,7 +61,8 @@ void MainWindow::on_btnLogin_clicked()
     jsonObj.insert("pin", ui->textPincode->text());
 
     //
-    QString site_url="http://localhost:3000/login";
+    //Without environment --> QString site_url="http://localhost:3000/login";
+    QString site_url=Environment::base_url()+"/login";
     QNetworkRequest request(site_url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     loginManager = new QNetworkAccessManager(this);
@@ -68,16 +70,37 @@ void MainWindow::on_btnLogin_clicked()
 
     reply=loginManager->post(request, QJsonDocument(jsonObj).toJson());
 
-    //ui->stackedWidget->setCurrentIndex(2);
 }
 
 void MainWindow::loginSlot(QNetworkReply *reply)
 {
     //reply's answer to response_data
     response_data=reply->readAll();
-    
-    //Print token
-    qDebug()<<response_data;
+
+    //Server errors
+    if(response_data.length()<2){
+        qDebug()<<"Server error";
+        //Print it to ui
+        ui->labelInfo->setText("Server problems");
+    //Database errors
+    } else if (response_data=="Internal Server Error"){
+        qDebug()<<"Database error";
+        //Print it to ui
+        ui->labelInfo->setText("Database problems");
+    //Login OK
+    } else {
+        if(response_data=="Unauthorized"||response_data=="Card number doesn't exist" ){
+            //Print error
+            qDebug()<<response_data;
+            ui->labelInfo->setText("Wrong card number or pin code");
+        } else if (response_data.length()>30){
+            //Print token
+            qDebug()<<response_data;
+            ui->labelInfo->setText("Login successful");
+            //Go next page
+            ui->stackedWidget->setCurrentIndex(2);
+        }
+    }
 
     //Delete later
     reply->deleteLater();
