@@ -87,16 +87,17 @@ void MainWindow::loginSlot(QNetworkReply *reply)
         qDebug()<<"Database error";
         //Print it to ui
         ui->labelInfo->setText("Database problems");
-    //Login OK
     } else {
         if(response_data=="Unauthorized"||response_data=="Card number doesn't exist" ){
             //Print error
             qDebug()<<response_data;
+            //Print it to ui
             ui->labelInfo->setText("Wrong card number or pin code");
+        //Login OK
         } else if (response_data.length()>30){
             //Print token
             qDebug()<<response_data;
-            ui->labelInfo->setText("Login successful");
+            //ui->labelInfo->setText("Login successful");
             //Go next page
             ui->stackedWidget->setCurrentIndex(2);
         }
