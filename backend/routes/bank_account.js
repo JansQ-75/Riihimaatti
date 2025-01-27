@@ -113,4 +113,17 @@ router.delete('/:idbank_account', checkAdmin, function (request, response) {
     })
 });
 
+// Route handler for checking which account(s) a card has access to
+// Admin only
+router.get('/cardAccess/:cardnumber', bank_account.validateCardAccess, function (request, response) {
+    bank_account.checkCardAccess(request.params.cardnumber, function (err, result) {
+        if (err) {
+            response.json(err);
+        }
+        else {
+            response.json(result);
+        }
+    })
+});
+
 module.exports = router;

@@ -123,6 +123,17 @@ const bank_account = {
             );
     },
 
+    checkCardAccess: function (cardnumber, callback) {
+        return db.query
+            ('SELECT b.idbank_account, b.account_type FROM bank_account b JOIN access_rights a ON b.idbank_account=a.idbank_account JOIN card c ON a.idcard=c.idcard WHERE c.cardnumber=?',
+                [
+                    cardnumber
+                ],
+                callback
+            );
+
+    },
+
     // validate bank account id
     validateAccountIdAccess: function (req, res, next) {
         if (req.isAdmin) {
@@ -164,6 +175,33 @@ const bank_account = {
           `;
 
         db.query(query, [req.params.bank_account_number, req.cardnumber], (err, result) => {
+            if (err)
+                return res
+                    .status(500)
+                    .json({ error: `500: It's not you, it's me problem` });
+            console.log(req.isAdmin);
+
+            if (!result.length)
+                return res.status(403).json({ error: `Access denied! Stop snooping!` });
+
+            next();
+        });
+    },
+
+    // validate card access to an account
+    validateCardAccess: function (req, res, next) {
+        if (req.isAdmin) {
+            return next();
+        }
+        const query = `
+            SELECT c.cardnumber
+            FROM card c 
+            JOIN access_rights a ON c.idcard=a.idcard
+            JOIN bank_account b ON a.idbank_account=b.idbank_account 
+            WHERE c.cardnumber=? AND b.idbank_account=?;
+          `;
+
+        db.query(query, [req.params.cardnumber, req.idbank_account], (err, result) => {
             if (err)
                 return res
                     .status(500)
