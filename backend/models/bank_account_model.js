@@ -151,11 +151,10 @@ const bank_account = {
             if (err)
                 return res
                     .status(500)
-                    .json({ error: `500: It's not you, it's me problem` });
-            console.log(req.isAdmin);
+                    .json({ error: `Internal Server Error. Sit tight!` });
 
             if (!result.length)
-                return res.status(403).json({ error: `Access denied! Stop snooping!` });
+                return res.status(403).json({ error: `Access denied. Forbidden Kingdom. You shall not pass!` });
 
             next();
         });
@@ -178,11 +177,10 @@ const bank_account = {
             if (err)
                 return res
                     .status(500)
-                    .json({ error: `500: It's not you, it's me problem` });
-            console.log(req.isAdmin);
+                    .json({ error: `Internal Server Error. Sit tight!` });
 
             if (!result.length)
-                return res.status(403).json({ error: `Access denied! Stop snooping!` });
+                return res.status(403).json({ error: `Access denied. Forbidden Kingdom. You shall not pass!` });
 
             next();
         });
@@ -194,37 +192,27 @@ const bank_account = {
             return next();
         }
         const query = `
-            SELECT c.cardnumber
-            FROM card c 
-            JOIN access_rights a ON c.idcard=a.idcard
-            JOIN bank_account b ON a.idbank_account=b.idbank_account 
-            WHERE c.cardnumber=? AND b.idbank_account=?;
-          `;
-
-        db.query(query, [req.params.cardnumber, req.idbank_account], (err, result) => {
-            if (err)
-                return res
-                    .status(500)
-                    .json({ error: `500: It's not you, it's me problem` });
-            console.log(req.isAdmin);
-
-            if (!result.length)
-                return res.status(403).json({ error: `Access denied! Stop snooping!` });
-
-            next();
-        });
-    },
-}
-
-/*
- `
-            SELECT b.bank_account_number
+            SELECT b.idbank_account
             FROM bank_account b 
             JOIN access_rights a ON b.idbank_account=a.idbank_account 
             JOIN card c ON a.idcard=c.idcard 
-            WHERE b.bank_account_number=? AND c.cardnumber=?;
+            WHERE c.cardnumber=?;
+          `;
 
-          `
-*/
+        db.query(query, [req.params.cardnumber], (err, result) => {
+            if (err)
+                return res
+                    .status(500)
+                    .json({ error: `Internal Server Error. Sit tight!` });
+
+
+            if (req.cardnumber != req.params.cardnumber)
+                return res.status(403).json({ error: 'Access denied. Forbidden Kingdom. You shall not pass!' });
+
+            else
+                next();
+        });
+    },
+}
 
 module.exports = bank_account;
