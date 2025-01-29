@@ -26,7 +26,7 @@ app.use('/login', loginRouter);
 app.use('/users', usersRouter);
 app.use('/transactions', transactionsRouter);
 app.use('/customer', authenticateToken, customerRouter);
-app.use('/bank_account', bank_accountRouter);
+app.use('/bank_account', authenticateToken, bank_accountRouter);
 app.use('/card', authenticateToken, cardRouter);
 app.use((req, res) => {
   console.log(`No route matched: ${req.method} ${req.url}`);
