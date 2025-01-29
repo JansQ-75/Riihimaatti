@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "creditordebit.h"
+
 #include <QMainWindow>
 
 //For http
@@ -23,6 +25,8 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+
+
 private slots:
     void on_btnLogin_clicked();
 
@@ -40,13 +44,35 @@ private slots:
 
     void loginSlot(QNetworkReply *reply);
 
+    void pressed_number();
+
+    void showDebitOrCreditSlot(QNetworkReply *replyCreditOrDebit);
+
 private:
     Ui::MainWindow *ui;
 
-    //For http
+    //For http token
     QNetworkAccessManager *loginManager;
     QNetworkReply *reply;
     QByteArray response_data;
+
+    QString cardnumberForLabel;
+    QString pincodeForLabel;
+    int iForLogin =0;
+    int pincodeTries =0;
+    bool pincodeLocked=false;
+
+    QByteArray customersToken;
+
+    //For http credit or debit
+    QNetworkAccessManager *creditOrDebitManager;
+    QNetworkReply *replyCreditOrDebit;
+    QByteArray response_dataCreditOrDebit;
+
+    //For customer
+    int idcustomer;
+    int idcard;
+    QString type;
 
 };
 #endif // MAINWINDOW_H
