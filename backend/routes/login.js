@@ -26,7 +26,7 @@ router.post('/', function (req, res) {
     if (dbResult[0].locked_status >= 3) {
       res.status(403).send(`Card locked.`);
     }
-    console.log('hei', dbResult);
+
     bcrypt.compare(pin, dbResult[0].pin, (err, compareResult) => {
       if (compareResult) {
         const token = generateAccessToken({ cardnumber: cardnum });
@@ -42,14 +42,12 @@ router.post('/', function (req, res) {
         );
         res.send({ token });
       } else {
-        console.log('login failed');
         card.setLockedStatus(
           {
             cardnum,
             locked_status: dbResult[0].locked_status + 1,
           },
           (dbError, dbResult) => {
-            console.log(dbError);
             res.sendStatus(401);
           },
         );
