@@ -36,6 +36,22 @@ const card = {
     );
   },
 
+    /**
+   * Get card data
+   * Only authenticated card owner can get data
+   * @param {string} cardnumber - The card number to search for
+   * @param {function} callback - The callback function to handle the query result
+   * @returns {void}
+   *
+   * */
+    getByCardnumberStart: function (cardnumber, callback) {
+      return db.query(
+        'SELECT idcard, cardnumber, card.idcustomer, type, fname, lname FROM card INNER JOIN customer ON card.idcustomer=customer.idcustomer WHERE cardnumber=?',
+        [cardnumber],
+        callback,
+      );
+    },
+
   //Get card by id
   getById: function (idcard, callback) {
     return db.query('SELECT * FROM card WHERE idcard=?', [idcard], callback);

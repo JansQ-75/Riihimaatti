@@ -47,6 +47,25 @@ router.get(
 );
 
 /**
+ * Only logged in card owner (or admin) can view card data
+ * @param {number} number
+ * @returns {Object} - Card data
+ */
+router.get(
+  '/bycardnumberstart/:cardnumber',
+  isCardOwnerOrAdmin,
+  function (request, response) {
+    card.getByCardnumberStart(request.params.cardnumber, function (err, result) {
+      if (err) {
+        response.json(err);
+      } else {
+        response.json(result[0]);
+      }
+    });
+  },
+);
+
+/**
  * Get card data by id.
  * for card owner or admin
  */

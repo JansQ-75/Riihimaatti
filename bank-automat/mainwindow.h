@@ -3,6 +3,8 @@
 
 #include "creditordebit.h"
 
+#include "login.h"
+
 #include <QMainWindow>
 
 //For http
@@ -73,6 +75,8 @@ private:
     int idcustomer;
     int idcard;
     QString type;
+    QString fname;
+    QString lname;
 
 };
 #endif // MAINWINDOW_H

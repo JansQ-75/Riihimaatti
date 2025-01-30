@@ -165,16 +165,12 @@ void MainWindow::loginSlot(QNetworkReply *reply)
             QByteArray customersToken =jsonresponse["token"].toString().toUtf8();
 
 
-            QString site_url=Environment::base_url()+"/card/bycardnumber/"+cardnumberForLabel;
+            QString site_url=Environment::base_url()+"/card/bycardnumberstart/"+cardnumberForLabel;
             QNetworkRequest request(site_url);
             request.setRawHeader(QByteArray("Authorization"), QByteArray("Bearer " + customersToken));
             creditOrDebitManager = new QNetworkAccessManager(this);
             connect(creditOrDebitManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(showDebitOrCreditSlot(QNetworkReply*)));
             replyCreditOrDebit=creditOrDebitManager->get(request);
-
-
-            ui->labelHeyAndName->setText("LAITA TÄHÄN ASIAKKAAN NIMI + TERVETULOA");
-
 
             //Go next page
             ui->stackedWidget->setCurrentIndex(2);
@@ -196,7 +192,7 @@ void MainWindow::loginSlot(QNetworkReply *reply)
 void MainWindow::showDebitOrCreditSlot(QNetworkReply *replyCreditOrDebit)
 {
     response_dataCreditOrDebit=replyCreditOrDebit->readAll();
-    //qDebug()<<response_dataCreditOrDebit;
+    qDebug()<<response_dataCreditOrDebit;
 
     //Parse json
     QJsonDocument jsonresponse = QJsonDocument::fromJson(response_dataCreditOrDebit);
@@ -210,13 +206,16 @@ void MainWindow::showDebitOrCreditSlot(QNetworkReply *replyCreditOrDebit)
     idcustomer = jsonObj2["idcustomer"].toInt();
     idcard = jsonObj2["idcard"].toInt();
     type = jsonObj2["type"].toString();
+    fname = jsonObj2["fname"].toString();
+    lname = jsonObj2["lname"].toString();
 
+    ui->labelHeyAndName->setText("Welcome " + fname + " " + lname);
 
     //Ask credit or debit if it is necessessary
     if(type=="debit/credit"){
         //
         creditOrDebit *objCreditOrDebit = new creditOrDebit(this);
-        objCreditOrDebit->setCustomerName("(käyttäjän nimi tähän)");
+        objCreditOrDebit->setCustomerName(fname + " " + lname);
         objCreditOrDebit->setCustomersToken(customersToken);
         objCreditOrDebit->open();
     }
