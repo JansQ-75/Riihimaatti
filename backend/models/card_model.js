@@ -10,7 +10,6 @@ const card = {
     );
   },
   setLockedStatus: function (params, callback) {
-    console.log(params);
     return db.query(
       'UPDATE card SET locked_status=? WHERE cardnumber=?',
       [params.locked_status, params.cardnum],
