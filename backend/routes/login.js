@@ -20,17 +20,39 @@ router.post('/', function (req, res) {
       return;
     }
     if (!dbResult.length) {
-      // res.sendStatus(500);
       res.send(`Card number doesn't exist`);
       return;
     }
-
+    if (dbResult[0].locked_status >= 3) {
+      res.status(403).send(`Card locked.`);
+    }
+    console.log('hei', dbResult);
     bcrypt.compare(pin, dbResult[0].pin, (err, compareResult) => {
       if (compareResult) {
         const token = generateAccessToken({ cardnumber: cardnum });
+        card.setLockedStatus(
+          {
+            cardnum,
+            locked_status: 0,
+          },
+          (dbError, _dbResult) => {
+            // Login was successful, if resetting counter fails => only log error
+            if (dbError) console.log(`Error resetting locked_status`);
+          },
+        );
         res.send({ token });
       } else {
-        res.sendStatus(401);
+        console.log('login failed');
+        card.setLockedStatus(
+          {
+            cardnum,
+            locked_status: dbResult[0].locked_status + 1,
+          },
+          (dbError, dbResult) => {
+            console.log(dbError);
+            res.sendStatus(401);
+          },
+        );
       }
     });
   });

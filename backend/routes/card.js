@@ -101,9 +101,9 @@ router.put('/:idcard', checkAdmin, function (request, response) {
 
 /**
  *
- * Updates the card in the database. Requires Admin access
+ * Deletes card. Requires Admin access
  *
- * @route PUT /card/:idcard
+ * @route DELETE /card/:idcard
  * @param {number} idcard - The ID of the card to update (provided in the URL).
  * @param {Object} request.body - The request body containing the updated card data.
  * @param {string} [request.body.cardnumber] - The new card number (optional).
