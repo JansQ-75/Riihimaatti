@@ -4,12 +4,18 @@ const bcrypt = require('bcryptjs');
 const card = {
   checkPassword: function (cardnum, callback) {
     return db.query(
-      'SELECT pin FROM card WHERE cardnumber=?',
+      'SELECT pin, locked_status FROM card WHERE cardnumber=?',
       [cardnum],
       callback,
     );
   },
-
+  setLockedStatus: function (params, callback) {
+    return db.query(
+      'UPDATE card SET locked_status=? WHERE cardnumber=?',
+      [params.locked_status, params.cardnum],
+      callback,
+    );
+  },
   /**
    * Get all card data, requires admin access.
    */
