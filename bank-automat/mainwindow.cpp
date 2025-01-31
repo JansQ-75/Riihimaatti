@@ -12,11 +12,15 @@ MainWindow::MainWindow(QWidget *parent)
     objLogin = new Login(this);
     objTransactions = new Transactions(this);
     objWithdrawal = new Withdrawal(this);
+    objcreditOrDebit = new creditOrDebit(this);
+
 
     ui->stackedWidget->addWidget(objBalance);
     ui->stackedWidget->addWidget(objLogin);
     ui->stackedWidget->addWidget(objTransactions);
     ui->stackedWidget->addWidget(objWithdrawal);
+
+
 
     //Timer
     loginTimer = new QTimer(this);
@@ -29,9 +33,14 @@ MainWindow::MainWindow(QWidget *parent)
     //connect(objTransactions,&Transactions::backMain, this, &MainWindow::goBackSlot);
     //connect(objWithdrawal,&Withdrawal::backMain, this, &MainWindow::goBackSlot);
 
+
+    //Bring data
     connect(objLogin,&Login::sendDataToMain, this, &MainWindow::getDataFromLoginSlot);
     connect(objLogin,&Login::sendToken, this, &MainWindow::getTokenSlot);
+
+
 }
+
 
 
 MainWindow::~MainWindow()
@@ -46,10 +55,10 @@ void MainWindow::goBackSlot()
 
 void MainWindow::getTokenSlot(QByteArray customersToken)
 {
-    qDebug()<<customersToken;
-
     //HAE TOKEN TÄSTÄ
 }
+
+
 
 void MainWindow::getDataFromLoginSlot(int idcustomer, int idcard, QString type, QString fname, QString lname)
 {
@@ -59,7 +68,10 @@ void MainWindow::getDataFromLoginSlot(int idcustomer, int idcard, QString type, 
      * josta jokainen hakee omaan widgettiin tarvittavat tiedot,
      * jotka on tullu mainista!
      *
+     * emit nimeäSunOma(idcustomer, idcard, type, fname, lname);
+     *
     */
+
 }
 
 //Go the login page

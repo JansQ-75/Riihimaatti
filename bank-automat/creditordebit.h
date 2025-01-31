@@ -33,8 +33,10 @@ private:
 
     QString customerName;
     QByteArray customersToken;
+    QString chosen;
 
-signals:
+
+
 
 };
 

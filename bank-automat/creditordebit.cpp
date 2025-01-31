@@ -1,5 +1,6 @@
 #include "creditordebit.h"
 #include "environment.h"
+#include "mainwindow.h"
 #include "ui_creditordebit.h"
 
 creditOrDebit::creditOrDebit(QWidget *parent)
@@ -7,6 +8,8 @@ creditOrDebit::creditOrDebit(QWidget *parent)
     , ui(new Ui::creditOrDebit)
 {
     ui->setupUi(this);
+
+
 }
 
 creditOrDebit::~creditOrDebit()
@@ -18,8 +21,7 @@ creditOrDebit::~creditOrDebit()
 void creditOrDebit::on_btnDebit_clicked()
 {
     //ota talteen käyttäjän valinta
-    QString chosen ="debit";
-
+    chosen ="debit";
     this->close();
 
 }
@@ -28,7 +30,10 @@ void creditOrDebit::on_btnDebit_clicked()
 void creditOrDebit::on_btnCredit_clicked()
 {
     //ota talteen käyttäjän valinta
-    QString chosen ="credit";
+    chosen ="credit";
+
+    qDebug()<<chosen;
+
 
     this->close();
 }
@@ -37,7 +42,6 @@ void creditOrDebit::on_btnCredit_clicked()
 void creditOrDebit::setCustomersToken(const QByteArray &newCustomersToken)
 {
     customersToken = newCustomersToken;
-    qDebug()<<customersToken;
 }
 
 void creditOrDebit::setCustomerName(const QString &newCustomerName)

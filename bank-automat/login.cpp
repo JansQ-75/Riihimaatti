@@ -28,6 +28,8 @@ Login::~Login()
     delete ui;
 }
 
+
+
 void Login::pressed_number()
 {
     //Empty label

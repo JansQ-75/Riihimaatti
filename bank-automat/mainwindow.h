@@ -5,6 +5,7 @@
 #include "login.h"
 #include "transactions.h"
 #include "withdrawal.h"
+#include "creditordebit.h"
 
 #include <QMainWindow>
 #include <QTimer>
@@ -29,9 +30,6 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-public slots:
-
-
 private slots:
     void on_btnBalance_clicked();
     void on_btnTransactions_clicked();
@@ -53,6 +51,7 @@ private:
     Login *objLogin;
     Transactions *objTransactions;
     Withdrawal *objWithdrawal;
+    creditOrDebit *objcreditOrDebit;
 
     QTimer *loginTimer;
 
