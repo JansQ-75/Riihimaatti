@@ -20,7 +20,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     //Timer
     loginTimer = new QTimer(this);
-    connect(loginTimer, SIGNAL(timeout()), this, SLOT(stopwatchForTenSeconds()));
+    connect(loginTimer, &QTimer::timeout, this, &MainWindow::stopwatchForTenSeconds);
+
+    connect(objLogin,&Login::backMain, this, &MainWindow::goBackSlot);
 
 }
 
@@ -30,7 +32,10 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-//----------------Main interface buttons------------------
+void MainWindow::goBackSlot()
+{
+    ui->stackedWidget->setCurrentIndex(1);
+}
 
 //Go the login page
 void MainWindow::on_btnStart_clicked()
@@ -68,7 +73,6 @@ void MainWindow::on_btnLogout_clicked()
 {
     ui->stackedWidget->setCurrentIndex(0);
 }
-
 
 void MainWindow::stopwatchForTenSeconds()
 {

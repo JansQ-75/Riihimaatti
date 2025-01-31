@@ -57,6 +57,9 @@ private slots:
     void loginSlot(QNetworkReply *reply);
     void showDebitOrCreditSlot(QNetworkReply *replyCreditOrDebit);
 
+signals:
+    void backMain();
+
 };
 
 #endif // LOGIN_H

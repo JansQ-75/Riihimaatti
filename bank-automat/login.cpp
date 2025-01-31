@@ -22,6 +22,7 @@ Login::Login(QWidget *parent)
     connect(ui->btnClear,&QPushButton::clicked, this, &Login::pressed_number);
     connect(ui->btnLogin,&QPushButton::clicked, this, &Login::pressed_login);
 
+
 }
 
 Login::~Login()
@@ -84,7 +85,6 @@ void Login::pressed_login()
     jsonObj.insert("cardnumber", ui->labelCardnumber->text());
     jsonObj.insert("pin", ui->labelPincode->text());
 
-    //
     //Without environment --> QString site_url="http://localhost:3000/login";
     QString site_url=Environment::base_url()+"/login";
     QNetworkRequest request(site_url);
@@ -98,16 +98,17 @@ void Login::pressed_login()
 
 void Login::loginSlot(QNetworkReply *reply)
 {
-        qDebug()<<"test";
     //reply's answer to response_data
     response_data=reply->readAll();
+
 
     //Server errors
     if(response_data.length()<2){
         qDebug()<<"Server error";
         //Print it to ui
         ui->labelInfo->setText("Server problems");
-        //Database errors
+
+    //Database errors
     } else if (response_data=="Internal Server Error"){
         qDebug()<<"Database error";
         ui->labelInfo->setText("Database problems");
@@ -117,10 +118,12 @@ void Login::loginSlot(QNetworkReply *reply)
         if(response_data=="Unauthorized"||response_data=="Card number doesn't exist" ){
             //Print customer
             ui->labelInfo->setText("Wrong card number or pin code");
-            //Card locked
+
+        //Card locked
         } else if (response_data=="Card locked."){
             ui->labelInfo->setText("Your card is locked.");
-            //Login OK
+
+        //Login OK
         } else if (response_data.length()>30){
             ui->labelInfo->setText("Login successful");
 
@@ -142,7 +145,7 @@ void Login::loginSlot(QNetworkReply *reply)
             replyCreditOrDebit=creditOrDebitManager->get(request);
 
             //Go next page
-            //ui->stackedWidget->setCurrentIndex(2);
+            emit backMain();
             ui->labelInfo->setText("");
         }
         //empty variables and labels

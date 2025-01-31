@@ -29,6 +29,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+public slots:
+
+
 private slots:
     void on_btnBalance_clicked();
     void on_btnTransactions_clicked();
@@ -39,6 +42,8 @@ private slots:
     void stopwatchForTenSeconds();
 
     void on_btnStart_clicked();
+    void goBackSlot();
+
 
 private:
     Ui::MainWindow *ui;
