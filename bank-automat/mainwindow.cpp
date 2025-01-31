@@ -22,7 +22,12 @@ MainWindow::MainWindow(QWidget *parent)
     loginTimer = new QTimer(this);
     connect(loginTimer, &QTimer::timeout, this, &MainWindow::stopwatchForTenSeconds);
 
+    //Go back connet
     connect(objLogin,&Login::backMain, this, &MainWindow::goBackSlot);
+    //connect(objLogin,&Login::backMain, this, &MainWindow::goBackSlot);
+    //connect(objBalance,&Balance::backMain, this, &MainWindow::goBackSlot);
+    //connect(objTransactions,&Transactions::backMain, this, &MainWindow::goBackSlot);
+    //connect(objWithdrawal,&Withdrawal::backMain, this, &MainWindow::goBackSlot);
 
 }
 

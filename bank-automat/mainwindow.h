@@ -55,13 +55,6 @@ private:
 
     QTimer *loginTimer;
 
-    //For http token
-    QNetworkAccessManager *loginManager;
-    QNetworkReply *reply;
-    QByteArray response_data;
-
-    QByteArray customersToken;
-
     //For customer
     int idcustomer;
     int idcard;
