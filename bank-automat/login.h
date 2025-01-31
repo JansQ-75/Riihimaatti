@@ -52,6 +52,7 @@ private:
 
 private slots:
     void pressed_number();
+    void pressed_login();
 
     void loginSlot(QNetworkReply *reply);
     void showDebitOrCreditSlot(QNetworkReply *replyCreditOrDebit);

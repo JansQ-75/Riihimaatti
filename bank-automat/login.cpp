@@ -20,6 +20,7 @@ Login::Login(QWidget *parent)
     connect(ui->btn9,&QPushButton::clicked, this, &Login::pressed_number);
     connect(ui->btn0,&QPushButton::clicked, this, &Login::pressed_number);
     connect(ui->btnClear,&QPushButton::clicked, this, &Login::pressed_number);
+    connect(ui->btnLogin,&QPushButton::clicked, this, &Login::pressed_login);
 
 }
 
@@ -72,6 +73,26 @@ void Login::pressed_number()
         }
        */
     }
+}
+
+void Login::pressed_login()
+{
+    //Create a json obejct
+    QJsonObject jsonObj;
+
+    //Read user's input for a cardnumber and pin code
+    jsonObj.insert("cardnumber", ui->labelCardnumber->text());
+    jsonObj.insert("pin", ui->labelPincode->text());
+
+    //
+    //Without environment --> QString site_url="http://localhost:3000/login";
+    QString site_url=Environment::base_url()+"/login";
+    QNetworkRequest request(site_url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    loginManager = new QNetworkAccessManager(this);
+    connect(loginManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(loginSlot(QNetworkReply*)));
+
+    reply=loginManager->post(request, QJsonDocument(jsonObj).toJson());
 }
 
 
