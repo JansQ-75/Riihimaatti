@@ -8,7 +8,7 @@ Login::Login(QWidget *parent)
 {
     ui->setupUi(this);
 
-    //connect: when button is pressed, go to slot pressed number.
+    //connect: when button is pressed, go to the pressed number slot.
     connect(ui->btn1,&QPushButton::clicked, this, &Login::pressed_number);
     connect(ui->btn2,&QPushButton::clicked, this, &Login::pressed_number);
     connect(ui->btn3,&QPushButton::clicked, this, &Login::pressed_number);
@@ -21,14 +21,14 @@ Login::Login(QWidget *parent)
     connect(ui->btn0,&QPushButton::clicked, this, &Login::pressed_number);
     connect(ui->btnClear,&QPushButton::clicked, this, &Login::pressed_number);
     connect(ui->btnLogin,&QPushButton::clicked, this, &Login::pressed_login);
-
-
 }
 
 Login::~Login()
 {
     delete ui;
 }
+
+
 
 void Login::pressed_number()
 {
@@ -136,7 +136,6 @@ void Login::loginSlot(QNetworkReply *reply)
             QJsonObject jsonObj = jsonresponse.object();
             QByteArray customersToken =jsonresponse["token"].toString().toUtf8();
 
-
             QString site_url=Environment::base_url()+"/card/bycardnumberstart/"+cardnumberForLabel;
             QNetworkRequest request(site_url);
             request.setRawHeader(QByteArray("Authorization"), QByteArray("Bearer " + customersToken));
@@ -145,7 +144,9 @@ void Login::loginSlot(QNetworkReply *reply)
             replyCreditOrDebit=creditOrDebitManager->get(request);
 
             //Go next page
+            emit sendToken(customersToken);
             emit backMain();
+
             ui->labelInfo->setText("");
         }
         //empty variables and labels
@@ -164,7 +165,7 @@ void Login::loginSlot(QNetworkReply *reply)
 void Login::showDebitOrCreditSlot(QNetworkReply *replyCreditOrDebit)
 {
     response_dataCreditOrDebit=replyCreditOrDebit->readAll();
-    qDebug()<<response_dataCreditOrDebit;
+    //qDebug()<<response_dataCreditOrDebit;
 
     //Parse json
     QJsonDocument jsonresponse = QJsonDocument::fromJson(response_dataCreditOrDebit);
@@ -190,6 +191,10 @@ void Login::showDebitOrCreditSlot(QNetworkReply *replyCreditOrDebit)
         objCreditOrDebit->open();
     }
 
+    //Data to mainwindow
+    emit sendDataToMain(idcustomer, idcard, type, fname, lname);
+
+    //Delete later
     replyCreditOrDebit->deleteLater();
     creditOrDebitManager->deleteLater();
 }
