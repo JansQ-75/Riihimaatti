@@ -3,6 +3,7 @@
 
 #include "creditordebit.h"
 
+
 #include <QWidget>
 
 namespace Ui {
@@ -59,7 +60,8 @@ private slots:
 
 signals:
     void backMain();
-
+    void sendDataToMain(int idcustomer, int idcard, QString type, QString fname, QString lname);
+    void sendToken(QByteArray customersToken);
 };
 
 #endif // LOGIN_H

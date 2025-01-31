@@ -29,6 +29,8 @@ MainWindow::MainWindow(QWidget *parent)
     //connect(objTransactions,&Transactions::backMain, this, &MainWindow::goBackSlot);
     //connect(objWithdrawal,&Withdrawal::backMain, this, &MainWindow::goBackSlot);
 
+    connect(objLogin,&Login::sendDataToMain, this, &MainWindow::getDataFromLoginSlot);
+    connect(objLogin,&Login::sendToken, this, &MainWindow::getTokenSlot);
 }
 
 
@@ -40,6 +42,24 @@ MainWindow::~MainWindow()
 void MainWindow::goBackSlot()
 {
     ui->stackedWidget->setCurrentIndex(1);
+}
+
+void MainWindow::getTokenSlot(QByteArray customersToken)
+{
+    qDebug()<<customersToken;
+
+    //HAE TOKEN TÄSTÄ
+}
+
+void MainWindow::getDataFromLoginSlot(int idcustomer, int idcard, QString type, QString fname, QString lname)
+{
+    ui->labelHeyAndName->setText("Welcome " + fname + " " + lname);
+
+    /* tähän tulee emit signaali,
+     * josta jokainen hakee omaan widgettiin tarvittavat tiedot,
+     * jotka on tullu mainista!
+     *
+    */
 }
 
 //Go the login page

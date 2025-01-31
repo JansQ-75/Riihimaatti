@@ -43,7 +43,8 @@ private slots:
 
     void on_btnStart_clicked();
     void goBackSlot();
-
+    void getDataFromLoginSlot(int idcustomer, int idcard, QString type, QString fname, QString lname);
+    void getTokenSlot(QByteArray customersToken);
 
 private:
     Ui::MainWindow *ui;
