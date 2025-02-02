@@ -29,6 +29,12 @@ GET http://localhost:3000/bank_account/by-account-nbr/{{accountnumber}} HTTP/1.1
 Content-Type: application/json
 Authorization: bearer {{token}}
 
+### Get account data by customer id - Admin & User
+# @prompt customerId
+GET http://localhost:3000/bank_account/by-customerId/{{customerId}} HTTP/1.1
+Content-Type: application/json
+Authorization: bearer {{token}}
+
 ### Add new bank account - Admin only
 # @prompt accountnumber
 # @prompt accountType

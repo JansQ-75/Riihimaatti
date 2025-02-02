@@ -1,5 +1,6 @@
 #include "withdrawal.h"
 #include "ui_withdrawal.h"
+#include "environment.h"
 
 Withdrawal::Withdrawal(QWidget *parent)
     : QWidget(parent)
@@ -11,4 +12,109 @@ Withdrawal::Withdrawal(QWidget *parent)
 Withdrawal::~Withdrawal()
 {
     delete ui;
+}
+
+void Withdrawal::getBalance()
+{
+    qDebug() << "etsitään tietoa";
+
+    WithdrawalManager = new QNetworkAccessManager(this);
+
+    // API request
+    QString site_url=Environment::base_url()+"/bank_account/by-customerId/" + QString::number(customerId);
+    QNetworkRequest request(site_url);
+
+    // Authorization header
+    request.setRawHeader(QByteArray("Authorization"), QByteArray("Bearer " + receivedToken));
+
+    // make GET request
+    reply = WithdrawalManager->get(request);
+
+    // connect to slot for handling response
+    connect(reply, &QNetworkReply::finished, this, &Withdrawal::handleNetworkReply);
+
+
+    //Delete later
+    WithdrawalManager->deleteLater();
+}
+
+void Withdrawal::handleNetworkReply()
+{
+    qDebug() << "handlataan";
+
+    QByteArray response_data = reply->readAll();
+    QJsonDocument jsonresponse = QJsonDocument::fromJson(response_data);
+
+    if (jsonresponse.isNull() || !jsonresponse.isObject()) {
+        qDebug() << "Error: Invalid JSON response";
+        reply->deleteLater();
+        return;
+    }
+
+    QJsonObject jsonObj = jsonresponse.object();
+
+    // Safely extract data
+    if (jsonObj.contains("idbank_account")) idbank_account = jsonObj["idbank_account"].toInt();
+    if (jsonObj.contains("bank_account_number")) bank_account_number = jsonObj["bank_account_number"].toString();
+    if (jsonObj.contains("account_type")) account_type = jsonObj["account_type"].toString();
+    if (jsonObj.contains("balance")) balance = QString::number(jsonObj["balance"].toString().toDouble(), 'f', 2).toDouble();
+    if (jsonObj.contains("credit_limit")) credit_limit = QString::number(jsonObj["credit_limit"].toString().toDouble(), 'f', 2).toDouble();
+    if (jsonObj.contains("idcustomer")) idcustomer = jsonObj["idcustomer"].toInt();
+    if (jsonObj.contains("fname")) fname = jsonObj["fname"].toString();
+    if (jsonObj.contains("lname")) lname = jsonObj["lname"].toString();
+    if (jsonObj.contains("address")) address = jsonObj["address"].toString();
+    if (jsonObj.contains("phone")) phone = jsonObj["phone"].toString();
+
+    qDebug() << "Bank account number successfully: " << bank_account_number;
+    qDebug() << "idcustomer successfully: " << idcustomer;
+    qDebug() << "phone successfully: " << phone;
+    qDebug() << "credit " << credit_limit;
+    qDebug() << "balance " << balance;
+
+
+
+    reply->deleteLater();
+}
+
+
+void Withdrawal::getToken(QByteArray token)
+{
+    receivedToken = token;
+    qDebug() << "Token received in Withdrawal: " <<token;
+}
+
+void Withdrawal::getName(int idcustomer, QString fname, QString lname)
+{
+    ui->label->setText("Name: " + fname + " " + lname);
+
+    customerId = idcustomer;
+    qDebug() << "Customers id: " <<customerId;
+
+    qDebug() << "etsitään tietoa";
+
+    WithdrawalManager = new QNetworkAccessManager(this);
+
+    // API request
+    QString site_url=Environment::base_url()+"/bank_account/by-customerId/" + QString::number(customerId);
+    QNetworkRequest request(site_url);
+
+    // Authorization header
+    request.setRawHeader(QByteArray("Authorization"), QByteArray("Bearer " + receivedToken));
+
+    // make GET request
+    reply = WithdrawalManager->get(request);
+
+    if (!reply) {
+        qDebug() << "Reply is NULL!";
+        return;
+    }
+
+    // connect to slot for handling response
+    bool success = connect(reply, &QNetworkReply::finished, this, &Withdrawal::handleNetworkReply);
+    if (!success) {
+        qDebug() << "Failed to connect signal to slot!";
+    }
+
+    //Delete later
+    // WithdrawalManager->deleteLater();
 }

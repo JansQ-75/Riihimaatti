@@ -38,6 +38,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(objLogin,&Login::sendDataToMain, this, &MainWindow::getDataFromLoginSlot);
     connect(objLogin,&Login::sendToken, this, &MainWindow::getTokenSlot);
 
+    // Send data
+    connect(this, &MainWindow::sendTokenToWithdrawal, objWithdrawal, &Withdrawal::getToken);
+    connect(this, &MainWindow::sendLoginData, objWithdrawal, &Withdrawal::getName);
+
 
 }
 
@@ -56,6 +60,7 @@ void MainWindow::goBackSlot()
 void MainWindow::getTokenSlot(QByteArray customersToken)
 {
     //HAE TOKEN TÄSTÄ
+    emit sendTokenToWithdrawal(customersToken); // signal for getting token in Withdrawal
 }
 
 
@@ -63,6 +68,9 @@ void MainWindow::getTokenSlot(QByteArray customersToken)
 void MainWindow::getDataFromLoginSlot(int idcustomer, int idcard, QString type, QString fname, QString lname)
 {
     ui->labelHeyAndName->setText("Welcome " + fname + " " + lname);
+
+    //send name to Withdrawal
+    emit sendLoginData(idcustomer, fname, lname);
 
     /* tähän tulee emit signaali,
      * josta jokainen hakee omaan widgettiin tarvittavat tiedot,

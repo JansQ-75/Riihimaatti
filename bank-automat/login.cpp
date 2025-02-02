@@ -143,8 +143,10 @@ void Login::loginSlot(QNetworkReply *reply)
             connect(creditOrDebitManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(showDebitOrCreditSlot(QNetworkReply*)));
             replyCreditOrDebit=creditOrDebitManager->get(request);
 
-            //Go next page
+            // send Token to other widgets
             emit sendToken(customersToken);
+
+            //Go next page
             emit backMain();
 
             ui->labelInfo->setText("");
