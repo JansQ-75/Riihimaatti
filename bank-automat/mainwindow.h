@@ -67,7 +67,7 @@ signals:
     void sendTokenToWithdrawal(QByteArray customersToken);
 
     // to get data to widgets
-    void sendLoginData(int idcustomer, QString fname, QString lname);
+    void sendLoginData(int idcustomer, QString type);
 
 };
 #endif // MAINWINDOW_H

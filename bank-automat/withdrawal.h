@@ -31,6 +31,7 @@ private:
 
     QByteArray receivedToken;
     int customerId;
+    QString accountType;
 
     int idbank_account;
     QString bank_account_number;
@@ -43,8 +44,6 @@ private:
     QString address;
     QString phone;
 
-
-    void getBalance();
 
 signals:
     void backMainSignal();
@@ -59,7 +58,7 @@ private slots:
 
 public slots:
     void getToken(QByteArray token); // receive token
-    void getName(int idcustomer, QString fname, QString lname); // receive name for Hello-text
+    void getCustomer(int idcustomer, QString type);
 };
 
 #endif // WITHDRAWAL_H

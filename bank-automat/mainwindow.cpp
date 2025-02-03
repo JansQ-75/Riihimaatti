@@ -40,7 +40,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Send data
     connect(this, &MainWindow::sendTokenToWithdrawal, objWithdrawal, &Withdrawal::getToken);
-    connect(this, &MainWindow::sendLoginData, objWithdrawal, &Withdrawal::getName);
+    connect(this, &MainWindow::sendLoginData, objWithdrawal, &Withdrawal::getCustomer);
 
 
 }
@@ -70,7 +70,7 @@ void MainWindow::getDataFromLoginSlot(int idcustomer, int idcard, QString type, 
     ui->labelHeyAndName->setText("Welcome " + fname + " " + lname);
 
     //send name to Withdrawal
-    emit sendLoginData(idcustomer, fname, lname);
+    emit sendLoginData(idcustomer, type);
 
     /* tähän tulee emit signaali,
      * josta jokainen hakee omaan widgettiin tarvittavat tiedot,

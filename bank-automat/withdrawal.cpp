@@ -14,29 +14,6 @@ Withdrawal::~Withdrawal()
     delete ui;
 }
 
-void Withdrawal::getBalance()
-{
-    qDebug() << "etsitään tietoa";
-
-    WithdrawalManager = new QNetworkAccessManager(this);
-
-    // API request
-    QString site_url=Environment::base_url()+"/bank_account/by-customerId/" + QString::number(customerId);
-    QNetworkRequest request(site_url);
-
-    // Authorization header
-    request.setRawHeader(QByteArray("Authorization"), QByteArray("Bearer " + receivedToken));
-
-    // make GET request
-    reply = WithdrawalManager->get(request);
-
-    // connect to slot for handling response
-    connect(reply, &QNetworkReply::finished, this, &Withdrawal::handleNetworkReply);
-
-
-    //Delete later
-    WithdrawalManager->deleteLater();
-}
 
 void Withdrawal::handleNetworkReply()
 {
@@ -65,15 +42,30 @@ void Withdrawal::handleNetworkReply()
     if (jsonObj.contains("address")) address = jsonObj["address"].toString();
     if (jsonObj.contains("phone")) phone = jsonObj["phone"].toString();
 
+    //debuggausta
     qDebug() << "Bank account number successfully: " << bank_account_number;
     qDebug() << "idcustomer successfully: " << idcustomer;
     qDebug() << "phone successfully: " << phone;
     qDebug() << "credit " << credit_limit;
     qDebug() << "balance " << balance;
 
+    // print customer information
+    ui->label_ownerName->setText("CUSTOMER:\n" + fname + " " + lname + "\n" + address + "\n" + phone);
 
+    // print account info
+    accountType = account_type;
+    qDebug() << "account type: " + accountType;
 
+    // account type is debit
+    if (accountType == "debit") {
+    ui->label_balance->setText("ACCOUNT:\n" + bank_account_number + "\nBalance: " + QString::number(balance) + " €");
+    } else {
+        ui->label_balance->setText("ACCOUNT:\n" + bank_account_number + "\nAvailable balance: " + QString::number(credit_limit-balance) + " €\nCredit limit: " + QString::number(credit_limit) + " €");
+    }
+
+    // delete later
     reply->deleteLater();
+    WithdrawalManager->deleteLater();
 }
 
 
@@ -83,14 +75,12 @@ void Withdrawal::getToken(QByteArray token)
     qDebug() << "Token received in Withdrawal: " <<token;
 }
 
-void Withdrawal::getName(int idcustomer, QString fname, QString lname)
+void Withdrawal::getCustomer(int idcustomer, QString type)
 {
-    ui->label->setText("Name: " + fname + " " + lname);
 
     customerId = idcustomer;
     qDebug() << "Customers id: " <<customerId;
 
-    qDebug() << "etsitään tietoa";
 
     WithdrawalManager = new QNetworkAccessManager(this);
 
@@ -104,19 +94,9 @@ void Withdrawal::getName(int idcustomer, QString fname, QString lname)
     // make GET request
     reply = WithdrawalManager->get(request);
 
-    if (!reply) {
-        qDebug() << "Reply is NULL!";
-        return;
-    }
-
     // connect to slot for handling response
-    bool success = connect(reply, &QNetworkReply::finished, this, &Withdrawal::handleNetworkReply);
-    if (!success) {
-        qDebug() << "Failed to connect signal to slot!";
-    }
+    connect(reply, &QNetworkReply::finished, this, &Withdrawal::handleNetworkReply);
 
-    //Delete later
-    // WithdrawalManager->deleteLater();
 }
 
 void Withdrawal::on_btn_20e_clicked()
