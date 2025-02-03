@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const transaction = require('../models/transaction_model');
+const bank_account = require('../models/bank_account_model');
 const { checkAdmin } = require('../authentication');
 
 router.get('/', checkAdmin, function (req, res) {
@@ -27,7 +28,7 @@ router.get('/:idbank_account/:offsetValue',
   });
 
 // Make withdrawal
-router.get('/:account_type/:idbank_account/:idcard/:withdrawal', transaction.validateTransactionsAccess, function (request, response) {
+router.get('/:account_type/:idbank_account/:idcard/:withdrawal', bank_account.validateAccountIdAccess, function (request, response) {
   transaction.makeWithdrawal(request.params.account_type, request.params.idbank_account, request.params.idcard, request.params.withdrawal,
     function (err, result) {
       if (err) {

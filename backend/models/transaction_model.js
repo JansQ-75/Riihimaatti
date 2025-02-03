@@ -82,31 +82,6 @@ update: function (idtransaction, transaction_data, callback) {
     });
 },
 
-// Validate
-validateTransactionsAccess: function (req, res, next) {
-  if (req.isAdmin) {
-    return next();
-  }
-  const query = `
-      SELECT t.idbank_account 
-      FROM transaction t 
-      JOIN bank_account b ON t.idbank_account=b.idbank_account 
-      JOIN access_rights a ON b.idbank_account=a.idbank_account 
-      JOIN card c ON a.idcard=c.idcard 
-      WHERE t.idbank_account=? AND c.cardnumber=?;
-    `;
 
-  db.query(query, [req.params.idbank_account, req.cardnumber], (err, result) => {
-    if (err)
-      return res
-        .status(500)
-        .json({ error: `Internal Server Error. Sit tight!` });
-
-    if (!result.length)
-      return res.status(403).json({ error: `Access denied. Forbidden Kingdom. You shall not pass!` });
-
-    next();
-  });
-},
 };
 module.exports = transaction;

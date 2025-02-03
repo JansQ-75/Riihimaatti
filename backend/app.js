@@ -9,7 +9,6 @@ const usersRouter = require('./routes/users');
 const transactionsRouter = require('./routes/transactions');
 const customerRouter = require('./routes/customer');
 const bank_accountRouter = require('./routes/bank_account');
-const access_rightsRouter = require('./routes/access_rights');
 const loginRouter = require('./routes/login');
 const cardRouter = require('./routes/card');
 
@@ -26,7 +25,6 @@ app.use('/', indexRouter);
 app.use('/login', loginRouter);
 app.use('/users', usersRouter);
 app.use('/transactions', authenticateToken, transactionsRouter);
-app.use('/access_rights', authenticateToken, access_rightsRouter);
 app.use('/customer', authenticateToken, customerRouter);
 app.use('/bank_account', authenticateToken, bank_accountRouter);
 app.use('/card', authenticateToken, cardRouter);
