@@ -118,3 +118,33 @@ void Withdrawal::getName(int idcustomer, QString fname, QString lname)
     //Delete later
     // WithdrawalManager->deleteLater();
 }
+
+void Withdrawal::on_btn_20e_clicked()
+{
+    emit backMainSignal();
+}
+
+
+void Withdrawal::on_btn_40e_clicked()
+{
+    emit backMainSignal();
+}
+
+
+void Withdrawal::on_btn_60e_clicked()
+{
+    emit backMainSignal();
+}
+
+
+void Withdrawal::on_btn_100e_clicked()
+{
+    emit backMainSignal();
+}
+
+
+void Withdrawal::on_btn_otherAmount_clicked()
+{
+    emit backMainSignal();
+}
+
