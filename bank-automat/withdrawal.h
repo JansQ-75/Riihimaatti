@@ -46,8 +46,16 @@ private:
 
     void getBalance();
 
+signals:
+    void backMainSignal();
+
 private slots:
     void handleNetworkReply();
+    void on_btn_20e_clicked();
+    void on_btn_40e_clicked();
+    void on_btn_60e_clicked();
+    void on_btn_100e_clicked();
+    void on_btn_otherAmount_clicked();
 
 public slots:
     void getToken(QByteArray token); // receive token
