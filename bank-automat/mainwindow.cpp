@@ -31,7 +31,7 @@ MainWindow::MainWindow(QWidget *parent)
     //connect(objLogin,&Login::backMain, this, &MainWindow::goBackSlot);
     //connect(objBalance,&Balance::backMain, this, &MainWindow::goBackSlot);
     //connect(objTransactions,&Transactions::backMain, this, &MainWindow::goBackSlot);
-    //connect(objWithdrawal,&Withdrawal::backMain, this, &MainWindow::goBackSlot);
+    connect(objWithdrawal,&Withdrawal::backMainSignal, this, &MainWindow::goBackSlot);
 
 
     //Bring data
