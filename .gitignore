@@ -2,5 +2,5 @@ backend/node_modules
 bank-automat/build
 bank-automat/bank-automat.pro.user
 bank-automat/bank-automat.pro.user.*
-build-back-automat*
+build-bank-automat*
 */.env
