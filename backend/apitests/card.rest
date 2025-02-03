@@ -49,6 +49,7 @@ Authorization: bearer {{token}}
 # @prompt pin
 # @prompt idcustomer
 # @prompt type
+# @prompt locked_status
 PUT http://localhost:3000/card/{{cardid}} HTTP/1.1
 Content-Type: application/json
 Authorization: bearer {{token}}
@@ -57,7 +58,8 @@ Authorization: bearer {{token}}
   "cardnumber": "{{cardnumber}}",
   "pin": "{{pin}}",
   "idcustomer": "{{idcustomer}}",
-  "type": "{{type}}"
+  "type": "{{type}}",
+  "locked_status": "{{locked_status}}"
 }
 
 

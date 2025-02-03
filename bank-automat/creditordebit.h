@@ -22,23 +22,21 @@ public:
     ~creditOrDebit();
 
     void setCustomerName(const QString &newCustomerName);
-
     void setCustomersToken(const QByteArray &newCustomersToken);
 
 private slots:
     void on_btnDebit_clicked();
-
     void on_btnCredit_clicked();
-
-
 
 private:
     Ui::creditOrDebit *ui;
 
     QString customerName;
     QByteArray customersToken;
+    QString chosen;
 
-signals:
+
+
 
 };
 

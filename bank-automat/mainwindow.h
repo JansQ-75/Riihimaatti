@@ -1,9 +1,14 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "balance.h"
+#include "login.h"
+#include "transactions.h"
+#include "withdrawal.h"
 #include "creditordebit.h"
 
 #include <QMainWindow>
+#include <QTimer>
 
 //For http
 #include <QDialog>
@@ -25,54 +30,37 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-
-
 private slots:
-    void on_btnLogin_clicked();
-
     void on_btnBalance_clicked();
-
     void on_btnTransactions_clicked();
-
     void on_btnWithdrawal_clicked();
-
     void on_btnBack_clicked();
-
     void on_btnLogout_clicked();
 
+    void stopwatchForTenSeconds();
+
     void on_btnStart_clicked();
-
-    void loginSlot(QNetworkReply *reply);
-
-    void pressed_number();
-
-    void showDebitOrCreditSlot(QNetworkReply *replyCreditOrDebit);
+    void goBackSlot();
+    void getDataFromLoginSlot(int idcustomer, int idcard, QString type, QString fname, QString lname);
+    void getTokenSlot(QByteArray customersToken);
 
 private:
     Ui::MainWindow *ui;
 
-    //For http token
-    QNetworkAccessManager *loginManager;
-    QNetworkReply *reply;
-    QByteArray response_data;
+    Balance *objBalance;
+    Login *objLogin;
+    Transactions *objTransactions;
+    Withdrawal *objWithdrawal;
+    creditOrDebit *objcreditOrDebit;
 
-    QString cardnumberForLabel;
-    QString pincodeForLabel;
-    int iForLogin =0;
-    int pincodeTries =0;
-    bool pincodeLocked=false;
-
-    QByteArray customersToken;
-
-    //For http credit or debit
-    QNetworkAccessManager *creditOrDebitManager;
-    QNetworkReply *replyCreditOrDebit;
-    QByteArray response_dataCreditOrDebit;
+    QTimer *loginTimer;
 
     //For customer
     int idcustomer;
     int idcard;
     QString type;
+    QString fname;
+    QString lname;
 
 };
 #endif // MAINWINDOW_H
