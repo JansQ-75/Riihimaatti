@@ -16,7 +16,7 @@ router.get('/', checkAdmin, function (req, res) {
 
 // Show transactions
 router.get('/:idbank_account/:offsetValue',
-  transaction.validateTransactionsAccess, function (request, response) {
+  bank_account.validateAccountIdAccess, function (request, response) {
     transaction.showTransactions(
       request.params.idbank_account, request.params.offsetValue, function (err, result) {
       if (err) {
@@ -41,7 +41,7 @@ router.get('/:account_type/:idbank_account/:idcard/:withdrawal', bank_account.va
 });
 
 // Transactions by id
-router.get('/:idbank_account', transaction.validateTransactionsAccess, function (request, response) {
+router.get('/:idbank_account', bank_account.validateAccountIdAccess, function (request, response) {
   transaction.transactionsById(request.params.idbank_account, function (err, result) {
     if (err) {
       response.json(err);
