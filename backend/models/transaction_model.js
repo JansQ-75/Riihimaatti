@@ -1,70 +1,87 @@
 const db = require('../database');
 
+// Get all transactions from all accounts
 const transaction = {
   getAll: function (callback) {
     return db.query('SELECT * FROM transaction;', callback);
   },
-  // Todo
 
-// Get transaction date
-getTransaction_date: function (transaction_date, callback){
-  return db.query('SELECT * FROM transaction WHERE transaction_date=?', [transaction_date], callback);
+// Get transactions by account id
+  transactionsById: function (idbank_account, callback) {
+    return db.query(
+      ` SELECT t.transaction_date, t.withdrawal, b.bank_account_number, c.cardnumber 
+      FROM transaction t
+      JOIN bank_account b ON t.idbank_account=b.idbank_account 
+      LEFT JOIN card c ON t.idcard=c.idcard 
+      WHERE b.idbank_account=?`,
+      [idbank_account], callback
+    );
+  },
+
+// Show transactions, previous ten, next ten
+showTransactions: function (idbank_account, offsetValue, callback) {
+  return db.query('CALL showTransactions (?, ?)',
+    [idbank_account, offsetValue],
+    callback);
 },
 
-// Withdraw money, 20, 40, 50, 100
-withdrawal: function (idbank_account, amountToWithdraw, callback) {
-  return db.query('UPDATE bank_account SET balance = balance - ? WHERE idbank_account=? AND balance >= ?',
-     [amountToWithdraw, idbank_account, amountToWithdraw], callback);
-},
-
-// Show previous 10 transactions
-showPreviousTransactions: function (transaction, callback){
-  return db.query('SELECT * FROM transaction ORDER BY transaction_date DESC LIMIT 10',
-     [transaction], callback)
-},
-
-// Show next 10 transactions
-showNextTransactions: function (transaction, callback){
-  return db.query('SELECT * FROM transaction ORDER BY transaction_date ASC LIMIT 10', 
-    [transaction], callback)
-},
-
-//Do a withdrawal
-makeDrawal: function (account_type, transaction_data, callback) {
-  if(account_type === "debit"){
+// Do a withdrawal (virhe)
+makeWithdrawal: function (account_type, idbank_account, idcard, withdrawal, callback) {
+  if (account_type === "debit") {
     return db.query(
       'CALL makeDebitWithdrawal (?, ?, ?)',
-      [
-        transaction_data.idbank_account,
-        transaction_data.idcard,
-        transaction_data.withdrawal,
-      ],
-      callback,
+      [idbank_account, idcard, withdrawal],
+      callback
     );
-  } else if (account_type === "credit"){
+  } else if (account_type === "credit") {
     return db.query(
       'CALL makeCreditWithdrawal (?, ?, ?)',
-      [
-        transaction_data.idbank_account,
-        transaction_data.idcard,
-        transaction_data.withdrawal,
-      ],
-      callback,
+      [idbank_account, idcard, withdrawal],
+      callback
     );
   }
 },
 
-//Get all
-atm_transactions: function (transaction_data, callback) {
+// Delete
+delete: function (idtransaction, callback) {
   return db.query(
-    'CALL atm_transactions (?)',
-    [
-      transaction_data.idbank_account
-    ],
+    'DELETE FROM transaction WHERE idtransaction=?',
+    [idtransaction],
     callback,
   );
-}
+},
+
+// Update
+update: function (idtransaction, transaction_data, callback) {
+    db.query('SELECT * FROM transaction WHERE idtransaction=?', [idtransaction], (err, result) => {
+      if (err) {
+        return callback(err);
+      }
+      if (!result.length) {
+        return callback({ error: 'Transaction not found' });
+      }
+      const previous = result[0];
+
+      // Updates only fields where new info is given
+      return db.query(
+        'UPDATE transaction SET transaction_date=?, withdrawal=?, idbank_account=?, idcard=? WHERE idtransaction=?',
+        [
+          transaction_data.transaction_date || previous.transaction_date,
+          transaction_data.withdrawal || previous.withdrawal,
+          transaction_data.idbank_account || previous.idbank_account,
+          transaction_data.idcard || previous.idcard,
+          idtransaction
+        ],
+        function (err, result) {
+          if (err) {
+            return callback(err);
+          }
+          callback(null, result);
+        },
+      );
+    });
+},
+
 
 };
-
 module.exports = transaction;
