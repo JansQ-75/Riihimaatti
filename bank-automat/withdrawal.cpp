@@ -7,6 +7,7 @@ Withdrawal::Withdrawal(QWidget *parent)
     , ui(new Ui::Withdrawal)
 {
     ui->setupUi(this);
+    WithdrawalManager = new QNetworkAccessManager(this);
 }
 
 Withdrawal::~Withdrawal()
@@ -82,8 +83,6 @@ void Withdrawal::getCustomer(int idcustomer, QString type)
     qDebug() << "Customers id: " <<customerId;
 
 
-    WithdrawalManager = new QNetworkAccessManager(this);
-
     // API request
     QString site_url=Environment::base_url()+"/bank_account/by-customerId/" + QString::number(customerId);
     QNetworkRequest request(site_url);
@@ -101,6 +100,7 @@ void Withdrawal::getCustomer(int idcustomer, QString type)
 
 void Withdrawal::on_btn_20e_clicked()
 {
+
     emit backMainSignal();
 }
 
