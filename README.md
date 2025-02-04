@@ -3,7 +3,7 @@
 
 ---
 
-## Table of contents
+### Table of contents
 
 - *Project introduction*
 - *Project goals*
@@ -14,30 +14,30 @@
 
 ---
 
-## Project introduction
+### Project introduction
 
 The aim of this project was to develop an ATM application, using the knowledge the student-developers learned on previous courses while studying software development at Oulu University of Applied Scienses.
 
-## Project goals
+---
+
+### Project goals
 
  :star: The purpose of this project was to create an ATM application which combines SQL database, REST API, Linux server and Qt Creator.
+
  :star: Our goal was to become confident users of technologies, which we used in the project.
+
  :star: We aimed to use the knowledge, which we learnt in previous courses at the Oulu University of Applied Sciences, and apply our knowledge. Moreover, we wanted to expand our knowledge in given fields and technologies. 
 
 ---
 
-## Usage instructions
+### Usage instructions
 
 *Jotain fiksua tähän* 
-=======
-## Usage instructions
-
-*Jotain fiksua tähän*
 
 ---
 
-## Documentation
-
+### Documentation
+---
 ### Backend
 
 ```sh
@@ -45,11 +45,11 @@ cd backend
 npm install
 npm run dev
 ```
-#### API??
-
-#### Server/Linux??
-
-#### Database
+### API??
+---
+### Server/Linux??
+---
+### Database
 
 For this project we created SQL database with MySQLWorkbench
 
@@ -78,10 +78,15 @@ For this project we created SQL database with MySQLWorkbench
 - Access rights
     - Columns: foreign keys for card and bank account
     - One access right must have one card and one bank account
-
+---
 ### Frontend
 
-#### User interface (QT)
+**Logo:** 
+<img src="riihimaattilogo.jpg">
+Also available on .png for easy use.
+
+---
+### User interface (QT)
 
 
 First, the app opens a login interface. The ATM app asks customer's card number and pin code. After successful authentification, it opens the main interface of the ATM app. There are four buttons in the ATM app's main interface. 
@@ -92,18 +97,10 @@ First, the app opens a login interface. The ATM app asks customer's card number 
 
 ---
 
-## Project outcome
+### Project outcome
 
 ---
 
-## Contributors
-=======
----
-
-## Project outcome
-
----
-
-## Contributors
+### Contributors
 
 This project was constructed by four students: Atte Perämäki, Paula Kaartinen, Janina Niemelä and Satu Palviainen. 
