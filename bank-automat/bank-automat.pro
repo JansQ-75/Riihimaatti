@@ -16,6 +16,7 @@ SOURCES += \
     login.cpp \
     main.cpp \
     mainwindow.cpp \
+    statuswithdrawal.cpp \
     transactions.cpp \
     withdrawal.cpp
 
@@ -25,6 +26,7 @@ HEADERS += \
     environment.h \
     login.h \
     mainwindow.h \
+    statuswithdrawal.h \
     transactions.h \
     withdrawal.h
 
@@ -33,6 +35,7 @@ FORMS += \
     creditordebit.ui \
     login.ui \
     mainwindow.ui \
+    statuswithdrawal.ui \
     transactions.ui \
     withdrawal.ui
 

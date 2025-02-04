@@ -1,6 +1,8 @@
 #ifndef WITHDRAWAL_H
 #define WITHDRAWAL_H
 
+#include "statuswithdrawal.h"
+
 #include <QWidget>
 
 //For http
@@ -24,7 +26,8 @@ public:
 private:
     Ui::Withdrawal *ui;
 
-    QNetworkReply *reply;
+    StatusWithdrawal *objStatus;
+
     QByteArray response_data;
     QNetworkAccessManager *WithdrawalManager;
     QByteArray response_Withdrawal;
@@ -32,6 +35,8 @@ private:
     QByteArray receivedToken;
     int customerId;
     QString accountType;
+    int bankAccountId;
+    int cardId;
 
 
 signals:
@@ -47,6 +52,7 @@ private slots:
 public slots:
     void getToken(QByteArray token); // receive token
     void CustomerDataSlot(int, QString, QString, double, double, int, QString, QString, QString, QString);
+    void LoginDataSlot(int);
 };
 
 #endif // WITHDRAWAL_H

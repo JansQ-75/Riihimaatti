@@ -7,12 +7,16 @@ Withdrawal::Withdrawal(QWidget *parent)
     , ui(new Ui::Withdrawal)
 {
     ui->setupUi(this);
-    //WithdrawalManager = new QNetworkAccessManager(this);
+
+    objStatus = new StatusWithdrawal(this);
+
+    WithdrawalManager = new QNetworkAccessManager(this);
 }
 
 Withdrawal::~Withdrawal()
 {
     delete ui;
+    WithdrawalManager->deleteLater();
 }
 
 void Withdrawal::getToken(QByteArray token)
@@ -31,16 +35,42 @@ void Withdrawal::CustomerDataSlot(int idbank_account, QString bank_account_numbe
     accountType = account_type;
     qDebug() << "account type: " + accountType;
 
-    // account type is debit
+    // different print depending on type (debit or credit)
+    // tää pitää ehkä siirtää toiseen slottiin mihin tulee creditOrdebitistä tieto myös
     if (accountType == "debit") {
     ui->label_balance->setText("ACCOUNT:\n" + bank_account_number + "\nBalance: " + QString::number(balance) + " €");
     } else {
         ui->label_balance->setText("ACCOUNT:\n" + bank_account_number + "\nAvailable balance: " + QString::number(credit_limit-balance) + " €\nCredit limit: " + QString::number(credit_limit) + " €");
     }
+
+    // set id for bank account
+    bankAccountId = idbank_account;
+}
+
+void Withdrawal::LoginDataSlot(int idcard)
+{
+    cardId = idcard;
+    qDebug()<<"Withdrawalissa saatu kortin id: " + QString::number(cardId);
 }
 
 void Withdrawal::on_btn_20e_clicked()
 {
+
+    // API request
+    QString site_url=Environment::base_url()+"/transactions/" + accountType + "/" + QString::number(bankAccountId) + "/" + QString::number(cardId) + "/20";
+    QNetworkRequest request(site_url);
+
+    // Authorization header
+    request.setRawHeader(QByteArray("Authorization"), QByteArray("Bearer " + receivedToken));
+
+    // make GET request
+    QNetworkReply *reply = WithdrawalManager->get(request);
+    qDebug()<<"tehtiin nosto 20e"<<reply;
+
+    //reply->deleteLater();
+
+    objStatus->setStatusText(20);
+    objStatus->open();
 
     emit backMainSignal();
 }

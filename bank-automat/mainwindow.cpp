@@ -46,7 +46,7 @@ MainWindow::MainWindow(QWidget *parent)
     // Send data
     connect(this, &MainWindow::sendTokenToWithdrawal, objWithdrawal, &Withdrawal::getToken);
     connect(this, &MainWindow::sendCustomerWithdrawal, objWithdrawal, &Withdrawal::CustomerDataSlot);
-
+    connect(this, &MainWindow::sendLoginDataWithdrawal, objWithdrawal, &Withdrawal::LoginDataSlot);
 
 }
 
@@ -90,9 +90,6 @@ void MainWindow::getCustomerData(int idcustomer)
         this->receivedCustomerInfo(reply);
         reply->deleteLater();
     });
-
-
-
 
 }
 
@@ -160,6 +157,7 @@ void MainWindow::getDataFromLoginSlot(int idcustomer, int idcard, QString type, 
      * emit nimeäSunOma(idcustomer, idcard, type, fname, lname);
      *
     */
+    emit sendLoginDataWithdrawal(idcard);
 
 }
 

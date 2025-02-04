@@ -84,8 +84,9 @@ signals:
     // to send Tokens to widgets
     void sendTokenToWithdrawal(QByteArray customersToken);
 
-    // to get data to widgets
+    // to get Login data to widgets
     void sendLoginData(int idcustomer, QString type);
+    void sendLoginDataWithdrawal(int);
 
     // to send customer data to widgets
     void sendCustomerWithdrawal(int, QString, QString, double, double, int, QString, QString, QString, QString);
