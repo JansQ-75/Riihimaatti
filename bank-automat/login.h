@@ -62,6 +62,7 @@ signals:
     void backMain();
     void sendDataToMain(int idcustomer, int idcard, QString type, QString fname, QString lname);
     void sendToken(QByteArray customersToken);
+    void RetrieveCustomerData(int idcustomer);
 };
 
 #endif // LOGIN_H

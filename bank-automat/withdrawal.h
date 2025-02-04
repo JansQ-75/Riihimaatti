@@ -33,23 +33,11 @@ private:
     int customerId;
     QString accountType;
 
-    int idbank_account;
-    QString bank_account_number;
-    QString account_type;
-    double balance;
-    double credit_limit;
-    int idcustomer;
-    QString fname;
-    QString lname;
-    QString address;
-    QString phone;
-
 
 signals:
     void backMainSignal();
 
 private slots:
-    void handleNetworkReply();
     void on_btn_20e_clicked();
     void on_btn_40e_clicked();
     void on_btn_60e_clicked();
@@ -58,7 +46,7 @@ private slots:
 
 public slots:
     void getToken(QByteArray token); // receive token
-    void getCustomer(int idcustomer, QString type);
+    void CustomerDataSlot(int, QString, QString, double, double, int, QString, QString, QString, QString);
 };
 
 #endif // WITHDRAWAL_H
