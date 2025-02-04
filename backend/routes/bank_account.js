@@ -48,6 +48,23 @@ router.get(
         })
     });
 
+// Route handler for GET request to get info of a specific bank account (via customerId)
+// Admin or validated user
+router.get(
+    '/by-customerId/:idcustomer',
+    bank_account.validateCustomerIdAccess,
+    function (request, response) {
+        bank_account.getByCustomerId(request.params.idcustomer, function (err, result) {
+            if (err) {
+                response.json(err);
+            }
+            else {
+                response.json(result[0]);
+            }
+        })
+    });
+
+
 // Route handler for POST request to add bank account to database
 // Admin only
 router.post('/', checkAdmin, function (request, response) {

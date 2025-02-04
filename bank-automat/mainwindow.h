@@ -62,5 +62,12 @@ private:
     QString fname;
     QString lname;
 
+signals:
+    // to send Tokens to widgets
+    void sendTokenToWithdrawal(QByteArray customersToken);
+
+    // to get data to widgets
+    void sendLoginData(int idcustomer, QString type);
+
 };
 #endif // MAINWINDOW_H

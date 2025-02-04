@@ -32,6 +32,17 @@ const bank_account = {
             );
     },
 
+    getByCustomerId: function (idcustomer, callback) {
+        return db.query
+            (
+                'SELECT * FROM bank_account b JOIN customer c ON b.idcustomer=c.idcustomer WHERE c.idcustomer=?',
+                [
+                    idcustomer
+                ],
+                callback
+            );
+    },
+
     // Add bank account
     add: function (bank_account_data, callback) {
         return db.query
@@ -207,6 +218,34 @@ const bank_account = {
 
 
             if (req.cardnumber != req.params.cardnumber)
+                return res.status(403).json({ error: 'Access denied. Forbidden Kingdom. You shall not pass!' });
+
+            else
+                next();
+        });
+    },
+
+    // validate card access to an account
+    validateCustomerIdAccess: function (req, res, next) {
+        if (req.isAdmin) {
+            return next();
+        }
+        const query = `
+            SELECT b.idbank_account
+            FROM bank_account b 
+            JOIN customer cu ON b.idcustomer=cu.idcustomer
+            JOIN card ca ON cu.idcustomer=ca.idcustomer
+            WHERE ca.idcustomer=? AND ca.cardnumber
+          `;
+
+        db.query(query, [req.params.idcustomer, req.cardnumber], (err, result) => {
+            if (err)
+                return res
+                    .status(500)
+                    .json({ error: `Internal Server Error. Sit tight!` });
+
+
+            if (!result.length)
                 return res.status(403).json({ error: 'Access denied. Forbidden Kingdom. You shall not pass!' });
 
             else
