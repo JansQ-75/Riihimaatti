@@ -28,7 +28,7 @@ private:
 
     StatusWithdrawal *objStatus;
 
-    QByteArray response_data;
+    //QByteArray response_data;
     QNetworkAccessManager *WithdrawalManager;
     QByteArray response_Withdrawal;
 

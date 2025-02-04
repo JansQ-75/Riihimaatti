@@ -17,6 +17,7 @@ public:
 
     void setAmount(int newAmount);
     void setStatusText(int);
+    void setErrorText();
 
 private:
     Ui::StatusWithdrawal *ui;

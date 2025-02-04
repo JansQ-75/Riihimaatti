@@ -21,10 +21,17 @@ void StatusWithdrawal::setAmount(int newAmount)
 
 void StatusWithdrawal::setStatusText(int amount)
 {
-
-    ui->label_status->setText("Withdrawal was successful\nHere is " + QString::number(amount) + " € for you");
+    // set text for customer to see, if withdrawal was successful
+    ui->label_status->setText("Withdrawal was successful\n\nHere is " + QString::number(amount) + " € for you");
 
     // timer for closing popup
     QTimer::singleShot(5000, this, &QWidget::close);
 
+}
+
+void StatusWithdrawal::setErrorText()
+{
+    ui->label_status->setText("Error:\n\nWithdrawal was not succesful");
+
+    QTimer::singleShot(5000, this, &QWidget::close);
 }
