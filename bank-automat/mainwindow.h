@@ -43,6 +43,8 @@ private slots:
     void goBackSlot();
     void getDataFromLoginSlot(int idcustomer, int idcard, QString type, QString fname, QString lname);
     void getTokenSlot(QByteArray customersToken);
+    void getCustomerData(int idcustomer);
+    void receivedCustomerInfo(QNetworkReply *reply);
 
 private:
     Ui::MainWindow *ui;
@@ -55,12 +57,28 @@ private:
 
     QTimer *loginTimer;
 
-    //For customer
-    int idcustomer;
+    // store token
+    QByteArray token;
+
+    //HTTP
+    QByteArray response_data;
+    QNetworkAccessManager *MainWindowManager;
+
+    //card info
     int idcard;
     QString type;
+
+    //Customer info
+    int idbank_account;
+    QString bank_account_number;
+    QString account_type;
+    double balance;
+    double credit_limit;
+    int idcustomer;
     QString fname;
     QString lname;
+    QString address;
+    QString phone;
 
 signals:
     // to send Tokens to widgets
@@ -68,6 +86,9 @@ signals:
 
     // to get data to widgets
     void sendLoginData(int idcustomer, QString type);
+
+    // to send customer data to widgets
+    void sendCustomerWithdrawal(int, QString, QString, double, double, int, QString, QString, QString, QString);
 
 };
 #endif // MAINWINDOW_H
