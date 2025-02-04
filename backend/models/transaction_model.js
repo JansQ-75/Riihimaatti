@@ -25,7 +25,7 @@ showTransactions: function (idbank_account, offsetValue, callback) {
     callback);
 },
 
-// Do a withdrawal (virhe)
+// Do a withdrawal 
 makeWithdrawal: function (account_type, idbank_account, idcard, withdrawal, callback) {
   if (account_type === "debit") {
     return db.query(

@@ -1,0 +1,42 @@
+# @name login
+# @prompt cardnumber
+# @prompt pin
+POST http://localhost:3000/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "cardnumber": "{{cardnumber}}",
+  "pin": "{{pin}}"
+}
+
+###
+@token = {{login.response.body.token}}
+
+### Get all accesses - admin only
+GET http://localhost:3000/access_rights HTTP/1.1
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+### Get accesses by id - admin only
+# @prompt idaccess_rights
+GET http://localhost:3000/access_rights/{{idaccess_rights}} HTTP/1.1
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+### add an access - admin only
+# @prompt idcard
+# @prompt idbank_account
+POST http://localhost:3000/access_rights/ HTTP/1.1
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+  "idcard": "{{idcard}}",
+  "{{idbank_account}}": "{{idbank_account}}",
+}
+
+### remove access - admin only
+# @prompt idaccess_rights
+DELETE http://localhost:3000/access_rights/{{idaccess_rights}} HTTP/1.1
+Content-Type: application/json
+Authorization: bearer {{token}}
