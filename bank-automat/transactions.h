@@ -17,6 +17,14 @@ public:
 
 private:
     Ui::Transactions *ui;
+
+    QByteArray receivedToken;
+public slots:
+    void getToken(QByteArray token);
+    void CustomerDataSlot(int, QString, QString, double, double, int, QString, QString, QString, QString);
+
+signals:
+    void backMain();
 };
 
 #endif // TRANSACTIONS_H

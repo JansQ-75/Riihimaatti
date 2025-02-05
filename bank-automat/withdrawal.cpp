@@ -18,7 +18,6 @@ Withdrawal::~Withdrawal()
 void Withdrawal::getToken(QByteArray token)
 {
     receivedToken = token;
-    qDebug() << "Token received in Withdrawal: " <<token;
 }
 
 void Withdrawal::CustomerDataSlot(int idbank_account, QString bank_account_number, QString account_type, double balance, double credit_limit, int idcustomer, QString fname, QString lname, QString address, QString phone)

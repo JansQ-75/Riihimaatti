@@ -32,20 +32,22 @@ MainWindow::MainWindow(QWidget *parent)
 
     //Go back connet
     connect(objLogin,&Login::backMain, this, &MainWindow::goBackSlot);
-    //connect(objLogin,&Login::backMain, this, &MainWindow::goBackSlot);
-    //connect(objBalance,&Balance::backMain, this, &MainWindow::goBackSlot);
-    //connect(objTransactions,&Transactions::backMain, this, &MainWindow::goBackSlot);
+    connect(objTransactions,&Transactions::backMain, this, &MainWindow::goBackSlot);
     connect(objWithdrawal,&Withdrawal::backMainSignal, this, &MainWindow::goBackSlot);
+    //connect(objBalance,&Balance::backMain, this, &MainWindow::goBackSlot);
 
 
     //Bring data
-    connect(objLogin,&Login::sendDataToMain, this, &MainWindow::getDataFromLoginSlot);
     connect(objLogin,&Login::sendToken, this, &MainWindow::getTokenSlot);
     connect(objLogin, &Login::RetrieveCustomerData, this, &MainWindow::getCustomerData);
 
-    // Send data
-    connect(this, &MainWindow::sendTokenToWithdrawal, objWithdrawal, &Withdrawal::getToken);
-    connect(this, &MainWindow::sendCustomerWithdrawal, objWithdrawal, &Withdrawal::CustomerDataSlot);
+    //Send ...
+    //...Tokens
+    connect(this, &MainWindow::sendTokenToWidget, objWithdrawal, &Withdrawal::getToken);
+    connect(this, &MainWindow::sendTokenToWidget, objTransactions, &Transactions::getToken);
+    //...Customer data
+    connect(this, &MainWindow::sendCustomerData, objWithdrawal, &Withdrawal::CustomerDataSlot);
+    connect(this, &MainWindow::sendCustomerData, objTransactions, &Transactions::CustomerDataSlot);
 
 
 }
@@ -66,14 +68,13 @@ void MainWindow::goBackSlot()
 void MainWindow::getTokenSlot(QByteArray customersToken)
 {
     token = customersToken;
-    //HAE TOKEN TÄSTÄ
-    emit sendTokenToWithdrawal(customersToken); // signal for getting token in Withdrawal
+
+    //Send token signal to widgets
+    emit sendTokenToWidget(customersToken);
 }
 
 void MainWindow::getCustomerData(int idcustomer)
 {
-    // customerId = idcustomer;
-    qDebug() << "Customers id: " <<idcustomer;
 
     // API request
     QString site_url=Environment::base_url()+"/bank_account/by-customerId/" + QString::number(idcustomer);
@@ -92,8 +93,6 @@ void MainWindow::getCustomerData(int idcustomer)
     });
 
 
-
-
 }
 
 void MainWindow::receivedCustomerInfo(QNetworkReply *reply)
@@ -105,9 +104,9 @@ void MainWindow::receivedCustomerInfo(QNetworkReply *reply)
         QJsonDocument jsonresponse = QJsonDocument::fromJson(response_data);
 
         if (jsonresponse.isNull() || !jsonresponse.isObject()) {
-        qDebug() << "Error: Invalid JSON response";
-        reply->deleteLater();
-        return;
+            qDebug() << "Error: Invalid JSON response";
+            reply->deleteLater();
+            return;
         }
 
         QJsonObject jsonObj = jsonresponse.object();
@@ -124,20 +123,13 @@ void MainWindow::receivedCustomerInfo(QNetworkReply *reply)
         if (jsonObj.contains("address")) address = jsonObj["address"].toString();
         if (jsonObj.contains("phone")) phone = jsonObj["phone"].toString();
 
-        //debuggausta
-        qDebug() << "Bank account number successfully: " << bank_account_number;
-        qDebug() << "idcustomer successfully: " << idcustomer;
-        qDebug() << "phone successfully: " << phone;
-        qDebug() << "credit " << credit_limit;
-        qDebug() << "balance " << balance;
-
         ui->labelHeyAndName->setText("Welcome " + fname + " " + lname);
 
         // Signaalit asiakastietojen hakemiseksi omaan widgetiin.
         /*
             Keksikää omat signaalit vastaavalla tavalla
         */
-        emit sendCustomerWithdrawal(idbank_account, bank_account_number, account_type, balance, credit_limit, idcustomer, fname, lname, address, phone);
+        emit sendCustomerData(idbank_account, bank_account_number, account_type, balance, credit_limit, idcustomer, fname, lname, address, phone);
 
         // delete later
         reply->deleteLater();
@@ -145,21 +137,6 @@ void MainWindow::receivedCustomerInfo(QNetworkReply *reply)
     } else {
         qDebug() << "Error: " << reply->errorString();
     }
-
-}
-
-
-
-void MainWindow::getDataFromLoginSlot(int idcustomer, int idcard, QString type, QString fname, QString lname)
-{
-
-    /* tähän tulee emit signaali,
-     * josta jokainen hakee omaan widgettiin tarvittavat tiedot,
-     * jotka on tullu mainista!
-     *
-     * emit nimeäSunOma(idcustomer, idcard, type, fname, lname);
-     *
-    */
 
 }
 
