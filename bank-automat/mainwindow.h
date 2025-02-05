@@ -41,7 +41,6 @@ private slots:
 
     void on_btnStart_clicked();
     void goBackSlot();
-    void getDataFromLoginSlot(int idcustomer, int idcard, QString type, QString fname, QString lname);
     void getTokenSlot(QByteArray customersToken);
     void getCustomerData(int idcustomer);
     void receivedCustomerInfo(QNetworkReply *reply);
@@ -82,13 +81,10 @@ private:
 
 signals:
     // to send Tokens to widgets
-    void sendTokenToWithdrawal(QByteArray customersToken);
-
-    // to get data to widgets
-    void sendLoginData(int idcustomer, QString type);
+    void sendTokenToWidget(QByteArray customersToken);
 
     // to send customer data to widgets
-    void sendCustomerWithdrawal(int, QString, QString, double, double, int, QString, QString, QString, QString);
+    void sendCustomerData(int, QString, QString, double, double, int, QString, QString, QString, QString);
 
 };
 #endif // MAINWINDOW_H

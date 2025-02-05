@@ -16,14 +16,63 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>140</x>
-     <y>110</y>
+     <x>280</x>
+     <y>30</y>
      <width>181</width>
      <height>21</height>
     </rect>
    </property>
    <property name="text">
     <string>Transactions</string>
+   </property>
+  </widget>
+  <widget class="QTableView" name="tableView">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>190</y>
+     <width>631</width>
+     <height>271</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnDown">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>330</y>
+     <width>65</width>
+     <height>65</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>DOWN</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnUp">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>260</y>
+     <width>65</width>
+     <height>65</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>UP</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelCustomer">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>60</y>
+     <width>141</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Customer</string>
    </property>
   </widget>
  </widget>
