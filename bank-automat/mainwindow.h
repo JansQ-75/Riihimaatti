@@ -82,14 +82,14 @@ private:
 
 signals:
     // to send Tokens to widgets
-    void sendTokenToWithdrawal(QByteArray customersToken);
+    void sendTokenToWidget(QByteArray customersToken);
 
     // to get Login data to widgets
     void sendLoginData(int idcustomer, QString type);
     void sendLoginDataWithdrawal(int);
 
     // to send customer data to widgets
-    void sendCustomerWithdrawal(int, QString, QString, double, double, int, QString, QString, QString, QString);
+    void sendCustomerData(int, QString, QString, double, double, int, QString, QString, QString, QString);
 
 };
 #endif // MAINWINDOW_H

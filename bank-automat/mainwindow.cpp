@@ -44,8 +44,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(objLogin, &Login::RetrieveCustomerData, this, &MainWindow::getCustomerData);
 
     // Send data
-    connect(this, &MainWindow::sendTokenToWithdrawal, objWithdrawal, &Withdrawal::getToken);
-    connect(this, &MainWindow::sendCustomerWithdrawal, objWithdrawal, &Withdrawal::CustomerDataSlot);
+    connect(this, &MainWindow::sendTokenToWidget, objWithdrawal, &Withdrawal::getToken);
+    connect(this, &MainWindow::sendCustomerData, objWithdrawal, &Withdrawal::CustomerDataSlot);
     connect(this, &MainWindow::sendLoginDataWithdrawal, objWithdrawal, &Withdrawal::LoginDataSlot);
 
 }
@@ -67,7 +67,7 @@ void MainWindow::getTokenSlot(QByteArray customersToken)
 {
     token = customersToken;
     //HAE TOKEN TÄSTÄ
-    emit sendTokenToWithdrawal(customersToken); // signal for getting token in Withdrawal
+    emit sendTokenToWidget(customersToken); // signal for getting token in Withdrawal
 }
 
 void MainWindow::getCustomerData(int idcustomer)
@@ -134,7 +134,7 @@ void MainWindow::receivedCustomerInfo(QNetworkReply *reply)
         /*
             Keksikää omat signaalit vastaavalla tavalla
         */
-        emit sendCustomerWithdrawal(idbank_account, bank_account_number, account_type, balance, credit_limit, idcustomer, fname, lname, address, phone);
+        emit sendCustomerData(idbank_account, bank_account_number, account_type, balance, credit_limit, idcustomer, fname, lname, address, phone);
 
         // delete later
         reply->deleteLater();
@@ -149,16 +149,7 @@ void MainWindow::receivedCustomerInfo(QNetworkReply *reply)
 
 void MainWindow::getDataFromLoginSlot(int idcustomer, int idcard, QString type, QString fname, QString lname)
 {
-
-    /* tähän tulee emit signaali,
-     * josta jokainen hakee omaan widgettiin tarvittavat tiedot,
-     * jotka on tullu mainista!
-     *
-     * emit nimeäSunOma(idcustomer, idcard, type, fname, lname);
-     *
-    */
     emit sendLoginDataWithdrawal(idcard);
-
 }
 
 //Go the login page

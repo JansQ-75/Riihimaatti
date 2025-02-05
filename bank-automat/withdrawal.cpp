@@ -9,8 +9,13 @@ Withdrawal::Withdrawal(QWidget *parent)
     ui->setupUi(this);
 
     objStatus = new StatusWithdrawal(this);
+    objOtherAmount = new OtherAmountWithdrawal(this);
 
     WithdrawalManager = new QNetworkAccessManager(this);
+
+    //connect: signal to withdraw other amount
+    connect(objOtherAmount, &OtherAmountWithdrawal::withdrawOtherAmount, this, &Withdrawal::withdrawOtherAmountSlot);
+
 }
 
 Withdrawal::~Withdrawal()
@@ -158,7 +163,45 @@ void Withdrawal::on_btn_100e_clicked()
 
 
 void Withdrawal::on_btn_otherAmount_clicked()
-{    
+{
+    objOtherAmount->exec();
+}
+
+void Withdrawal::withdrawOtherAmountSlot(QString otherAmount)
+{
+
+    // API request
+    QString site_url=Environment::base_url()+"/transactions/" + accountType + "/" + QString::number(bankAccountId) + "/" + QString::number(cardId) + "/" + otherAmount;
+    QNetworkRequest request(site_url);
+
+    // Authorization header
+    request.setRawHeader(QByteArray("Authorization"), QByteArray("Bearer " + receivedToken));
+
+    // make GET request
+    QNetworkReply *reply = WithdrawalManager->get(request);
+    qDebug()<<"tehtiin nosto " + otherAmount + "e";
+
+    connect(reply, &QNetworkReply::finished, this, [this, reply, otherAmount]() {
+        QByteArray response_data = reply->readAll();
+        qDebug() << "API ResponseDataJaninaaaa: " << response_data;
+
+        if (response_data == "1") {
+            objStatus->setStatusText(otherAmount.toInt());
+            objStatus->exec();
+        } else {
+            qDebug() << "Withdrawal failed";
+            objStatus->setErrorText();
+            objStatus->exec();
+        }
+
+        reply->deleteLater(); // Clean up reply
+    });
+
+
+
+    //reply->deleteLater();
+
     emit backMainSignal();
+
 }
 

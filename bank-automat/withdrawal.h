@@ -1,6 +1,7 @@
 #ifndef WITHDRAWAL_H
 #define WITHDRAWAL_H
 
+#include "otheramountwithdrawal.h"
 #include "statuswithdrawal.h"
 
 #include <QWidget>
@@ -27,6 +28,7 @@ private:
     Ui::Withdrawal *ui;
 
     StatusWithdrawal *objStatus;
+    OtherAmountWithdrawal *objOtherAmount;
 
     //QByteArray response_data;
     QNetworkAccessManager *WithdrawalManager;
@@ -39,6 +41,7 @@ private:
     int cardId;
 
 
+
 signals:
     void backMainSignal();
 
@@ -49,10 +52,12 @@ private slots:
     void on_btn_100e_clicked();
     void on_btn_otherAmount_clicked();
 
+
 public slots:
     void getToken(QByteArray token); // receive token
     void CustomerDataSlot(int, QString, QString, double, double, int, QString, QString, QString, QString);
     void LoginDataSlot(int);
+    void withdrawOtherAmountSlot(QString);
 };
 
 #endif // WITHDRAWAL_H
