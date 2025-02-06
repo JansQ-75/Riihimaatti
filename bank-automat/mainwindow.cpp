@@ -41,11 +41,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(objLogin,&Login::sendToken, this, &MainWindow::getTokenSlot);
     connect(objLogin, &Login::RetrieveCustomerData, this, &MainWindow::getCustomerData);
 
-    //Send ...
-    //...Tokens
+    //Send tokens
     connect(this, &MainWindow::sendTokenToWidget, objWithdrawal, &Withdrawal::getToken);
     connect(this, &MainWindow::sendTokenToWidget, objTransactions, &Transactions::getToken);
-    //...Customer data
+
+    //Send customer data
     connect(this, &MainWindow::sendCustomerData, objWithdrawal, &Withdrawal::CustomerDataSlot);
     connect(this, &MainWindow::sendCustomerData, objTransactions, &Transactions::CustomerDataSlot);
 
@@ -69,7 +69,7 @@ void MainWindow::getTokenSlot(QByteArray customersToken)
 {
     token = customersToken;
 
-    //Send token signal to widgets
+    //Send token to widgets
     emit sendTokenToWidget(customersToken);
 }
 
@@ -99,7 +99,7 @@ void MainWindow::receivedCustomerInfo(QNetworkReply *reply)
 {
     if (reply->error() == QNetworkReply::NoError) {
         QByteArray response_data = reply->readAll();
-        qDebug() << "Raw API Response: " << response_data;
+        //qDebug() << "Raw API Response: " << response_data;
 
         QJsonDocument jsonresponse = QJsonDocument::fromJson(response_data);
 
