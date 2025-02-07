@@ -16,7 +16,8 @@ class Transactions : public QWidget
 
 public:
     explicit Transactions(QWidget *parent = nullptr);
-    Transactions( QString transaction_date, double withdrawal, QString bank_account_number, int cardnumber);
+    //Transactions(QString transaction_date, double withdrawal, QString bank_account_number, int cardnumber);
+    //Transactions();
     ~Transactions();
 
     //Set and get methods
@@ -43,7 +44,8 @@ private:
     QByteArray response_data;
 
     //For object list
-
+    int i;
+QList<Transactions*> transactionsList;
     QString transaction_date;
     double withdrawal;
     QString bank_account_number;

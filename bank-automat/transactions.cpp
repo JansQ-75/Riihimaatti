@@ -11,15 +11,6 @@ Transactions::Transactions(QWidget *parent)
     ui->setupUi(this);
 }
 
-Transactions::Transactions(QString transaction_date, double withdrawal, QString bank_account_number, int cardnumber)
-{
-    //Set values
-    this->setTransaction_date(transaction_date);
-    this->setWithdrawal(withdrawal);
-    this->setBank_account_number(bank_account_number);
-    this->setCardnumber(cardnumber);
-
-}
 
 Transactions::~Transactions()
 {
@@ -101,30 +92,33 @@ void Transactions::dbDataSlot(QNetworkReply *replyData)
     }
 
     //Array
-    QJsonArray jsonArr01 = jsonresponse.array();
+    QJsonArray jsonArr = jsonresponse.array();
 
     //Get objects from array
+    for(int i=0; i<jsonArr.size(); i++){
+        //QJsonObject jsonObj0[i] = jsonArr01.at(i).toObject();
 
-    QJsonObject jsonObj01 = jsonArr01.at(0).toObject();
+        transaction_date = jsonArr.at(i).toObject()["transaction_date"].toString();
+        withdrawal = jsonArr.at(i).toObject()["withdrawal"].toDouble(); //O
+        bank_account_number = jsonArr.at(i).toObject()["bank_account_number"].toString();
+        cardnumber = jsonArr.at(i).toObject()["cardnumber"].toInt();
 
-    transaction_date = jsonObj01["transaction_date"].toString();
-    withdrawal = jsonObj01["withdrawal"].toDouble(); //O
-    bank_account_number = jsonObj01["bank_account_number"].toString();
-    cardnumber = jsonObj01["cardnumber"].toInt();
-    qDebug() << transaction_date;
-    qDebug() << withdrawal;
-    qDebug() << bank_account_number;
-    qDebug() << cardnumber;
+        qDebug() << transaction_date;
+        qDebug() << withdrawal;
 
 
-    Transactions objtransaction1 = Transactions(transaction_date, withdrawal, bank_account_number, cardnumber);
+        Transactions objtransaction;
+        objtransaction.setTransaction_date(transaction_date);
+        objtransaction.setWithdrawal(withdrawal);
+        objtransaction.setBank_account_number(bank_account_number);
+        objtransaction.setCardnumber(cardnumber);
+        transactionsList.append(&objtransaction);
 
-    QList<Transactions*> transactionsList;
-    transactionsList.append(&objtransaction1);
+    }
 
-    //Transactions objtransaction2 = Transactions(transaction_date, withdrawal, bank_account_number, cardnumber);
-    //transactionsList.append(&objtransaction2);
-/*
+
+
+
     QStandardItemModel *table_model = new QStandardItemModel(transactionsList.size(),4);
 
     //Strech columns
@@ -150,13 +144,10 @@ void Transactions::dbDataSlot(QNetworkReply *replyData)
 
         QStandardItem *itemcardnumber = new QStandardItem(QString::number(transactionsList[row]->getCardnumber()));
         table_model->setItem(row, 3, itemcardnumber);
-
-
     }
 
-
     ui->tableView->setModel(table_model);
-*/
+
     replyData->deleteLater();
     transactionManager->deleteLater();
 }
