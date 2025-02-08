@@ -53,7 +53,7 @@ private:
     Login *objLogin;
     Transactions *objTransactions;
     Withdrawal *objWithdrawal;
-    creditOrDebit *objcreditOrDebit;
+    // creditOrDebit *objcreditOrDebit;
 
     QTimer *loginTimer;
 

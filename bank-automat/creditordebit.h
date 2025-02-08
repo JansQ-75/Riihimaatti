@@ -23,17 +23,26 @@ public:
 
     void setCustomerName(const QString &newCustomerName);
     void setCustomersToken(const QByteArray &newCustomersToken);
+    void setCardnumber(int newCardnumber);
+    void searchAccessRights(int);
 
 private slots:
     void on_btnDebit_clicked();
     void on_btnCredit_clicked();
+    void handleResponseSlot();
 
 private:
     Ui::creditOrDebit *ui;
 
     QString customerName;
     QByteArray customersToken;
+    int cardnumber;
     QString chosen;
+
+    //For http
+    QNetworkAccessManager *creditOrDebitManager;
+    QNetworkReply *reply;
+    QByteArray response_data;
 
 
 

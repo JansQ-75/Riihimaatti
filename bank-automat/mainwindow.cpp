@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
     objLogin = new Login(this);
     objTransactions = new Transactions(this);
     objWithdrawal = new Withdrawal(this);
-    objcreditOrDebit = new creditOrDebit(this);
+    // objcreditOrDebit = new creditOrDebit(this);
 
 
     ui->stackedWidget->addWidget(objBalance);

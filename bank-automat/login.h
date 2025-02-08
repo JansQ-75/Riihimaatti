@@ -37,7 +37,7 @@ private:
     QNetworkReply *reply;
     QByteArray response_data;
 
-    QByteArray customersToken;
+    QByteArray token;
 
     //For http credit or debit
     QNetworkAccessManager *creditOrDebitManager;
@@ -47,6 +47,7 @@ private:
     //For customer
     int idcustomer;
     int idcard;
+    int cardnumber;
     QString type;
     QString fname;
     QString lname;
