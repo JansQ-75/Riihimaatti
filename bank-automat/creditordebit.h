@@ -52,10 +52,13 @@ private:
     QString secondType;
 
     // valitut tilit
-    QString chosenDebitType;
-    int chosenDebitId;
-    QString chosenCreditType;
-    int chosenCreditId;
+    QString chosenAccountType;
+    int chosenAccountId;
+    QString btnType;
+
+
+signals:
+    void selectedAccount(QString, int);
 };
 
 #endif // CREDITORDEBIT_H
