@@ -24,7 +24,7 @@ public:
     void setCustomerName(const QString &newCustomerName);
     void setCustomersToken(const QByteArray &newCustomersToken);
     void setCardnumber(int newCardnumber);
-    void searchAccessRights(int);
+    void searchAccessRights(int, QByteArray);
 
 private slots:
     void on_btnDebit_clicked();
@@ -44,9 +44,18 @@ private:
     QNetworkReply *reply;
     QByteArray response_data;
 
+    // to store account info
+    QVector<QPair<int, QString>> accounts;
+    int firstId;
+    QString firstType;
+    int secondId;
+    QString secondType;
 
-
-
+    // valitut tilit
+    QString chosenDebitType;
+    int chosenDebitId;
+    QString chosenCreditType;
+    int chosenCreditId;
 };
 
 #endif // CREDITORDEBIT_H
