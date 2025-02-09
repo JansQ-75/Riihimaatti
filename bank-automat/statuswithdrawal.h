@@ -17,6 +17,7 @@ public:
 
     void setStatusText(QString);
     void setErrorText();
+    void setNetworkError();
     void setAmount(const QString &newAmount);
 
 private:

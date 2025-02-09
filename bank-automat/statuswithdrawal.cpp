@@ -31,6 +31,13 @@ void StatusWithdrawal::setErrorText()
     QTimer::singleShot(5000, this, &QWidget::close);
 }
 
+void StatusWithdrawal::setNetworkError()
+{
+    ui->label_status->setText("Network error occurred");
+
+    QTimer::singleShot(5000, this, &QWidget::close);
+}
+
 void StatusWithdrawal::setAmount(const QString &newAmount)
 {
     amount = newAmount;

@@ -60,18 +60,18 @@ void Withdrawal::makeWithdrawal(QString amount)
     // make GET request
     QNetworkReply *reply = WithdrawalManager->get(request);
 
-
+    // get reply for creating conditions for showing withdrawal status to customer
     connect(reply, &QNetworkReply::finished, this, [this, reply, amount]() {
         if (reply->error() != QNetworkReply::NoError) {
             qDebug() << "Network error occurred: " << reply->errorString();
-            objStatus->setErrorText();
+            objStatus->setNetworkError();
             objStatus->exec();
             reply->deleteLater();
             return;
         }
 
         QByteArray response_data = reply->readAll();
-        qDebug() << "API ResponseDataJaninaaaa: " << response_data;
+        qDebug() << "API ResponseDataAffectedRows: " << response_data;
 
         if (response_data.trimmed() == "1") {  // Trim spaces/newlines if necessary
             objStatus->setStatusText(amount);
@@ -81,15 +81,9 @@ void Withdrawal::makeWithdrawal(QString amount)
             objStatus->setErrorText();
             objStatus->exec();
         }
+        reply->deleteLater();
 
     });
-
-
-    // qDebug()<<"tehtiin nosto "<<amount<<"e";
-
-    // // Let customer know if the withdrawal was successful
-    // objStatus->setStatusText(amount);
-    // objStatus->open();
 
     emit backMainSignal(); // return to main menu
 }
@@ -107,15 +101,23 @@ void Withdrawal::CustomerDataSlot(int idbank_account, QString bank_account_numbe
     ui->label_ownerName->setText("CUSTOMER:\n" + fname + " " + lname + "\n" + address + "\n" + phone);
 
     // print account info
-    accountType = account_type;
+
+    // conditions for setting account type
+    if (cardType == "debit/credit") {
+        // in case of dual card, use value customer has selected
+        accountType = dualAccountType;
+    } else {
+        // in case of debit or credit card, use value provided by login
+        accountType = account_type;
+    }
+
     qDebug() << "account type: " + accountType;
 
     // different print depending on type (debit or credit)
-    // tää pitää ehkä siirtää toiseen slottiin mihin tulee creditOrdebitistä tieto myös
     if (accountType == "debit") {
-    ui->label_balance->setText("ACCOUNT:\n" + bank_account_number + "\nBalance: " + QString::number(balance) + " €");
+    ui->label_balance->setText("ACCOUNT INFO:\n\nBalance: " + QString::number(balance) + " €");
     } else {
-        ui->label_balance->setText("ACCOUNT:\n" + bank_account_number + "\nAvailable balance: " + QString::number(credit_limit-balance) + " €\nCredit limit: " + QString::number(credit_limit) + " €");
+        ui->label_balance->setText("ACCOUNT INFO:\n\nAvailable balance: " + QString::number(credit_limit-balance) + " €\nCredit limit: " + QString::number(credit_limit) + " €");
     }
 
     // set id for bank account
