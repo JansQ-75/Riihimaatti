@@ -29,7 +29,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Withdrawal was successful</string>
+    <string>Making withdrawal...</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignmentFlag::AlignCenter</set>

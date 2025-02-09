@@ -26,7 +26,7 @@ void StatusWithdrawal::setStatusText(QString amount)
 
 void StatusWithdrawal::setErrorText()
 {
-    ui->label_status->setText("Error:\n\nWithdrawal was not succesful");
+    ui->label_status->setText("Not enough balance\n\nWithdrawal failed");
 
     QTimer::singleShot(5000, this, &QWidget::close);
 }

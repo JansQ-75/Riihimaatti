@@ -61,13 +61,35 @@ void Withdrawal::makeWithdrawal(QString amount)
     QNetworkReply *reply = WithdrawalManager->get(request);
 
 
-    qDebug()<<"responsedataa withdrawalissa"<<reply;
+    connect(reply, &QNetworkReply::finished, this, [this, reply, amount]() {
+        if (reply->error() != QNetworkReply::NoError) {
+            qDebug() << "Network error occurred: " << reply->errorString();
+            objStatus->setErrorText();
+            objStatus->exec();
+            reply->deleteLater();
+            return;
+        }
 
-    qDebug()<<"tehtiin nosto "<<amount<<"e";
+        QByteArray response_data = reply->readAll();
+        qDebug() << "API ResponseDataJaninaaaa: " << response_data;
 
-    // Let customer know if the withdrawal was successful
-    objStatus->setStatusText(amount);
-    objStatus->open();
+        if (response_data.trimmed() == "1") {  // Trim spaces/newlines if necessary
+            objStatus->setStatusText(amount);
+            objStatus->exec();
+        } else {
+            qDebug() << "Withdrawal failed";
+            objStatus->setErrorText();
+            objStatus->exec();
+        }
+
+    });
+
+
+    // qDebug()<<"tehtiin nosto "<<amount<<"e";
+
+    // // Let customer know if the withdrawal was successful
+    // objStatus->setStatusText(amount);
+    // objStatus->open();
 
     emit backMainSignal(); // return to main menu
 }
