@@ -88,7 +88,7 @@ signals:
 
     // to get Login data to widgets
     void sendLoginData(int idcustomer, QString type);
-    void sendLoginDataWithdrawal(int);
+    void sendLoginDataWithdrawal(int, QString);
 
     // to send customer data to widgets
     void sendCustomerData(int, QString, QString, double, double, int, QString, QString, QString, QString);

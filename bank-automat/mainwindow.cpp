@@ -156,7 +156,7 @@ void MainWindow::getDualSelections(QString dualAccountType, int dualAccountId)
 
 void MainWindow::getDataFromLoginSlot(int idcustomer, int idcard, QString type, QString fname, QString lname)
 {
-    emit sendLoginDataWithdrawal(idcard);
+    emit sendLoginDataWithdrawal(idcard, type);
 }
 
 //Go the login page

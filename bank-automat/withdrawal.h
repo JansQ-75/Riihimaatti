@@ -25,8 +25,9 @@ public:
     ~Withdrawal();
 
     void setDualAccountType(const QString &newDualAccountType);
-
     void setDualAccountId(int newDualAccountId);
+
+    void makeWithdrawal(QString);
 
 private:
     Ui::Withdrawal *ui;
@@ -43,6 +44,7 @@ private:
     QString accountType;
     int bankAccountId;
     int cardId;
+    QString cardType;
 
     //dual info
     QString dualAccountType;
@@ -64,7 +66,7 @@ private slots:
 public slots:
     void getToken(QByteArray token); // receive token
     void CustomerDataSlot(int, QString, QString, double, double, int, QString, QString, QString, QString);
-    void LoginDataSlot(int);
+    void LoginDataSlot(int, QString);
     void withdrawOtherAmountSlot(QString);
 };
 

@@ -15,13 +15,13 @@ public:
     explicit StatusWithdrawal(QWidget *parent = nullptr);
     ~StatusWithdrawal();
 
-    void setAmount(int newAmount);
-    void setStatusText(int);
+    void setStatusText(QString);
     void setErrorText();
+    void setAmount(const QString &newAmount);
 
 private:
     Ui::StatusWithdrawal *ui;
-    int amount;
+    QString amount;
 
 };
 

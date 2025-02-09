@@ -26,14 +26,50 @@ Withdrawal::~Withdrawal()
 
 void Withdrawal::setDualAccountType(const QString &newDualAccountType)
 {
-    dualAccountType = newDualAccountType;
-    qDebug()<<"Kaksoiskortilta Withdrawaliin tyyppi: "<<dualAccountType;
+    dualAccountType = newDualAccountType; // store selected account type from dual card
 }
 
 void Withdrawal::setDualAccountId(int newDualAccountId)
 {
-    dualAccountId = newDualAccountId;
-    qDebug()<<"Kaksoiskortilta Withdrawaliin id: "<<dualAccountId;
+    dualAccountId = newDualAccountId; // store selected account id from dual card
+}
+
+void Withdrawal::makeWithdrawal(QString amount)
+{
+    QString type;
+    int accountId;
+
+    // conditions for setting account type and id
+    if (cardType == "debit/credit") {
+        // in case of dual card, use values customer has selected
+        type = dualAccountType;
+        accountId = dualAccountId;
+    } else {
+        // in case of debit or credit card, use values provided by login
+        type = accountType;
+        accountId = bankAccountId;
+    }
+
+    // API request
+    QString site_url=Environment::base_url()+"/transactions/" + type + "/" + QString::number(accountId) + "/" + QString::number(cardId) + "/" + amount;
+    QNetworkRequest request(site_url);
+
+    // Authorization header
+    request.setRawHeader(QByteArray("Authorization"), QByteArray("Bearer " + receivedToken));
+
+    // make GET request
+    QNetworkReply *reply = WithdrawalManager->get(request);
+
+
+    qDebug()<<"responsedataa withdrawalissa"<<reply;
+
+    qDebug()<<"tehtiin nosto "<<amount<<"e";
+
+    // Let customer know if the withdrawal was successful
+    objStatus->setStatusText(amount);
+    objStatus->open();
+
+    emit backMainSignal(); // return to main menu
 }
 
 void Withdrawal::getToken(QByteArray token)
@@ -64,113 +100,34 @@ void Withdrawal::CustomerDataSlot(int idbank_account, QString bank_account_numbe
     bankAccountId = idbank_account;
 }
 
-void Withdrawal::LoginDataSlot(int idcard)
+void Withdrawal::LoginDataSlot(int idcard, QString cardtype)
 {
     cardId = idcard;
+    cardType = cardtype;
     qDebug()<<"Withdrawalissa saatu kortin id: " + QString::number(cardId);
 }
 
 void Withdrawal::on_btn_20e_clicked()
 {
-
-    // API request
-    QString site_url=Environment::base_url()+"/transactions/" + accountType + "/" + QString::number(bankAccountId) + "/" + QString::number(cardId) + "/20";
-    QNetworkRequest request(site_url);
-
-    // Authorization header
-    request.setRawHeader(QByteArray("Authorization"), QByteArray("Bearer " + receivedToken));
-
-    // make GET request
-    QNetworkReply *reply = WithdrawalManager->get(request);
-    qDebug()<<"tehtiin nosto 20e"<<reply;
-
-    //reply->deleteLater();
-
-    objStatus->setStatusText(20);
-    objStatus->open();
-
-    emit backMainSignal();
+    makeWithdrawal("20");
 }
 
 
 void Withdrawal::on_btn_40e_clicked()
 {
-    // API request
-    QString site_url=Environment::base_url()+"/transactions/" + accountType + "/" + QString::number(bankAccountId) + "/" + QString::number(cardId) + "/40";
-    QNetworkRequest request(site_url);
-
-    // Authorization header
-    request.setRawHeader(QByteArray("Authorization"), QByteArray("Bearer " + receivedToken));
-
-    // make GET request
-    QNetworkReply *reply = WithdrawalManager->get(request);
-    qDebug()<<"tehtiin nosto 40e"<<reply;
-
-    //reply->deleteLater();
-
-    objStatus->setStatusText(40);
-    objStatus->open();
-
-    emit backMainSignal();
+    makeWithdrawal("40");
 }
 
 
 void Withdrawal::on_btn_60e_clicked()
 {
-    // API request
-    QString site_url=Environment::base_url()+"/transactions/" + accountType + "/" + QString::number(bankAccountId) + "/" + QString::number(cardId) + "/60";
-    QNetworkRequest request(site_url);
-
-    // Authorization header
-    request.setRawHeader(QByteArray("Authorization"), QByteArray("Bearer " + receivedToken));
-
-    // make GET request
-    QNetworkReply *reply = WithdrawalManager->get(request);
-    qDebug()<<"tehtiin nosto 60e"<<reply;
-
-    //reply->deleteLater();
-
-    objStatus->setStatusText(60);
-    objStatus->open();
-
-    emit backMainSignal();
+    makeWithdrawal("60");
 }
 
 
 void Withdrawal::on_btn_100e_clicked()
 {
-    // API request
-    QString site_url=Environment::base_url()+"/transactions/" + accountType + "/" + QString::number(bankAccountId) + "/" + QString::number(cardId) + "/100";
-    QNetworkRequest request(site_url);
-
-    // Authorization header
-    request.setRawHeader(QByteArray("Authorization"), QByteArray("Bearer " + receivedToken));
-
-    // make GET request
-    QNetworkReply *reply = WithdrawalManager->get(request);
-    qDebug()<<"tehtiin nosto 100e";
-
-    connect(reply, &QNetworkReply::finished, this, [this, reply]() {
-        QByteArray response_data = reply->readAll();
-        qDebug() << "API ResponseDataJaninaaaa: " << response_data;
-
-        if (response_data == "1") {
-            objStatus->setStatusText(100);
-            objStatus->exec();
-        } else {
-            qDebug() << "Withdrawal failed";
-            objStatus->setErrorText();
-            objStatus->exec();
-        }
-
-        reply->deleteLater(); // Clean up reply
-    });
-
-
-
-    //reply->deleteLater();
-
-    emit backMainSignal();
+    makeWithdrawal("100");
 }
 
 
@@ -181,39 +138,6 @@ void Withdrawal::on_btn_otherAmount_clicked()
 
 void Withdrawal::withdrawOtherAmountSlot(QString otherAmount)
 {
-
-    // API request
-    QString site_url=Environment::base_url()+"/transactions/" + accountType + "/" + QString::number(bankAccountId) + "/" + QString::number(cardId) + "/" + otherAmount;
-    QNetworkRequest request(site_url);
-
-    // Authorization header
-    request.setRawHeader(QByteArray("Authorization"), QByteArray("Bearer " + receivedToken));
-
-    // make GET request
-    QNetworkReply *reply = WithdrawalManager->get(request);
-    qDebug()<<"tehtiin nosto " + otherAmount + "e";
-
-    connect(reply, &QNetworkReply::finished, this, [this, reply, otherAmount]() {
-        QByteArray response_data = reply->readAll();
-        qDebug() << "API ResponseDataJaninaaaa: " << response_data;
-
-        if (response_data == "1") {
-            objStatus->setStatusText(otherAmount.toInt());
-            objStatus->exec();
-        } else {
-            qDebug() << "Withdrawal failed";
-            objStatus->setErrorText();
-            objStatus->exec();
-        }
-
-        reply->deleteLater(); // Clean up reply
-    });
-
-
-
-    //reply->deleteLater();
-
-    emit backMainSignal();
-
+    makeWithdrawal(otherAmount);
 }
 
