@@ -24,6 +24,18 @@ Withdrawal::~Withdrawal()
     WithdrawalManager->deleteLater();
 }
 
+void Withdrawal::setDualAccountType(const QString &newDualAccountType)
+{
+    dualAccountType = newDualAccountType;
+    qDebug()<<"Kaksoiskortilta Withdrawaliin tyyppi: "<<dualAccountType;
+}
+
+void Withdrawal::setDualAccountId(int newDualAccountId)
+{
+    dualAccountId = newDualAccountId;
+    qDebug()<<"Kaksoiskortilta Withdrawaliin id: "<<dualAccountId;
+}
+
 void Withdrawal::getToken(QByteArray token)
 {
     receivedToken = token;

@@ -45,6 +45,8 @@ private slots:
     void getTokenSlot(QByteArray customersToken);
     void getCustomerData(int idcustomer);
     void receivedCustomerInfo(QNetworkReply *reply);
+    void getDualSelections(QString, int);
+
 
 private:
     Ui::MainWindow *ui;
@@ -53,7 +55,7 @@ private:
     Login *objLogin;
     Transactions *objTransactions;
     Withdrawal *objWithdrawal;
-    // creditOrDebit *objcreditOrDebit;
+    creditOrDebit *objcreditOrDebit;
 
     QTimer *loginTimer;
 

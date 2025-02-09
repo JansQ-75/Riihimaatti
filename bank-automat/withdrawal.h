@@ -24,6 +24,10 @@ public:
     explicit Withdrawal(QWidget *parent = nullptr);
     ~Withdrawal();
 
+    void setDualAccountType(const QString &newDualAccountType);
+
+    void setDualAccountId(int newDualAccountId);
+
 private:
     Ui::Withdrawal *ui;
 
@@ -39,6 +43,10 @@ private:
     QString accountType;
     int bankAccountId;
     int cardId;
+
+    //dual info
+    QString dualAccountType;
+    int dualAccountId;
 
 
 

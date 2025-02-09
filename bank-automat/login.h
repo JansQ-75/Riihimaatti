@@ -59,11 +59,15 @@ private slots:
     void loginSlot(QNetworkReply *reply);
     void showDebitOrCreditSlot(QNetworkReply *replyCreditOrDebit);
 
+public slots:
+    void getDualCardInfo(QString dualAccountType, int dualAccountId);
+
 signals:
     void backMain();
     void sendDataToMain(int idcustomer, int idcard, QString type, QString fname, QString lname);
     void sendToken(QByteArray customersToken);
     void RetrieveCustomerData(int idcustomer);
+    void sendDualInfoToMain(QString, int);
 };
 
 #endif // LOGIN_H

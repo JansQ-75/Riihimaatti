@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
     objLogin = new Login(this);
     objTransactions = new Transactions(this);
     objWithdrawal = new Withdrawal(this);
-    // objcreditOrDebit = new creditOrDebit(this);
+    //objcreditOrDebit = new creditOrDebit(this);
 
 
     ui->stackedWidget->addWidget(objBalance);
@@ -42,11 +42,13 @@ MainWindow::MainWindow(QWidget *parent)
     connect(objLogin,&Login::sendDataToMain, this, &MainWindow::getDataFromLoginSlot);
     connect(objLogin,&Login::sendToken, this, &MainWindow::getTokenSlot);
     connect(objLogin, &Login::RetrieveCustomerData, this, &MainWindow::getCustomerData);
+    connect(objLogin, &Login::sendDualInfoToMain, this, &MainWindow::getDualSelections);
 
     // Send data
     connect(this, &MainWindow::sendTokenToWidget, objWithdrawal, &Withdrawal::getToken);
     connect(this, &MainWindow::sendCustomerData, objWithdrawal, &Withdrawal::CustomerDataSlot);
     connect(this, &MainWindow::sendLoginDataWithdrawal, objWithdrawal, &Withdrawal::LoginDataSlot);
+
 
 }
 
@@ -145,7 +147,12 @@ void MainWindow::receivedCustomerInfo(QNetworkReply *reply)
 
 }
 
-
+void MainWindow::getDualSelections(QString dualAccountType, int dualAccountId)
+{
+    objWithdrawal->setDualAccountType(dualAccountType);
+    objWithdrawal->setDualAccountId(dualAccountId);
+    qDebug()<<"Mainissa onnistuttu välittämään kaksoiskortin tiedot";
+}
 
 void MainWindow::getDataFromLoginSlot(int idcustomer, int idcard, QString type, QString fname, QString lname)
 {

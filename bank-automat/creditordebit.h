@@ -1,6 +1,8 @@
 #ifndef CREDITORDEBIT_H
 #define CREDITORDEBIT_H
 
+#include "withdrawal.h"
+
 #include <QDialog>
 
 //For http
