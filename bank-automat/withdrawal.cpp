@@ -115,9 +115,9 @@ void Withdrawal::CustomerDataSlot(int idbank_account, QString bank_account_numbe
 
     // different print depending on type (debit or credit)
     if (accountType == "debit") {
-    ui->label_balance->setText("ACCOUNT INFO:\n\nBalance: " + QString::number(balance) + " €");
+    ui->label_balance->setText("ACCOUNT INFO:\nBalance: " + QString::number(balance) + " €");
     } else {
-        ui->label_balance->setText("ACCOUNT INFO:\n\nAvailable balance: " + QString::number(credit_limit-balance) + " €\nCredit limit: " + QString::number(credit_limit) + " €");
+        ui->label_balance->setText("ACCOUNT INFO:\n\Available balance: " + QString::number(credit_limit-balance) + " €\nCredit limit: " + QString::number(credit_limit) + " €");
     }
 
     // set id for bank account

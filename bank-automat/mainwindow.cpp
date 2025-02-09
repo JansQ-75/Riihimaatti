@@ -152,6 +152,28 @@ void MainWindow::getDualSelections(QString dualAccountType, int dualAccountId)
     objWithdrawal->setDualAccountType(dualAccountType);
     objWithdrawal->setDualAccountId(dualAccountId);
     qDebug()<<"Mainissa onnistuttu välittämään kaksoiskortin tiedot";
+    /*
+     Ota tästä kaksoiskortin tiedot jos tarvitset
+     */
+
+    // haetaan tilin tiedot kun on valittu credit tai debit
+
+    // API request
+    QString site_url=Environment::base_url()+"/bank_account/by-id/" + QString::number(dualAccountId);
+    QNetworkRequest request(site_url);
+
+    // Authorization header
+    request.setRawHeader(QByteArray("Authorization"), QByteArray("Bearer " + token));
+
+    // make GET request
+    QNetworkReply *reply = MainWindowManager->get(request);
+
+    // connect to slot for handling response
+    connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+        this->receivedCustomerInfo(reply);
+        reply->deleteLater();
+    });
+
 }
 
 void MainWindow::getDataFromLoginSlot(int idcustomer, int idcard, QString type, QString fname, QString lname)
