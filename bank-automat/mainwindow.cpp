@@ -32,22 +32,27 @@ MainWindow::MainWindow(QWidget *parent)
 
     //Go back connet
     connect(objLogin,&Login::backMain, this, &MainWindow::goBackSlot);
-    //connect(objLogin,&Login::backMain, this, &MainWindow::goBackSlot);
-    //connect(objBalance,&Balance::backMain, this, &MainWindow::goBackSlot);
-    //connect(objTransactions,&Transactions::backMain, this, &MainWindow::goBackSlot);
+    connect(objTransactions,&Transactions::backMain, this, &MainWindow::goBackSlot);
     connect(objWithdrawal,&Withdrawal::backMainSignal, this, &MainWindow::goBackSlot);
+    //connect(objBalance,&Balance::backMain, this, &MainWindow::goBackSlot);
 
 
     //Bring data
-    connect(objLogin,&Login::sendDataToMain, this, &MainWindow::getDataFromLoginSlot);
     connect(objLogin,&Login::sendToken, this, &MainWindow::getTokenSlot);
     connect(objLogin, &Login::RetrieveCustomerData, this, &MainWindow::getCustomerData);
+    connect(objLogin,&Login::sendDataToMain, this, &MainWindow::getDataFromLoginSlot);
     connect(objLogin, &Login::sendDualInfoToMain, this, &MainWindow::getDualSelections);
 
-    // Send data
+    //Send ...
+    //...Tokens
     connect(this, &MainWindow::sendTokenToWidget, objWithdrawal, &Withdrawal::getToken);
+    connect(this, &MainWindow::sendTokenToWidget, objTransactions, &Transactions::getToken);
+    //...Customer data
     connect(this, &MainWindow::sendCustomerData, objWithdrawal, &Withdrawal::CustomerDataSlot);
+    connect(this, &MainWindow::sendCustomerData, objTransactions, &Transactions::CustomerDataSlot);
+    // ...Login data
     connect(this, &MainWindow::sendLoginDataWithdrawal, objWithdrawal, &Withdrawal::LoginDataSlot);
+
 
 
 }
@@ -67,15 +72,14 @@ void MainWindow::goBackSlot()
 
 void MainWindow::getTokenSlot(QByteArray customersToken)
 {
-    token = customersToken;
-    //HAE TOKEN TÄSTÄ
-    emit sendTokenToWidget(customersToken); // signal for getting token in Withdrawal
+    token = customersToken; // store token
+
+    //Send token signal to widgets
+    emit sendTokenToWidget(customersToken);
 }
 
 void MainWindow::getCustomerData(int idcustomer)
 {
-    // customerId = idcustomer;
-    qDebug() << "Customers id: " <<idcustomer;
 
     // API request
     QString site_url=Environment::base_url()+"/bank_account/by-customerId/" + QString::number(idcustomer);
@@ -104,9 +108,9 @@ void MainWindow::receivedCustomerInfo(QNetworkReply *reply)
         QJsonDocument jsonresponse = QJsonDocument::fromJson(response_data);
 
         if (jsonresponse.isNull() || !jsonresponse.isObject()) {
-        qDebug() << "Error: Invalid JSON response";
-        reply->deleteLater();
-        return;
+            qDebug() << "Error: Invalid JSON response";
+            reply->deleteLater();
+            return;
         }
 
         QJsonObject jsonObj = jsonresponse.object();
@@ -122,13 +126,6 @@ void MainWindow::receivedCustomerInfo(QNetworkReply *reply)
         if (jsonObj.contains("lname")) lname = jsonObj["lname"].toString();
         if (jsonObj.contains("address")) address = jsonObj["address"].toString();
         if (jsonObj.contains("phone")) phone = jsonObj["phone"].toString();
-
-        //debuggausta
-        qDebug() << "Bank account number successfully: " << bank_account_number;
-        qDebug() << "idcustomer successfully: " << idcustomer;
-        qDebug() << "phone successfully: " << phone;
-        qDebug() << "credit " << credit_limit;
-        qDebug() << "balance " << balance;
 
         ui->labelHeyAndName->setText("Welcome " + fname + " " + lname);
 
@@ -178,7 +175,7 @@ void MainWindow::getDualSelections(QString dualAccountType, int dualAccountId)
 
 void MainWindow::getDataFromLoginSlot(int idcustomer, int idcard, QString type, QString fname, QString lname)
 {
-    emit sendLoginDataWithdrawal(idcard, type);
+    emit sendLoginDataWithdrawal(idcard, type); // send login data to withdrawal
 }
 
 //Go the login page

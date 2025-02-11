@@ -41,12 +41,11 @@ private slots:
 
     void on_btnStart_clicked();
     void goBackSlot();
-    void getDataFromLoginSlot(int idcustomer, int idcard, QString type, QString fname, QString lname);
     void getTokenSlot(QByteArray customersToken);
     void getCustomerData(int idcustomer);
     void receivedCustomerInfo(QNetworkReply *reply);
     void getDualSelections(QString, int);
-
+    void getDataFromLoginSlot(int idcustomer, int idcard, QString type, QString fname, QString lname);
 
 private:
     Ui::MainWindow *ui;
