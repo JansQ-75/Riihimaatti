@@ -53,11 +53,7 @@ MainWindow::MainWindow(QWidget *parent)
     // ...Login data
     connect(this, &MainWindow::sendLoginDataWithdrawal, objWithdrawal, &Withdrawal::LoginDataSlot);
 
-
-
 }
-
-
 
 MainWindow::~MainWindow()
 {
@@ -73,7 +69,7 @@ void MainWindow::goBackSlot()
 void MainWindow::getTokenSlot(QByteArray customersToken)
 {
     token = customersToken; // store token
-
+  
     //Send token signal to widgets
     emit sendTokenToWidget(customersToken);
 }
