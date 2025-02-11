@@ -27,40 +27,47 @@ public:
     void setDualAccountType(const QString &newDualAccountType);
     void setDualAccountId(int newDualAccountId);
 
-    void makeWithdrawal(QString);
+    void makeWithdrawal(QString); // function for making withdrawal
+    void startTimer();
 
 private:
     Ui::Withdrawal *ui;
 
+    //timer for inactivity
+    QTimer *inactivityTimer;
+
+    // Defining objects
     StatusWithdrawal *objStatus;
     OtherAmountWithdrawal *objOtherAmount;
 
-    //QByteArray response_data;
-    QNetworkAccessManager *WithdrawalManager;
-    QByteArray response_Withdrawal;
 
-    QByteArray receivedToken;
-    int customerId;
-    QString accountType;
-    int bankAccountId;
-    int cardId;
-    QString cardType;
+    QNetworkAccessManager *WithdrawalManager;   // NetworkAccess Manager
+    QByteArray response_Withdrawal;             //variable for response data
 
-    //dual info
-    QString dualAccountType;
-    int dualAccountId;
+    QByteArray receivedToken;   // for storing token
+    int customerId;             // for storing customer id
+    QString accountType;        // for storing account type
+    int bankAccountId;          // for storing bank account id
+    int cardId;                 // for storing card id
+    QString cardType;           // for storing card type
+
+    //dual card info
+    QString dualAccountType;    // for storing account type
+    int dualAccountId;          // for storing account id
 
 
 
 signals:
-    void backMainSignal();
+    void backMainSignal();  // for returning main menu
 
 private slots:
-    void on_btn_20e_clicked();
-    void on_btn_40e_clicked();
-    void on_btn_60e_clicked();
-    void on_btn_100e_clicked();
-    void on_btn_otherAmount_clicked();
+    void on_btn_20e_clicked();          // withdraw 20e
+    void on_btn_40e_clicked();          // withdraw 40e
+    void on_btn_60e_clicked();          // withdraw 60e
+    void on_btn_100e_clicked();         // withdraw 100e
+    void on_btn_otherAmount_clicked();  // withdraw custom amount
+    void onButtonPressed();             // in case of some button is pressed, stop inactivity timer
+    void handleTimeout();               // if timer runs downs, return to main menu
 
 
 public slots:

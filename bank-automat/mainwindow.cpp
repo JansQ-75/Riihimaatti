@@ -198,6 +198,7 @@ void MainWindow::on_btnBalance_clicked()
 void MainWindow::on_btnWithdrawal_clicked()
 {
     ui->stackedWidget->setCurrentWidget(objWithdrawal);
+    objWithdrawal->startTimer();
 }
 
 //Go the transaction page

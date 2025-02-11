@@ -12,6 +12,7 @@ StatusWithdrawal::StatusWithdrawal(QWidget *parent)
 StatusWithdrawal::~StatusWithdrawal()
 {
     delete ui;
+    qDebug()<<"Status tuhottu";
 }
 
 void StatusWithdrawal::setStatusText(QString amount)
