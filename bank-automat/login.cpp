@@ -31,7 +31,6 @@ Login::Login(QWidget *parent)
 Login::~Login()
 {
     delete ui;
-    qDebug()<<"Login olio tuhottu";
 }
 
 
@@ -206,6 +205,7 @@ void Login::showDebitOrCreditSlot(QNetworkReply *replyCreditOrDebit)
 
     //Data to mainwindow
     emit RetrieveCustomerData(idcustomer);
+    emit sendDataToMain(idcustomer, idcard, type, fname, lname);
 
     //Delete later
     replyCreditOrDebit->deleteLater();
@@ -214,7 +214,5 @@ void Login::showDebitOrCreditSlot(QNetworkReply *replyCreditOrDebit)
 
 void Login::getDualCardInfo(QString dualAccountType, int dualAccountId)
 {
-    qDebug()<<"Kaksoiskortilta loginiin id: "<<dualAccountId;
-    qDebug()<<"Kaksoiskortilta loginiin tyyppi: "<<dualAccountType;
     emit sendDualInfoToMain(dualAccountType, dualAccountId);
 }

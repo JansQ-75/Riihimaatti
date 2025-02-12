@@ -77,7 +77,6 @@ void Withdrawal::makeWithdrawal(QString amount)
         }
 
         QByteArray response_data = reply->readAll();
-        qDebug() << "API ResponseDataAffectedRows: " << response_data;
 
         if (response_data.trimmed() == "1") {  // Trim spaces/newlines if necessary // when query is successful, it returns 1 affected row
             objStatus->setStatusText(amount);
@@ -122,8 +121,6 @@ void Withdrawal::CustomerDataSlot(int idbank_account, QString bank_account_numbe
         bankAccountId = idbank_account;
     }
 
-    qDebug() << "account type: " + accountType;
-
     // print account info
     // different print depending on account type (debit or credit)
     if (accountType == "debit") {
@@ -140,7 +137,6 @@ void Withdrawal::LoginDataSlot(int idcard, QString cardtype)
     // store values
     cardId = idcard;
     cardType = cardtype;
-    qDebug()<<"Withdrawalissa saatu kortin id: " + QString::number(cardId);
 }
 
 void Withdrawal::on_btn_20e_clicked()
