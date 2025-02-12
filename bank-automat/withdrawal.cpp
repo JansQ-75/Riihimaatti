@@ -82,6 +82,7 @@ void Withdrawal::makeWithdrawal(QString amount)
             objStatus->setStatusText(amount);
             objStatus->exec();
         } else {
+            qDebug() << "Withdrawal failed";
             objStatus->setErrorText();
             objStatus->exec();
         }
