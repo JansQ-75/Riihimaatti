@@ -28,7 +28,7 @@ public:
     void setDualAccountId(int newDualAccountId);
 
     void makeWithdrawal(QString); // function for making withdrawal
-    void startTimer();
+    void startTimer(); // timer function for inactivity
 
 private:
     Ui::Withdrawal *ui;

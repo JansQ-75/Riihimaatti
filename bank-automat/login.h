@@ -17,6 +17,7 @@ class Login : public QWidget
 public:
     explicit Login(QWidget *parent = nullptr);
     ~Login();
+    void startLoginTimer();
 
 private:
     Ui::Login *ui;
@@ -29,8 +30,9 @@ private:
     int pincodeTries =0;
     bool pincodeLocked=false;
 
-
+    // TIMER
     QTimer *loginTimer;
+    void resetLoginTimer();
 
     //For http token
     QNetworkAccessManager *loginManager;
@@ -56,6 +58,11 @@ private slots:
     void pressed_number();
     void pressed_login();
 
+    // Timer functions
+    void onAnyButtonPressed();  // in case of some button is pressed, stop inactivity timer
+    void handleTimeout();       // if timer runs downs, return to main menu
+
+
     void loginSlot(QNetworkReply *reply);
     void showDebitOrCreditSlot(QNetworkReply *replyCreditOrDebit);
 
@@ -64,6 +71,7 @@ public slots:
 
 signals:
     void backMain();
+    void backStartScreen();
     void sendToken(QByteArray customersToken);
     void RetrieveCustomerData(int idcustomer);
     void sendDualInfoToMain(QString, int);

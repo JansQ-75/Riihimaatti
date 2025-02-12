@@ -16,7 +16,9 @@ MainWindow::MainWindow(QWidget *parent)
     objLogin = new Login(this);
     objTransactions = new Transactions(this);
     objWithdrawal = new Withdrawal(this);
-    //objcreditOrDebit = new creditOrDebit(this);
+
+    // Timers
+    mainTimer = new QTimer(this);
 
 
     ui->stackedWidget->addWidget(objBalance);
@@ -24,17 +26,23 @@ MainWindow::MainWindow(QWidget *parent)
     ui->stackedWidget->addWidget(objTransactions);
     ui->stackedWidget->addWidget(objWithdrawal);
 
+    // make list of push buttons
+    QList<QPushButton*> buttons = findChildren<QPushButton*>();
+    //connect button' clicked() signals to slot for reseting timer if necessary
+    for (QPushButton* button : buttons) {
+        connect(button, &QPushButton::pressed, this, &MainWindow::onButtonPressed);
+    }
 
 
-    //Timer
-    loginTimer = new QTimer(this);
-    connect(loginTimer, &QTimer::timeout, this, &MainWindow::stopwatchForTenSeconds);
+    // Timer connections
+    connect(mainTimer, &QTimer::timeout, this, &MainWindow::handleTimeout);
 
-    //Go back connet
+    //Go back -connect
     connect(objLogin,&Login::backMain, this, &MainWindow::goBackSlot);
     connect(objTransactions,&Transactions::backMain, this, &MainWindow::goBackSlot);
     connect(objWithdrawal,&Withdrawal::backMainSignal, this, &MainWindow::goBackSlot);
     //connect(objBalance,&Balance::backMain, this, &MainWindow::goBackSlot);
+    connect(objLogin, &Login::backStartScreen, this, &MainWindow::on_btnLogout_clicked);
 
 
     //Bring data
@@ -173,11 +181,18 @@ void MainWindow::getDataFromLoginSlot(int idcustomer, int idcard, QString type, 
     emit sendLoginDataWithdrawal(idcard, type); // send login data to withdrawal
 }
 
+void MainWindow::startMainTimer()
+{
+    mainTimer->start(30000); //start 30s timer
+
+}
+
+
 //Go the login page
 void MainWindow::on_btnStart_clicked()
 {
-    //loginTimer->start(10000);
     ui->stackedWidget->setCurrentWidget(objLogin);
+    objLogin->startLoginTimer();
 }
 
 //Go the balance page
@@ -211,8 +226,14 @@ void MainWindow::on_btnLogout_clicked()
     ui->stackedWidget->setCurrentIndex(0);
 }
 
-void MainWindow::stopwatchForTenSeconds()
+void MainWindow::onButtonPressed()
 {
-    qDebug()<<"10 seconds passed in the stopwatch";
+    //if (<QPushButton> name = )
+    //this->resetLoginTimer();
+}
+
+void MainWindow::handleTimeout()
+{
     ui->stackedWidget->setCurrentIndex(0);
 }
+
