@@ -14,7 +14,6 @@ Login::Login(QWidget *parent)
 
     // make list of push buttons
     QList<QPushButton*> loginButtons = findChildren<QPushButton*>();
-    qDebug()<<loginButtons;
     //connect button' clicked() signals to slot for reseting timer if necessary
     for (QPushButton* button : loginButtons) {
         connect(button, &QPushButton::pressed, this, &Login::onAnyButtonPressed);
@@ -49,6 +48,12 @@ void Login::startLoginTimer()
 {
     // Go back to start screen if customer hasn't pressed any button within 10 seconds
     loginTimer->start(10000); // start 10s timer
+}
+
+void Login::stopLoginTimer()
+{
+    //stop timer
+    loginTimer->stop();
 }
 
 void Login::resetLoginTimer()

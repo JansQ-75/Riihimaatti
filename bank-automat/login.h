@@ -18,6 +18,7 @@ public:
     explicit Login(QWidget *parent = nullptr);
     ~Login();
     void startLoginTimer();
+    void stopLoginTimer();
 
 private:
     Ui::Login *ui;

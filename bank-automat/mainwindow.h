@@ -38,7 +38,6 @@ private slots:
     void on_btnLogout_clicked();
 
     void onButtonPressed();             // in case of some button is pressed, stop inactivity timer
-    void handleTimeout();               // if timer runs downs, return to main menu
 
 
     void on_btnStart_clicked();
@@ -61,7 +60,7 @@ private:
     // timer for inactivity
     void startMainTimer();
     QTimer *mainTimer; // 30s timer, for main menu inactivity
-    QTimer *loginTimer; // 10s timer, for login view
+    void stopWidgetTimers(); // to stop timers in other widgets
 
     // store token
     QByteArray token;
