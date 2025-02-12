@@ -37,7 +37,7 @@ private:
     QNetworkReply *reply;
     QByteArray response_data;
 
-    QByteArray customersToken;
+    QByteArray token;
 
     //For http credit or debit
     QNetworkAccessManager *creditOrDebitManager;
@@ -47,6 +47,7 @@ private:
     //For customer
     int idcustomer;
     int idcard;
+    int cardnumber;
     QString type;
     QString fname;
     QString lname;
@@ -58,10 +59,14 @@ private slots:
     void loginSlot(QNetworkReply *reply);
     void showDebitOrCreditSlot(QNetworkReply *replyCreditOrDebit);
 
+public slots:
+    void getDualCardInfo(QString dualAccountType, int dualAccountId);
+
 signals:
     void backMain();
     void sendToken(QByteArray customersToken);
     void RetrieveCustomerData(int idcustomer);
+    void sendDualInfoToMain(QString, int);
 };
 
 #endif // LOGIN_H

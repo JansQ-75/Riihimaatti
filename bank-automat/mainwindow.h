@@ -44,6 +44,8 @@ private slots:
     void getTokenSlot(QByteArray customersToken);
     void getCustomerData(int idcustomer);
     void receivedCustomerInfo(QNetworkReply *reply);
+    void getDualSelections(QString, int);
+    void getDataFromLoginSlot(int idcustomer, int idcard, QString type, QString fname, QString lname);
 
 private:
     Ui::MainWindow *ui;
@@ -82,6 +84,10 @@ private:
 signals:
     // to send Tokens to widgets
     void sendTokenToWidget(QByteArray customersToken);
+
+    // to get Login data to widgets
+    void sendLoginData(int idcustomer, QString type);
+    void sendLoginDataWithdrawal(int, QString);
 
     // to send customer data to widgets
     void sendCustomerData(int, QString, QString, double, double, int, QString, QString, QString, QString);

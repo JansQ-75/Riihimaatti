@@ -8,6 +8,8 @@ Login::Login(QWidget *parent)
 {
     ui->setupUi(this);
 
+
+
     //connect: when button is pressed, go to the pressed number slot.
     connect(ui->btn1,&QPushButton::clicked, this, &Login::pressed_number);
     connect(ui->btn2,&QPushButton::clicked, this, &Login::pressed_number);
@@ -21,11 +23,15 @@ Login::Login(QWidget *parent)
     connect(ui->btn0,&QPushButton::clicked, this, &Login::pressed_number);
     connect(ui->btnClear,&QPushButton::clicked, this, &Login::pressed_number);
     connect(ui->btnLogin,&QPushButton::clicked, this, &Login::pressed_login);
+
+
+
 }
 
 Login::~Login()
 {
     delete ui;
+    qDebug()<<"Login olio tuhottu";
 }
 
 
@@ -135,6 +141,7 @@ void Login::loginSlot(QNetworkReply *reply)
             }
             QJsonObject jsonObj = jsonresponse.object();
             QByteArray customersToken =jsonresponse["token"].toString().toUtf8();
+            token = customersToken;
 
             QString site_url=Environment::base_url()+"/card/bycardnumberstart/"+cardnumberForLabel;
             QNetworkRequest request(site_url);
@@ -145,6 +152,7 @@ void Login::loginSlot(QNetworkReply *reply)
 
             // send Token to other widgets
             emit sendToken(customersToken);
+
 
             //Go next page
             emit backMain();
@@ -180,6 +188,7 @@ void Login::showDebitOrCreditSlot(QNetworkReply *replyCreditOrDebit)
 
     idcustomer = jsonObj2["idcustomer"].toInt();
     idcard = jsonObj2["idcard"].toInt();
+    cardnumber = jsonObj2["cardnumber"].toInt();
     type = jsonObj2["type"].toString();
     fname = jsonObj2["fname"].toString();
     lname = jsonObj2["lname"].toString();
@@ -188,8 +197,10 @@ void Login::showDebitOrCreditSlot(QNetworkReply *replyCreditOrDebit)
     if(type=="debit/credit"){
         //
         creditOrDebit *objCreditOrDebit = new creditOrDebit(this);
+        connect(objCreditOrDebit, &creditOrDebit::selectedAccount, this, &Login::getDualCardInfo);
+        objCreditOrDebit->setCustomersToken(token);
         objCreditOrDebit->setCustomerName(fname + " " + lname);
-        objCreditOrDebit->setCustomersToken(customersToken);
+        objCreditOrDebit->setCardnumber(cardnumber);
         objCreditOrDebit->open();
     }
 
@@ -199,4 +210,11 @@ void Login::showDebitOrCreditSlot(QNetworkReply *replyCreditOrDebit)
     //Delete later
     replyCreditOrDebit->deleteLater();
     creditOrDebitManager->deleteLater();
+}
+
+void Login::getDualCardInfo(QString dualAccountType, int dualAccountId)
+{
+    qDebug()<<"Kaksoiskortilta loginiin id: "<<dualAccountId;
+    qDebug()<<"Kaksoiskortilta loginiin tyyppi: "<<dualAccountType;
+    emit sendDualInfoToMain(dualAccountType, dualAccountId);
 }
