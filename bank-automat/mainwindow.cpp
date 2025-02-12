@@ -29,7 +29,6 @@ MainWindow::MainWindow(QWidget *parent)
     // make list of push buttons of stacked widget page 1
     QWidget *page = ui->stackedWidget->widget(1);
     QList<QPushButton*> menuButtons = page->findChildren<QPushButton*>();
-    qDebug()<<"menubuttons: "<<menuButtons;
     //connect button' clicked() signals to slot for reseting timer if necessary
     for (QPushButton* button : menuButtons) {
         connect(button, &QPushButton::pressed, this, &MainWindow::onButtonPressed);
@@ -154,12 +153,9 @@ void MainWindow::receivedCustomerInfo(QNetworkReply *reply)
 
 void MainWindow::getDualSelections(QString dualAccountType, int dualAccountId)
 {
+    // set selected values to variables in Withdrawal
     objWithdrawal->setDualAccountType(dualAccountType);
     objWithdrawal->setDualAccountId(dualAccountId);
-    qDebug()<<"Mainissa onnistuttu välittämään kaksoiskortin tiedot";
-    /*
-     Ota tästä kaksoiskortin tiedot jos tarvitset
-     */
 
     // haetaan tilin tiedot kun on valittu credit tai debit
 

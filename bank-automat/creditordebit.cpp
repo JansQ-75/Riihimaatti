@@ -55,8 +55,6 @@ void creditOrDebit::handleResponseSlot()
             QString accountType = jsonObj["account_type"].toString();
 
             accounts.append(qMakePair(idBankAccount, accountType)); // Store both account infos
-
-            qDebug() << "Stored Account - ID:" << idBankAccount << ", Type:" << accountType;
         }
 
         // store values to variables
@@ -79,8 +77,6 @@ void creditOrDebit::handleResponseSlot()
 
         // send selected values to Withdrawal
         emit selectedAccount(chosenAccountType, chosenAccountId);
-
-        qDebug()<<"Debitiin valitut muuttujat: "<<chosenAccountType<<" ja "<<chosenAccountId;
 
         reply->deleteLater();
 

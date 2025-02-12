@@ -216,7 +216,6 @@ void Login::loginSlot(QNetworkReply *reply)
 void Login::showDebitOrCreditSlot(QNetworkReply *replyCreditOrDebit)
 {
     response_dataCreditOrDebit=replyCreditOrDebit->readAll();
-    //qDebug()<<response_dataCreditOrDebit;
 
     //Parse json
     QJsonDocument jsonresponse = QJsonDocument::fromJson(response_dataCreditOrDebit);
