@@ -99,7 +99,6 @@ void MainWindow::receivedCustomerInfo(QNetworkReply *reply)
 {
     if (reply->error() == QNetworkReply::NoError) {
         QByteArray response_data = reply->readAll();
-        qDebug() << "Raw API Response: " << response_data;
 
         QJsonDocument jsonresponse = QJsonDocument::fromJson(response_data);
 
