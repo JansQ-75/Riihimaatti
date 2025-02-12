@@ -206,6 +206,7 @@ void Login::showDebitOrCreditSlot(QNetworkReply *replyCreditOrDebit)
 
     //Data to mainwindow
     emit RetrieveCustomerData(idcustomer);
+    emit sendDataToMain(idcustomer, idcard, type, fname, lname);
 
     //Delete later
     replyCreditOrDebit->deleteLater();
