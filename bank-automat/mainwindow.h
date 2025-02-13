@@ -37,7 +37,8 @@ private slots:
     void on_btnBack_clicked();
     void on_btnLogout_clicked();
 
-    void stopwatchForTenSeconds();
+    void onButtonPressed();             // in case of some button is pressed, stop inactivity timer
+
 
     void on_btnStart_clicked();
     void goBackSlot();
@@ -56,7 +57,10 @@ private:
     Withdrawal *objWithdrawal;
     creditOrDebit *objcreditOrDebit;
 
-    QTimer *loginTimer;
+    // timer for inactivity
+    void startMainTimer();
+    QTimer *mainTimer; // 30s timer, for main menu inactivity
+    void stopWidgetTimers(); // to stop timers in other widgets
 
     // store token
     QByteArray token;

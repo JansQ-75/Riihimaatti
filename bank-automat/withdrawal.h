@@ -28,7 +28,8 @@ public:
     void setDualAccountId(int newDualAccountId);
 
     void makeWithdrawal(QString); // function for making withdrawal
-    void startTimer();
+    void startTimer(); // timer function for inactivity
+    void stopTimer(); // stop timer function
 
 private:
     Ui::Withdrawal *ui;
@@ -59,6 +60,7 @@ private:
 
 signals:
     void backMainSignal();  // for returning main menu
+    void logOutSignal();    // for logging out after inactivity for 10s
 
 private slots:
     void on_btn_20e_clicked();          // withdraw 20e

@@ -91,12 +91,18 @@ void Withdrawal::makeWithdrawal(QString amount)
     });
 
     emit backMainSignal(); // return to main menu
+    inactivityTimer->stop(); // stop timer
 }
 
 void Withdrawal::startTimer()
 {
     // Go back to main menu if customer hasn't pressed any button within 10 seconds
     inactivityTimer->start(10000); //start timer
+}
+
+void Withdrawal::stopTimer()
+{
+    inactivityTimer->stop();
 }
 
 void Withdrawal::getToken(QByteArray token)
@@ -181,8 +187,8 @@ void Withdrawal::onButtonPressed()
 
 void Withdrawal::handleTimeout()
 {
-    // Go back to main menu
-    emit backMainSignal();
+    // Logout after inactivity for 10 seconds
+    emit logOutSignal();
 }
 
 void Withdrawal::withdrawOtherAmountSlot(QString otherAmount)

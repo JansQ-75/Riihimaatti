@@ -8,6 +8,16 @@ Login::Login(QWidget *parent)
 {
     ui->setupUi(this);
 
+    // timer setup
+    loginTimer = new QTimer(this);
+    connect(loginTimer, &QTimer::timeout, this, &Login::handleTimeout);
+
+    // make list of push buttons
+    QList<QPushButton*> loginButtons = findChildren<QPushButton*>();
+    //connect button' clicked() signals to slot for reseting timer if necessary
+    for (QPushButton* button : loginButtons) {
+        connect(button, &QPushButton::pressed, this, &Login::onAnyButtonPressed);
+    }
 
 
     //connect: when button is pressed, go to the pressed number slot.
@@ -26,11 +36,30 @@ Login::Login(QWidget *parent)
 
 
 
+
 }
 
 Login::~Login()
 {
     delete ui;
+}
+
+void Login::startLoginTimer()
+{
+    // Go back to start screen if customer hasn't pressed any button within 10 seconds
+    loginTimer->start(10000); // start 10s timer
+}
+
+void Login::stopLoginTimer()
+{
+    //stop timer
+    loginTimer->stop();
+}
+
+void Login::resetLoginTimer()
+{
+    // restart loginTimer
+    loginTimer->start(10000); // start 10s timer
 }
 
 
@@ -100,6 +129,16 @@ void Login::pressed_login()
     reply=loginManager->post(request, QJsonDocument(jsonObj).toJson());
 }
 
+void Login::onAnyButtonPressed()
+{
+    this->resetLoginTimer();
+}
+
+void Login::handleTimeout()
+{
+    emit backStartScreen();
+}
+
 
 void Login::loginSlot(QNetworkReply *reply)
 {
@@ -152,9 +191,12 @@ void Login::loginSlot(QNetworkReply *reply)
             // send Token to other widgets
             emit sendToken(customersToken);
 
+            // Stop login timer
+            loginTimer->stop();
 
             //Go next page
             emit backMain();
+
 
             ui->labelInfo->setText("");
         }
@@ -174,7 +216,6 @@ void Login::loginSlot(QNetworkReply *reply)
 void Login::showDebitOrCreditSlot(QNetworkReply *replyCreditOrDebit)
 {
     response_dataCreditOrDebit=replyCreditOrDebit->readAll();
-    //qDebug()<<response_dataCreditOrDebit;
 
     //Parse json
     QJsonDocument jsonresponse = QJsonDocument::fromJson(response_dataCreditOrDebit);
