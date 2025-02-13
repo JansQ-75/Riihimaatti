@@ -23,8 +23,8 @@ router.post('/', function (req, res) {
       res.send(`Card number doesn't exist`);
       return;
     }
-    if (dbResult[0].locked_status >= 3) {
-      res.status(403).send(`Card locked.`);
+    if (dbResult[0].locked_status >= 2) {
+      return res.status(403).send(`Card locked.`);
     }
 
     bcrypt.compare(pin, dbResult[0].pin, (err, compareResult) => {
@@ -40,7 +40,7 @@ router.post('/', function (req, res) {
             if (dbError) console.log(`Error resetting locked_status`);
           },
         );
-        res.send({ token });
+        return res.send({ token });
       } else {
         card.setLockedStatus(
           {
@@ -48,7 +48,7 @@ router.post('/', function (req, res) {
             locked_status: dbResult[0].locked_status + 1,
           },
           (dbError, dbResult) => {
-            res.sendStatus(401);
+            return res.sendStatus(401);
           },
         );
       }
