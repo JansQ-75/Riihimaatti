@@ -24,10 +24,12 @@ public:
     explicit Withdrawal(QWidget *parent = nullptr);
     ~Withdrawal();
 
+    // setters for account type and id
     void setDualAccountType(const QString &newDualAccountType);
     void setDualAccountId(int newDualAccountId);
 
     void makeWithdrawal(QString); // function for making withdrawal
+
     void startTimer(); // timer function for inactivity
     void stopTimer(); // stop timer function
 
