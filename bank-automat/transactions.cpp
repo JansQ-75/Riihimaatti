@@ -87,7 +87,6 @@ void Transactions::CustomerDataSlot(int idbank_account, QString bank_account_num
 void Transactions::dbDataSlot(QNetworkReply *replyData)
 {
     response_data=replyData->readAll();
-    qDebug()<<response_data;
 
     //Parse json
     QJsonDocument jsonresponse = QJsonDocument::fromJson(response_data);
@@ -106,6 +105,11 @@ void Transactions::dbDataSlot(QNetworkReply *replyData)
         //QJsonObject jsonObj0[i] = jsonArr01.at(i).toObject();
 
         transaction_date = jsonArr.at(i).toObject()["transaction_date"].toString();
+        //Edit data
+        QDateTime pretty_transaction_date = QDateTime::fromString(transaction_date, Qt::ISODate);
+        pretty_transaction_date = pretty_transaction_date.toLocalTime();
+        qDebug()<<pretty_transaction_date;
+
         //withdrawal = jsonArr.at(i).toObject()["withdrawal"].toDouble(); //O
         withdrawal =QString::number(jsonArr.at(i).toObject()["withdrawal"].toString().toDouble(), 'f', 2).toDouble();
         bank_account_number = jsonArr.at(i).toObject()["bank_account_number"].toString();
@@ -115,7 +119,7 @@ void Transactions::dbDataSlot(QNetworkReply *replyData)
         Transactions *objtransaction= new Transactions();
 
         //Add the data
-        objtransaction->setTransaction_date(transaction_date);
+        objtransaction->setTransaction_date(pretty_transaction_date.toString("dd.MM.yyyy hh:mm:ss"));
         objtransaction->setWithdrawal(withdrawal);
         objtransaction->setBank_account_number(bank_account_number);
         objtransaction->setCardnumber(cardnumber);
