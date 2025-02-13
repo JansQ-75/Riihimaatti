@@ -12,19 +12,18 @@ MainWindow::MainWindow(QWidget *parent)
     //NetworkManager
     MainWindowManager = new QNetworkAccessManager(this);
 
+    //Create objects
     objBalance = new Balance(this);
     objLogin = new Login(this);
     objTransactions = new Transactions(this);
     objWithdrawal = new Withdrawal(this);
     objcreditOrDebit = new creditOrDebit(this);
 
-
+    //Add objects to the stacked widget
     ui->stackedWidget->addWidget(objBalance);
     ui->stackedWidget->addWidget(objLogin);
     ui->stackedWidget->addWidget(objTransactions);
     ui->stackedWidget->addWidget(objWithdrawal);
-
-
 
     //Timer
     loginTimer = new QTimer(this);
@@ -49,9 +48,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, &MainWindow::sendCustomerData, objWithdrawal, &Withdrawal::CustomerDataSlot);
     connect(this, &MainWindow::sendCustomerData, objTransactions, &Transactions::CustomerDataSlot);
 
-
 }
-
 
 
 MainWindow::~MainWindow()
@@ -75,7 +72,6 @@ void MainWindow::getTokenSlot(QByteArray customersToken)
 
 void MainWindow::getCustomerData(int idcustomer)
 {
-
     // API request
     QString site_url=Environment::base_url()+"/bank_account/by-customerId/" + QString::number(idcustomer);
     QNetworkRequest request(site_url);
@@ -91,7 +87,6 @@ void MainWindow::getCustomerData(int idcustomer)
         this->receivedCustomerInfo(reply);
         reply->deleteLater();
     });
-
 
 }
 
@@ -125,13 +120,10 @@ void MainWindow::receivedCustomerInfo(QNetworkReply *reply)
 
         ui->labelHeyAndName->setText("Welcome " + fname + " " + lname);
 
-        // Signaalit asiakastietojen hakemiseksi omaan widgetiin.
-        /*
-            Keksikää omat signaalit vastaavalla tavalla
-        */
+        //Signal to send customer's data to widgets
         emit sendCustomerData(idbank_account, bank_account_number, account_type, balance, credit_limit, idcustomer, fname, lname, address, phone);
 
-        // delete later
+        //Delete later
         reply->deleteLater();
 
     } else {

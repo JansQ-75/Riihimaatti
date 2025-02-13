@@ -35,6 +35,9 @@
      <height>331</height>
     </rect>
    </property>
+   <property name="selectionMode">
+    <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
+   </property>
   </widget>
   <widget class="QPushButton" name="btnDown">
    <property name="geometry">

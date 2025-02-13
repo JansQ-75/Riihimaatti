@@ -1,7 +1,7 @@
 #ifndef TRANSACTIONS_H
 #define TRANSACTIONS_H
 
-#include <QWidget>
+#include<QWidget>
 #include<QtNetwork>
 #include<QNetworkAccessManager>
 #include<QJsonDocument>
@@ -16,8 +16,6 @@ class Transactions : public QWidget
 
 public:
     explicit Transactions(QWidget *parent = nullptr);
-    //Transactions(QString transaction_date, double withdrawal, QString bank_account_number, int cardnumber);
-    //Transactions();
     ~Transactions();
 
     //Set and get methods
@@ -38,14 +36,13 @@ private:
 
     QByteArray receivedToken;
 
-    //For http token
+    //For http
     QNetworkAccessManager *transactionManager;
     QNetworkReply *replyData;
     QByteArray response_data;
 
     //For object list
-    int i;
-QList<Transactions*> transactionsList;
+    QList<Transactions*> transactionsList;
     QString transaction_date;
     double withdrawal;
     QString bank_account_number;
@@ -58,8 +55,12 @@ public slots:
 private slots:
     void dbDataSlot(QNetworkReply *replyData);
 
+    void on_btnUp_clicked();
+    void on_btnDown_clicked();
+
 signals:
     void backMain();
+    void addObjectsSignal(QJsonArray jsonArr);
 };
 
 #endif // TRANSACTIONS_H

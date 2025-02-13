@@ -65,7 +65,6 @@ void Login::pressed_number()
         pincodeForLabel = pincodeForLabel + textFromButton;
         ui->labelPincode->setText(pincodeForLabel);
         iForLogin++;
-        pincodeTries++;
 
         /*
         if(){
