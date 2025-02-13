@@ -79,11 +79,11 @@ void Login::pressed_number()
 
     //If button was "clear"
     if(textFromButton == "Clear"){
-        if(iForLogin<6){
+        if(iForLogin<7){
             cardnumberForLabel = "";
             ui->labelCardnumber->setText(cardnumberForLabel);
             iForLogin=0;
-        }else if(iForLogin>5 && iForLogin<10){
+        }else if(iForLogin>6 && iForLogin<11){
             pincodeForLabel = "";
             ui->labelPincode->setText(pincodeForLabel);
             iForLogin=6;
@@ -99,7 +99,6 @@ void Login::pressed_number()
         pincodeForLabel = pincodeForLabel + textFromButton;
         ui->labelPincode->setText(pincodeForLabel);
         iForLogin++;
-        pincodeTries++;
 
         /*
         if(){

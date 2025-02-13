@@ -28,8 +28,6 @@ private:
     QString cardnumberForLabel;
     QString pincodeForLabel;
     int iForLogin =0;
-    int pincodeTries =0;
-    bool pincodeLocked=false;
 
     // TIMER
     QTimer *loginTimer;
