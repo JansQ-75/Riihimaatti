@@ -17,39 +17,56 @@ MainWindow::MainWindow(QWidget *parent)
     objLogin = new Login(this);
     objTransactions = new Transactions(this);
     objWithdrawal = new Withdrawal(this);
-    objcreditOrDebit = new creditOrDebit(this);
 
-    //Add objects to the stacked widget
+    // Timer
+    mainTimer = new QTimer(this);
+
+    // other screenviews
     ui->stackedWidget->addWidget(objBalance);
     ui->stackedWidget->addWidget(objLogin);
     ui->stackedWidget->addWidget(objTransactions);
     ui->stackedWidget->addWidget(objWithdrawal);
 
-    //Timer
-    loginTimer = new QTimer(this);
-    connect(loginTimer, &QTimer::timeout, this, &MainWindow::stopwatchForTenSeconds);
+    // make list of push buttons of stacked widget page 1
+    QWidget *page = ui->stackedWidget->widget(1);
+    QList<QPushButton*> menuButtons = page->findChildren<QPushButton*>();
+    //connect button' clicked() signals to slot for reseting timer if necessary
+    for (QPushButton* button : menuButtons) {
+        connect(button, &QPushButton::pressed, this, &MainWindow::onButtonPressed);
+    }
 
-    //Go back connet
+    // Timer connections
+    connect(mainTimer, &QTimer::timeout, this, &MainWindow::on_btnLogout_clicked);
+
+    //Go back -connect
     connect(objLogin,&Login::backMain, this, &MainWindow::goBackSlot);
     connect(objTransactions,&Transactions::backMain, this, &MainWindow::goBackSlot);
     connect(objWithdrawal,&Withdrawal::backMainSignal, this, &MainWindow::goBackSlot);
-    //connect(objBalance,&Balance::backMain, this, &MainWindow::goBackSlot);
+
+    // Logout connections
+    connect(objWithdrawal, &Withdrawal::logOutSignal, this, &MainWindow::on_btnLogout_clicked);
+    connect(objLogin, &Login::backStartScreen, this, &MainWindow::on_btnLogout_clicked);
 
 
     //Bring data
     connect(objLogin,&Login::sendToken, this, &MainWindow::getTokenSlot);
     connect(objLogin, &Login::RetrieveCustomerData, this, &MainWindow::getCustomerData);
+    connect(objLogin,&Login::sendDataToMain, this, &MainWindow::getDataFromLoginSlot);
+    connect(objLogin, &Login::sendDualInfoToMain, this, &MainWindow::getDualSelections);
 
-    //Send tokens
+    //Send...
+    //...tokens
     connect(this, &MainWindow::sendTokenToWidget, objWithdrawal, &Withdrawal::getToken);
     connect(this, &MainWindow::sendTokenToWidget, objTransactions, &Transactions::getToken);
 
-    //Send customer data
+    //...customer data
     connect(this, &MainWindow::sendCustomerData, objWithdrawal, &Withdrawal::CustomerDataSlot);
     connect(this, &MainWindow::sendCustomerData, objTransactions, &Transactions::CustomerDataSlot);
+      
+    // ...login data
+    connect(this, &MainWindow::sendLoginDataWithdrawal, objWithdrawal, &Withdrawal::LoginDataSlot);
 
 }
-
 
 MainWindow::~MainWindow()
 {
@@ -60,13 +77,14 @@ MainWindow::~MainWindow()
 void MainWindow::goBackSlot()
 {
     ui->stackedWidget->setCurrentIndex(1);
+    this->startMainTimer();
 }
 
 void MainWindow::getTokenSlot(QByteArray customersToken)
 {
-    token = customersToken;
-
-    //Send token to widgets
+    token = customersToken; // store token
+  
+    //Send token signal to widgets
     emit sendTokenToWidget(customersToken);
 }
 
@@ -94,7 +112,6 @@ void MainWindow::receivedCustomerInfo(QNetworkReply *reply)
 {
     if (reply->error() == QNetworkReply::NoError) {
         QByteArray response_data = reply->readAll();
-        //qDebug() << "Raw API Response: " << response_data;
 
         QJsonDocument jsonresponse = QJsonDocument::fromJson(response_data);
 
@@ -132,11 +149,54 @@ void MainWindow::receivedCustomerInfo(QNetworkReply *reply)
 
 }
 
+void MainWindow::getDualSelections(QString dualAccountType, int dualAccountId)
+{
+    // set selected values to variables in Withdrawal
+    objWithdrawal->setDualAccountType(dualAccountType);
+    objWithdrawal->setDualAccountId(dualAccountId);
+
+    // haetaan tilin tiedot kun on valittu credit tai debit
+
+    // API request
+    QString site_url=Environment::base_url()+"/bank_account/by-id/" + QString::number(dualAccountId);
+    QNetworkRequest request(site_url);
+
+    // Authorization header
+    request.setRawHeader(QByteArray("Authorization"), QByteArray("Bearer " + token));
+
+    // make GET request
+    QNetworkReply *reply = MainWindowManager->get(request);
+
+    // connect to slot for handling response
+    connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+        this->receivedCustomerInfo(reply);
+        reply->deleteLater();
+    });
+
+}
+
+void MainWindow::getDataFromLoginSlot(int idcustomer, int idcard, QString type, QString fname, QString lname)
+{
+    emit sendLoginDataWithdrawal(idcard, type); // send login data to withdrawal
+}
+
+void MainWindow::startMainTimer()
+{
+    mainTimer->start(30000); //start 30s timer
+}
+
+void MainWindow::stopWidgetTimers()
+{
+    objLogin->stopLoginTimer();     // stop inactivitytimer in Login
+    objWithdrawal->stopTimer();     // stop inactivitytimer in Withdrawal
+}
+
+
 //Go the login page
 void MainWindow::on_btnStart_clicked()
 {
-    //loginTimer->start(10000);
     ui->stackedWidget->setCurrentWidget(objLogin);
+    objLogin->startLoginTimer();
 }
 
 //Go the balance page
@@ -149,6 +209,7 @@ void MainWindow::on_btnBalance_clicked()
 void MainWindow::on_btnWithdrawal_clicked()
 {
     ui->stackedWidget->setCurrentWidget(objWithdrawal);
+    objWithdrawal->startTimer();
 }
 
 //Go the transaction page
@@ -160,17 +221,30 @@ void MainWindow::on_btnTransactions_clicked()
 //Go back button
 void MainWindow::on_btnBack_clicked()
 {
-    ui->stackedWidget->setCurrentIndex(1);
+    this->stopWidgetTimers();                     // stop inactivity timer in other widgets
+    this->startMainTimer();                       // restart inactivitytimer in main menu
+    ui->stackedWidget->setCurrentIndex(1);        // return to main menu
 }
 
 //Logout button --> go start page
 void MainWindow::on_btnLogout_clicked()
 {
-    ui->stackedWidget->setCurrentIndex(0);
+    ui->stackedWidget->setCurrentIndex(2); // logout text for customer
+    this->stopWidgetTimers();   // stop inactivity timer in other widgets
+    mainTimer->stop();          // stop inactivitytimer in main menu
+
+    qDebug()<<"Kirjauduttu ulos";
+
+    // after 5 seconds, return to start screen
+    QTimer::singleShot(5000, this, [this](){
+        ui->stackedWidget->setCurrentIndex(0);
+    });
+
 }
 
-void MainWindow::stopwatchForTenSeconds()
+void MainWindow::onButtonPressed()
 {
-    qDebug()<<"10 seconds passed in the stopwatch";
-    ui->stackedWidget->setCurrentIndex(0);
+    // stop inactivity timer in main menu
+    mainTimer->stop();
 }
+

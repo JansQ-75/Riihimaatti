@@ -37,13 +37,16 @@ private slots:
     void on_btnBack_clicked();
     void on_btnLogout_clicked();
 
-    void stopwatchForTenSeconds();
+    void onButtonPressed();             // in case of some button is pressed, stop inactivity timer
+
 
     void on_btnStart_clicked();
     void goBackSlot();
     void getTokenSlot(QByteArray customersToken);
     void getCustomerData(int idcustomer);
     void receivedCustomerInfo(QNetworkReply *reply);
+    void getDualSelections(QString, int);
+    void getDataFromLoginSlot(int idcustomer, int idcard, QString type, QString fname, QString lname);
 
 private:
     Ui::MainWindow *ui;
@@ -54,7 +57,10 @@ private:
     Withdrawal *objWithdrawal;
     creditOrDebit *objcreditOrDebit;
 
-    QTimer *loginTimer;
+    // timer for inactivity
+    void startMainTimer();
+    QTimer *mainTimer; // 30s timer, for main menu inactivity
+    void stopWidgetTimers(); // to stop timers in other widgets
 
     // store token
     QByteArray token;
@@ -82,6 +88,10 @@ private:
 signals:
     // to send Tokens to widgets
     void sendTokenToWidget(QByteArray customersToken);
+
+    // to get Login data to widgets
+    void sendLoginData(int idcustomer, QString type);
+    void sendLoginDataWithdrawal(int, QString);
 
     // to send customer data to widgets
     void sendCustomerData(int, QString, QString, double, double, int, QString, QString, QString, QString);

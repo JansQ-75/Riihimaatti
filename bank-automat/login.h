@@ -17,6 +17,8 @@ class Login : public QWidget
 public:
     explicit Login(QWidget *parent = nullptr);
     ~Login();
+    void startLoginTimer();
+    void stopLoginTimer();
 
 private:
     Ui::Login *ui;
@@ -27,15 +29,16 @@ private:
     QString pincodeForLabel;
     int iForLogin =0;
 
-
+    // TIMER
     QTimer *loginTimer;
+    void resetLoginTimer();
 
     //For http token
     QNetworkAccessManager *loginManager;
     QNetworkReply *reply;
     QByteArray response_data;
 
-    QByteArray customersToken;
+    QByteArray token;
 
     //For http credit or debit
     QNetworkAccessManager *creditOrDebitManager;
@@ -45,6 +48,7 @@ private:
     //For customer
     int idcustomer;
     int idcard;
+    int cardnumber;
     QString type;
     QString fname;
     QString lname;
@@ -53,13 +57,24 @@ private slots:
     void pressed_number();
     void pressed_login();
 
+    // Timer functions
+    void onAnyButtonPressed();  // in case of some button is pressed, stop inactivity timer
+    void handleTimeout();       // if timer runs downs, return to main menu
+
+
     void loginSlot(QNetworkReply *reply);
     void showDebitOrCreditSlot(QNetworkReply *replyCreditOrDebit);
 
+public slots:
+    void getDualCardInfo(QString dualAccountType, int dualAccountId);
+
 signals:
     void backMain();
+    void backStartScreen();
     void sendToken(QByteArray customersToken);
     void RetrieveCustomerData(int idcustomer);
+    void sendDualInfoToMain(QString, int);
+    void sendDataToMain(int idcustomer, int idcard, QString type, QString fname, QString lname);
 };
 
 #endif // LOGIN_H

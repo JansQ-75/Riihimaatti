@@ -8,6 +8,18 @@ Login::Login(QWidget *parent)
 {
     ui->setupUi(this);
 
+    // timer setup
+    loginTimer = new QTimer(this);
+    connect(loginTimer, &QTimer::timeout, this, &Login::handleTimeout);
+
+    // make list of push buttons
+    QList<QPushButton*> loginButtons = findChildren<QPushButton*>();
+    //connect button' clicked() signals to slot for reseting timer if necessary
+    for (QPushButton* button : loginButtons) {
+        connect(button, &QPushButton::pressed, this, &Login::onAnyButtonPressed);
+    }
+
+
     //connect: when button is pressed, go to the pressed number slot.
     connect(ui->btn1,&QPushButton::clicked, this, &Login::pressed_number);
     connect(ui->btn2,&QPushButton::clicked, this, &Login::pressed_number);
@@ -21,11 +33,33 @@ Login::Login(QWidget *parent)
     connect(ui->btn0,&QPushButton::clicked, this, &Login::pressed_number);
     connect(ui->btnClear,&QPushButton::clicked, this, &Login::pressed_number);
     connect(ui->btnLogin,&QPushButton::clicked, this, &Login::pressed_login);
+
+
+
+
 }
 
 Login::~Login()
 {
     delete ui;
+}
+
+void Login::startLoginTimer()
+{
+    // Go back to start screen if customer hasn't pressed any button within 10 seconds
+    loginTimer->start(10000); // start 10s timer
+}
+
+void Login::stopLoginTimer()
+{
+    //stop timer
+    loginTimer->stop();
+}
+
+void Login::resetLoginTimer()
+{
+    // restart loginTimer
+    loginTimer->start(10000); // start 10s timer
 }
 
 
@@ -94,6 +128,16 @@ void Login::pressed_login()
     reply=loginManager->post(request, QJsonDocument(jsonObj).toJson());
 }
 
+void Login::onAnyButtonPressed()
+{
+    this->resetLoginTimer();
+}
+
+void Login::handleTimeout()
+{
+    emit backStartScreen();
+}
+
 
 void Login::loginSlot(QNetworkReply *reply)
 {
@@ -134,6 +178,7 @@ void Login::loginSlot(QNetworkReply *reply)
             }
             QJsonObject jsonObj = jsonresponse.object();
             QByteArray customersToken =jsonresponse["token"].toString().toUtf8();
+            token = customersToken;
 
             QString site_url=Environment::base_url()+"/card/bycardnumberstart/"+cardnumberForLabel;
             QNetworkRequest request(site_url);
@@ -145,8 +190,12 @@ void Login::loginSlot(QNetworkReply *reply)
             // send Token to other widgets
             emit sendToken(customersToken);
 
+            // Stop login timer
+            loginTimer->stop();
+
             //Go next page
             emit backMain();
+
 
             ui->labelInfo->setText("");
         }
@@ -166,7 +215,6 @@ void Login::loginSlot(QNetworkReply *reply)
 void Login::showDebitOrCreditSlot(QNetworkReply *replyCreditOrDebit)
 {
     response_dataCreditOrDebit=replyCreditOrDebit->readAll();
-    //qDebug()<<response_dataCreditOrDebit;
 
     //Parse json
     QJsonDocument jsonresponse = QJsonDocument::fromJson(response_dataCreditOrDebit);
@@ -179,6 +227,7 @@ void Login::showDebitOrCreditSlot(QNetworkReply *replyCreditOrDebit)
 
     idcustomer = jsonObj2["idcustomer"].toInt();
     idcard = jsonObj2["idcard"].toInt();
+    cardnumber = jsonObj2["cardnumber"].toInt();
     type = jsonObj2["type"].toString();
     fname = jsonObj2["fname"].toString();
     lname = jsonObj2["lname"].toString();
@@ -187,15 +236,23 @@ void Login::showDebitOrCreditSlot(QNetworkReply *replyCreditOrDebit)
     if(type=="debit/credit"){
         //
         creditOrDebit *objCreditOrDebit = new creditOrDebit(this);
+        connect(objCreditOrDebit, &creditOrDebit::selectedAccount, this, &Login::getDualCardInfo);
+        objCreditOrDebit->setCustomersToken(token);
         objCreditOrDebit->setCustomerName(fname + " " + lname);
-        objCreditOrDebit->setCustomersToken(customersToken);
+        objCreditOrDebit->setCardnumber(cardnumber);
         objCreditOrDebit->open();
     }
 
     //Data to mainwindow
     emit RetrieveCustomerData(idcustomer);
+    emit sendDataToMain(idcustomer, idcard, type, fname, lname);
 
     //Delete later
     replyCreditOrDebit->deleteLater();
     creditOrDebitManager->deleteLater();
+}
+
+void Login::getDualCardInfo(QString dualAccountType, int dualAccountId)
+{
+    emit sendDualInfoToMain(dualAccountType, dualAccountId);
 }
