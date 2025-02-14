@@ -9,7 +9,6 @@ Transactions::Transactions(QWidget *parent)
     , ui(new Ui::Transactions)
 {
     ui->setupUi(this);
-    //Transactions *objtra= new Transactions();
 }
 
 
@@ -21,6 +20,9 @@ Transactions::~Transactions()
     qDeleteAll(transactionsList);
     transactionsList.clear();
 
+    //Delete the table view
+    delete table_model;
+    table_model=nullptr;
 }
 
 
@@ -108,7 +110,6 @@ void Transactions::dbDataSlot(QNetworkReply *replyData)
         //Edit data
         QDateTime pretty_transaction_date = QDateTime::fromString(transaction_date, Qt::ISODate);
         pretty_transaction_date = pretty_transaction_date.toLocalTime();
-        qDebug()<<pretty_transaction_date;
 
         //withdrawal = jsonArr.at(i).toObject()["withdrawal"].toDouble(); //O
         withdrawal =QString::number(jsonArr.at(i).toObject()["withdrawal"].toString().toDouble(), 'f', 2).toDouble();
@@ -128,11 +129,12 @@ void Transactions::dbDataSlot(QNetworkReply *replyData)
         transactionsList.append(std::move(objtransaction));
     }
 
-
-    QStandardItemModel *table_model = new QStandardItemModel(10,4); //10 rows, 4 columns
+    //Create a table model
+    table_model = new QStandardItemModel(10,4); //10 rows, 4 columns
 
     //Strech columns
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
 
     //Set headers for a table view
     table_model->setHeaderData(0, Qt::Horizontal, QObject::tr("Transaction date"));
@@ -142,7 +144,7 @@ void Transactions::dbDataSlot(QNetworkReply *replyData)
 
 
     //Add data to rows
-    for (int row = 0; row < 10; ++row) {
+    for (int row = startingIndex; row < lastindex; ++row) {
 
         QStandardItem *itemtransaction_date = new QStandardItem(transactionsList[row]->getTransaction_date());
         table_model->setItem(row, 0, itemtransaction_date);
@@ -156,9 +158,6 @@ void Transactions::dbDataSlot(QNetworkReply *replyData)
         QStandardItem *itemcardnumber = new QStandardItem(QString::number(transactionsList[row]->getCardnumber()));
         table_model->setItem(row, 3, itemcardnumber);
     }
-
-    //emit addObjectsSignal(QList<Transactions>transactionsList);
-
 
     ui->tableView->setModel(table_model);
 
@@ -169,35 +168,108 @@ void Transactions::dbDataSlot(QNetworkReply *replyData)
 void Transactions::on_btnUp_clicked()
 {
     //show newer
-
-
+    updateData(1);
 }
-
 
 void Transactions::on_btnDown_clicked()
 {
     //show older
-
+    updateData(2);
 }
 
-
-/*
-void Transactions::addObjectsSlot(QJsonArray jsonArr)
+void Transactions::updateData(int number)
 {
-    //Add data to rows
-    for (int row = 0; row < 10; ++row) {
-        QStandardItem *itemtransaction_date = new QStandardItem(transactionsList[row]->getTransaction_date());
-        table_model->setItem(row, 0, itemtransaction_date);
+    //Newer
+    if(number==1){
+        //Change values
+        startingIndex=startingIndex-10;
+        lastindex=lastindex-10;
 
-        QStandardItem *itemwithdrawal = new QStandardItem(QString::number(transactionsList[row]->getWithdrawal()));
-        table_model->setItem(row, 1, itemwithdrawal);
+        //Check the length of the list
+        if(-1<startingIndex){
+            //Add newer data
+            for (int row = startingIndex; row < lastindex; ++row) {
+                table_model->setHeaderData(runningIndex, Qt::Vertical, QString::number(row+1));
 
-        QStandardItem *itembank_account = new QStandardItem(transactionsList[row]->getBank_account_number());
-        table_model->setItem(row, 2, itembank_account);
+                QStandardItem *itemtransaction_date = new QStandardItem(transactionsList[row]->getTransaction_date());
+                table_model->setItem(runningIndex, 0, itemtransaction_date);
 
-        QStandardItem *itemcardnumber = new QStandardItem(QString::number(transactionsList[row]->getCardnumber()));
-        table_model->setItem(row, 3, itemcardnumber);
+                QStandardItem *itemwithdrawal = new QStandardItem(QString::number(transactionsList[row]->getWithdrawal()));
+                table_model->setItem(runningIndex, 1, itemwithdrawal);
+
+                QStandardItem *itembank_account = new QStandardItem(transactionsList[row]->getBank_account_number());
+                table_model->setItem(runningIndex, 2, itembank_account);
+
+                QStandardItem *itemcardnumber = new QStandardItem(QString::number(transactionsList[row]->getCardnumber()));
+                table_model->setItem(runningIndex, 3, itemcardnumber);
+
+                runningIndex++;
+            }
+            runningIndex=0;
+        } else {
+            qDebug()<<"At the start of the list";
+            startingIndex=0;
+            lastindex=10;
+        }
+    //Older
+    }else if (number==2){
+        //Change values
+        startingIndex=startingIndex+10;
+        lastindex=lastindex+10;
+
+        //Check the length of the list
+        if(transactionsList.size()>lastindex){
+            //Add older data
+            for (int row = startingIndex; row < lastindex; ++row) {
+                table_model->setHeaderData(runningIndex, Qt::Vertical, QString::number(row));
+
+                QStandardItem *itemtransaction_date = new QStandardItem(transactionsList[row]->getTransaction_date());
+                table_model->setItem(runningIndex, 0, itemtransaction_date);
+
+                QStandardItem *itemwithdrawal = new QStandardItem(QString::number(transactionsList[row]->getWithdrawal()));
+                table_model->setItem(runningIndex, 1, itemwithdrawal);
+
+                QStandardItem *itembank_account = new QStandardItem(transactionsList[row]->getBank_account_number());
+                table_model->setItem(runningIndex, 2, itembank_account);
+
+                QStandardItem *itemcardnumber = new QStandardItem(QString::number(transactionsList[row]->getCardnumber()));
+                table_model->setItem(runningIndex, 3, itemcardnumber);
+
+                runningIndex++;
+            }
+            runningIndex=0;
+        } else {
+            lastindex=transactionsList.size();
+            //table_model->clearItemData();
+
+            for (int row = startingIndex; row < lastindex; ++row) {
+                table_model->setHeaderData(runningIndex, Qt::Vertical, QString::number(row));
+
+                QStandardItem *itemtransaction_date = new QStandardItem(transactionsList[row]->getTransaction_date());
+                table_model->setItem(runningIndex, 0, itemtransaction_date);
+                qDebug()<<itemtransaction_date;
+
+                QStandardItem *itemwithdrawal = new QStandardItem(QString::number(transactionsList[row]->getWithdrawal()));
+                table_model->setItem(runningIndex, 1, itemwithdrawal);
+
+                QStandardItem *itembank_account = new QStandardItem(transactionsList[row]->getBank_account_number());
+                table_model->setItem(runningIndex, 2, itembank_account);
+
+                QStandardItem *itemcardnumber = new QStandardItem(QString::number(transactionsList[row]->getCardnumber()));
+                table_model->setItem(runningIndex, 3, itemcardnumber);
+
+                runningIndex++;
+            }
+            runningIndex=0;
+
+            //
+            qDebug()<<"The list is not long enough!";
+            //Values -->
+            startingIndex=startingIndex-10;
+            lastindex=lastindex-10;
+        }
+
+    }else{
+        qDebug()<<"error showing data int the table view";
     }
 }
-
-*/

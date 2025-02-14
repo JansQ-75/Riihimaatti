@@ -5,6 +5,7 @@
 #include<QtNetwork>
 #include<QNetworkAccessManager>
 #include<QJsonDocument>
+#include <QStandardItemModel>
 
 namespace Ui {
 class Transactions;
@@ -36,6 +37,12 @@ private:
 
     QByteArray receivedToken;
 
+    //For table model
+    QStandardItemModel *table_model;
+    int startingIndex = 0;
+    int lastindex = 10;
+    int runningIndex = 0;
+
     //For http
     QNetworkAccessManager *transactionManager;
     QNetworkReply *replyData;
@@ -47,6 +54,8 @@ private:
     double withdrawal;
     QString bank_account_number;
     int cardnumber;
+
+    void updateData(int);
 
 public slots:
     void getToken(QByteArray token);
