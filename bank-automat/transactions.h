@@ -42,6 +42,7 @@ private:
     int startingIndex = 0;
     int lastindex = 10;
     int runningIndex = 0;
+    int error=0;
 
     //For http
     QNetworkAccessManager *transactionManager;
