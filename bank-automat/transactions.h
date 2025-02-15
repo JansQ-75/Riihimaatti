@@ -48,19 +48,19 @@ private:
     QString bank_account_number;
     int cardnumber;
 
-public slots:
-    void getToken(QByteArray token);
-    void CustomerDataSlot(int, QString, QString, double, double, int, QString, QString, QString, QString);
+// public slots:
+//     void getToken(QByteArray token);
+//     void CustomerDataSlot(int, QString, QString, double, double, int, QString, QString, QString, QString);
 
-private slots:
-    void dbDataSlot(QNetworkReply *replyData);
+// private slots:
+//     void dbDataSlot(QNetworkReply *replyData);
 
-    void on_btnUp_clicked();
-    void on_btnDown_clicked();
+//     void on_btnUp_clicked();
+//     void on_btnDown_clicked();
 
-signals:
-    void backMain();
-    void addObjectsSignal(QJsonArray jsonArr);
-};
+// signals:
+//     void backMain();
+//     void addObjectsSignal(QJsonArray jsonArr);
+ };
 
 #endif // TRANSACTIONS_H
