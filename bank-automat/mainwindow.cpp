@@ -2,12 +2,19 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+//For a picture
+#include <QPixmap>
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    QPixmap logo("C:/Users/paula/Downloads/riihimaattilogopng.png");
+    ui->label_logoStart->setPixmap(logo);
+    ui->label_logoStart->setScaledContents(true);
 
     //NetworkManager
     MainWindowManager = new QNetworkAccessManager(this);
@@ -40,7 +47,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     //Go back -connect
     connect(objLogin,&Login::backMain, this, &MainWindow::goBackSlot);
-    //connect(objTransactions,&Transactions::backMain, this, &MainWindow::goBackSlot);
+    connect(objTransactions,&Transactions::backMain, this, &MainWindow::goBackSlot);
     connect(objWithdrawal,&Withdrawal::backMainSignal, this, &MainWindow::goBackSlot);
 
     // Logout connections
@@ -57,11 +64,11 @@ MainWindow::MainWindow(QWidget *parent)
     //Send...
     //...tokens
     connect(this, &MainWindow::sendTokenToWidget, objWithdrawal, &Withdrawal::getToken);
-    //connect(this, &MainWindow::sendTokenToWidget, objTransactions, &Transactions::getToken);
+    connect(this, &MainWindow::sendTokenToWidget, objTransactions, &Transactions::getToken);
 
     //...customer data
     connect(this, &MainWindow::sendCustomerData, objWithdrawal, &Withdrawal::CustomerDataSlot);
-    // connect(this, &MainWindow::sendCustomerData, objTransactions, &Transactions::CustomerDataSlot);
+    connect(this, &MainWindow::sendCustomerData, objTransactions, &Transactions::CustomerDataSlot);
       
     // ...login data
     connect(this, &MainWindow::sendLoginDataWithdrawal, objWithdrawal, &Withdrawal::LoginDataSlot);
