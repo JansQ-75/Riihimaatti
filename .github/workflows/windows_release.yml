@@ -86,7 +86,7 @@ jobs:
         uses: actions/upload-artifact@master
         with:
           name: ${{ env.ARTIFACT }}
-          path: ${{ runner.temp }}\bank-automat\release\${{ env.ARTIFACT }}
+          path: ${{ runner.temp }}\${{ env.ARTIFACT }}
           
       - name: Cache Qt installation
         uses: actions/cache@v3
