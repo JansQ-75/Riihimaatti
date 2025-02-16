@@ -2,13 +2,21 @@
 #include "transactions.h"
 #include "ui_transactions.h"
 
+//For a table view
 #include <QStandardItemModel>
+
+//For a picture
+//#include <QPixmap>
 
 Transactions::Transactions(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Transactions)
 {
     ui->setupUi(this);
+
+    //QPixmap logo("C:/Users/paula/Downloads/riihimaattilogopng.png");
+    //ui->label_logoTransaction->setPixmap(logo);
+    //ui->label_logoTransaction->setScaledContents(true);
 }
 
 
@@ -143,6 +151,15 @@ void Transactions::dbDataSlot(QNetworkReply *replyData)
 
 
     //Add data to rows
+
+    //Check length if shorte
+    if(transactionsList.size()<lastindex){
+        lastindex=transactionsList.size();
+
+        ui->btnDown->setEnabled(false);
+        ui->btnUp->setEnabled(false);
+
+    }
     for (int row = startingIndex; row < lastindex; ++row) {
 
         QStandardItem *itemtransaction_date = new QStandardItem(transactionsList[row]->getTransaction_date());
@@ -208,6 +225,7 @@ void Transactions::updateData(int number)
                 runningIndex++;
             }
             runningIndex=0;
+
         } else {
             qDebug()<<"No more newer values";
             startingIndex=0;
