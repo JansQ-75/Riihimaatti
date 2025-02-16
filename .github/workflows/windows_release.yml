@@ -17,7 +17,7 @@ defaults:
     shell: cmd
 
 env:
-  SOURCE_DIR:   ${{ github.workspace }}/bank-automat
+  SOURCE_DIR:   ${{ github.workspace }}\bank-automat
   QT_VERSION:   6.8.2
   ARTIFACT:     riihimaatti.zip
 
@@ -79,7 +79,7 @@ jobs:
       - name: (9) Zip build
         working-directory: ${{ runner.temp }}
         run:  |
-              7z a qt-planets-build.zip ${{ runner.temp }}\build\* -r
+              7z a ${{ env.ARTIFACT }} ${{ runner.temp }}\build\* -r
               
       - name: (10) Save build artifact
         uses: actions/upload-artifact@master
