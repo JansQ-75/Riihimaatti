@@ -70,17 +70,8 @@ jobs:
               qmake -r ${{ env.SOURCE_DIR }}\bank-automat.pro
               ${{ runner.temp }}\jom\jom -j2
               cd release
-              windeployqt --qmldir ${{ env.SOURCE_DIR }} riihimaatti.exe --pdb --release --compiler-runtime
-              copy C:\Windows\System32\concrt140.dll . 
-              copy C:\Windows\System32\vccorlib140.dll .
-              copy C:\Windows\System32\msvcp140.dll .
-              copy C:\Windows\System32\vcruntime140.dll .
+              windeployqt --release --qmldir ${{ env.SOURCE_DIR }} --compiler-runtime --no-translations --no-system-d3dcompiler riihimaatti.exe
               mv bank-automat.exe ${{ env.ARTIFACT }}
-      # incase we need to back this up
-      # - name: (7.1) Zip build
-      #   working-directory: ${{ runner.temp }}
-      #   run:  |
-      #         7z a ${{ env.ARTIFACT }} ${{ runner.temp }}\build\* -r
               
       - name: (8) Save build artifact
         uses: actions/upload-artifact@master
