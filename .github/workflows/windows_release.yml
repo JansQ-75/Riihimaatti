@@ -1,3 +1,5 @@
+# Modified from 
+# https://medium.com/@TomRvr/continuous-integration-for-a-qt-project-with-github-b19a33b39980
 name: Windows Release
 
 on:
@@ -15,8 +17,8 @@ defaults:
     shell: cmd
 
 env:
-  SOURCE_DIR:   ${{ github.workspace }}
-  QT_VERSION:   6.2.8
+  SOURCE_DIR:   ${{ github.workspace }}/bank-automat
+  QT_VERSION:   6.5.2
   ARTIFACT:     riihimaatti.zip
 
 jobs:
@@ -41,7 +43,6 @@ jobs:
           target:       desktop
           arch:         win64_msvc2022_64
           dir:          ${{ runner.temp }}
-          modules:      qtcharts qt3d
           setup-python: false
 
       - name: (4) Download JOM
