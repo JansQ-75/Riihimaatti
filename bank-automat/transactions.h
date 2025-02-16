@@ -70,7 +70,6 @@ private slots:
 
 signals:
     void backMain();
-    void addObjectsSignal(QJsonArray jsonArr);
 };
 
 #endif // TRANSACTIONS_H

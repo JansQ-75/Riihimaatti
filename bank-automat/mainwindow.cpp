@@ -40,7 +40,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     //Go back -connect
     connect(objLogin,&Login::backMain, this, &MainWindow::goBackSlot);
-    //connect(objTransactions,&Transactions::backMain, this, &MainWindow::goBackSlot);
+    connect(objTransactions,&Transactions::backMain, this, &MainWindow::goBackSlot);
     connect(objWithdrawal,&Withdrawal::backMainSignal, this, &MainWindow::goBackSlot);
 
     // Logout connections
@@ -57,11 +57,11 @@ MainWindow::MainWindow(QWidget *parent)
     //Send...
     //...tokens
     connect(this, &MainWindow::sendTokenToWidget, objWithdrawal, &Withdrawal::getToken);
-    //connect(this, &MainWindow::sendTokenToWidget, objTransactions, &Transactions::getToken);
+    connect(this, &MainWindow::sendTokenToWidget, objTransactions, &Transactions::getToken);
 
     //...customer data
     connect(this, &MainWindow::sendCustomerData, objWithdrawal, &Withdrawal::CustomerDataSlot);
-    // connect(this, &MainWindow::sendCustomerData, objTransactions, &Transactions::CustomerDataSlot);
+    connect(this, &MainWindow::sendCustomerData, objTransactions, &Transactions::CustomerDataSlot);
       
     // ...login data
     connect(this, &MainWindow::sendLoginDataWithdrawal, objWithdrawal, &Withdrawal::LoginDataSlot);
