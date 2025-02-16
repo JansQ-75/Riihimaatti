@@ -75,7 +75,7 @@ jobs:
               copy C:\Windows\System32\vccorlib140.dll .
               copy C:\Windows\System32\msvcp140.dll .
               copy C:\Windows\System32\vcruntime140.dll .
-              ls -la
+              mv release\bank-automat.exe release\${{ env.ARTIFACT }}
               
       # - name: (9) Zip build
       #   working-directory: ${{ runner.temp }}
@@ -86,7 +86,7 @@ jobs:
         uses: actions/upload-artifact@master
         with:
           name: ${{ env.ARTIFACT }}
-          path: ${{ runner.temp }}\build\${{ env.ARTIFACT }}
+          path: ${{ runner.temp }}\build\release\${{ env.ARTIFACT }}
           
       - name: Cache Qt installation
         uses: actions/cache@v3
