@@ -26,6 +26,9 @@ jobs:
     runs-on:  windows-latest
 
     steps:
+      - name: Check Available Qt Versions
+        run: python -m aqt list-qt windows desktop --arch win64_msvc2022_64
+
       - name: (1) Checkout repo
         uses: actions/checkout@v4
         with:
