@@ -129,12 +129,11 @@ void Transactions::dbDataSlot(QNetworkReply *replyData)
         transactionsList.append(std::move(objtransaction));
     }
 
-    //Create a table model
-    table_model = new QStandardItemModel(10,4); //10 rows, 4 columns
+    //Create a table model (10 rows, 4 columns)
+    table_model = new QStandardItemModel(10,4);
 
     //Strech columns
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-
 
     //Set headers for a table view
     table_model->setHeaderData(0, Qt::Horizontal, QObject::tr("Transaction date"));
@@ -188,7 +187,7 @@ void Transactions::updateData(int number)
         startingIndex=startingIndex-10;
         lastindex=lastindex-10;
 
-        //Check the length of the list
+        //Check the value of the startingIndex
         if(-1<startingIndex){
             //Add newer data
             for (int row = startingIndex; row < lastindex; ++row) {
@@ -210,23 +209,21 @@ void Transactions::updateData(int number)
             }
             runningIndex=0;
         } else {
-            qDebug()<<"At the start of the list";
+            qDebug()<<"No more newer values";
             startingIndex=0;
             lastindex=10;
         }
     //Older
-    }else if (number==2){
-
-
-        //Check the length of the list
+    }else if (number==2){   
         if(error==1){
-            qDebug()<<"No more values";
+            qDebug()<<"No more older values";
 
         }else{
             //Change values
             startingIndex=startingIndex+10;
             lastindex=lastindex+10;
 
+            //Check the length of the list
             if(transactionsList.size()>lastindex){
                 //Add older data
                 for (int row = startingIndex; row < lastindex; ++row) {
@@ -247,7 +244,7 @@ void Transactions::updateData(int number)
                     runningIndex++;
                 }
 
-            } else if (error==0){
+            } else {
                 int lastIndex2=lastindex;
                 lastindex=transactionsList.size();
 
@@ -290,7 +287,7 @@ void Transactions::updateData(int number)
                 }
                 error=1;
 
-                //Values -->
+                //Reset value
                 lastindex=lastIndex2;
 
                 qDebug()<<"The end of the list";
