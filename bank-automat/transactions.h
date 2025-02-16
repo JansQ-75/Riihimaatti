@@ -5,6 +5,7 @@
 #include<QtNetwork>
 #include<QNetworkAccessManager>
 #include<QJsonDocument>
+#include <QStandardItemModel>
 
 namespace Ui {
 class Transactions;
@@ -36,6 +37,13 @@ private:
 
     QByteArray receivedToken;
 
+    //For table model
+    QStandardItemModel *table_model;
+    int startingIndex = 0;
+    int lastindex = 10;
+    int runningIndex = 0;
+    int error=0;
+
     //For http
     QNetworkAccessManager *transactionManager;
     QNetworkReply *replyData;
@@ -48,19 +56,21 @@ private:
     QString bank_account_number;
     int cardnumber;
 
-// public slots:
-//     void getToken(QByteArray token);
-//     void CustomerDataSlot(int, QString, QString, double, double, int, QString, QString, QString, QString);
+    void updateData(int);
 
-// private slots:
-//     void dbDataSlot(QNetworkReply *replyData);
+public slots:
+    void getToken(QByteArray token);
+    void CustomerDataSlot(int, QString, QString, double, double, int, QString, QString, QString, QString);
 
-//     void on_btnUp_clicked();
-//     void on_btnDown_clicked();
+private slots:
+    void dbDataSlot(QNetworkReply *replyData);
 
-// signals:
-//     void backMain();
-//     void addObjectsSignal(QJsonArray jsonArr);
- };
+    void on_btnUp_clicked();
+    void on_btnDown_clicked();
+
+signals:
+    void backMain();
+    void addObjectsSignal(QJsonArray jsonArr);
+};
 
 #endif // TRANSACTIONS_H
