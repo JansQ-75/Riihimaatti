@@ -46,7 +46,7 @@ MainWindow::MainWindow(QWidget *parent)
     // Logout connections
     connect(objWithdrawal, &Withdrawal::logOutSignal, this, &MainWindow::on_btnLogout_clicked);
     connect(objLogin, &Login::backStartScreen, this, &MainWindow::on_btnLogout_clicked);
-
+    connect(objBalance, &Balance::backStartScreen, this, &MainWindow::on_btnLogout_clicked);
 
     //Bring data
     connect(objLogin,&Login::sendToken, this, &MainWindow::getTokenSlot);
@@ -62,10 +62,13 @@ MainWindow::MainWindow(QWidget *parent)
     //...customer data
     connect(this, &MainWindow::sendCustomerData, objWithdrawal, &Withdrawal::CustomerDataSlot);
     connect(this, &MainWindow::sendCustomerData, objTransactions, &Transactions::CustomerDataSlot);
+    connect(this, &MainWindow::sendCustomerData, objBalance, &Balance::CustomerDataSlot);
       
     // ...login data
     connect(this, &MainWindow::sendLoginDataWithdrawal, objWithdrawal, &Withdrawal::LoginDataSlot);
 
+    // for connecting balance to transactions
+    connect(objBalance, &Balance::openTransactions, this, &MainWindow::on_btnTransactions_clicked);
 }
 
 MainWindow::~MainWindow()
@@ -154,6 +157,7 @@ void MainWindow::getDualSelections(QString dualAccountType, int dualAccountId)
     // set selected values to variables in Withdrawal
     objWithdrawal->setDualAccountType(dualAccountType);
     objWithdrawal->setDualAccountId(dualAccountId);
+    objBalance->setDualAccountType(dualAccountType);
 
     // haetaan tilin tiedot kun on valittu credit tai debit
 
@@ -178,6 +182,7 @@ void MainWindow::getDualSelections(QString dualAccountType, int dualAccountId)
 void MainWindow::getDataFromLoginSlot(int idcustomer, int idcard, QString type, QString fname, QString lname)
 {
     emit sendLoginDataWithdrawal(idcard, type); // send login data to withdrawal
+    objBalance->setCardtype(type);
 }
 
 void MainWindow::startMainTimer()
@@ -189,8 +194,8 @@ void MainWindow::stopWidgetTimers()
 {
     objLogin->stopLoginTimer();     // stop inactivitytimer in Login
     objWithdrawal->stopTimer();     // stop inactivitytimer in Withdrawal
+    objBalance->stopBalanceTimer(); // in Balance
 }
-
 
 //Go the login page
 void MainWindow::on_btnStart_clicked()
@@ -203,6 +208,7 @@ void MainWindow::on_btnStart_clicked()
 void MainWindow::on_btnBalance_clicked()
 {
     ui->stackedWidget->setCurrentWidget(objBalance);
+    objBalance->startBalanceTimer();
 }
 
 //Go the withdrawal page
