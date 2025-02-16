@@ -36,16 +36,17 @@ void OtherAmountWithdrawal::pressed_number()
     */
     QPushButton *pressedButton=qobject_cast<QPushButton*>(sender());  //this makes sure it was really push button who sent the signal
     QString textFromButton=pressedButton->text();
-    //if we want it to int add .toInt()
+
 
 
     //If button was "clear"
     if(textFromButton == "Clear"){
-        //clears written amount
-        ui->textAmount->setText("");
+        amountForLineEdit.clear();      //clear variable
+        ui->textAmount->setText("");    //clears written amount
+        return;
     } else {
         // add numbers to lineEdit
-        amountForLineEdit = amountForLineEdit + textFromButton;
+        amountForLineEdit += textFromButton;
         //Numbers to label
         ui->textAmount->setText(amountForLineEdit);
     }
@@ -55,6 +56,18 @@ void OtherAmountWithdrawal::pressed_number()
 
 void OtherAmountWithdrawal::pressed_OK()
 {
-    emit withdrawOtherAmount(amountForLineEdit);
-    this->close();
+    int amount = amountForLineEdit.toInt(); // store selected amount as integer
+
+    // check if selected amount is divisible by ten (smallest bill is 10€) and bigger than 0
+    if ((amount%10)==0 && amount > 0) {
+        emit withdrawOtherAmount(amountForLineEdit);
+        amountForLineEdit.clear();  //clear variable
+        ui->textAmount->clear();    //clears written amount
+        this->close();
+    } else {
+        ui->label_errorText->setText("The amount can not be\nwithdrawn from account.\n\nPlease select a new amount.\n\nRemember that the smallest\n bill in automat is 10€");
+        ui->textAmount->clear();    //clears written amount
+        amountForLineEdit.clear();  //clear variable
+    }
+
 }
