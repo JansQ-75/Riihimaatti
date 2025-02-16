@@ -6,7 +6,7 @@
 #include <QStandardItemModel>
 
 //For a picture
-#include <QPixmap>
+//#include <QPixmap>
 
 Transactions::Transactions(QWidget *parent)
     : QWidget(parent)
@@ -14,9 +14,9 @@ Transactions::Transactions(QWidget *parent)
 {
     ui->setupUi(this);
 
-    QPixmap logo("C:/Users/paula/Downloads/riihimaattilogopng.png");
-    ui->label_logoTransaction->setPixmap(logo);
-    ui->label_logoTransaction->setScaledContents(true);
+    //QPixmap logo("C:/Users/paula/Downloads/riihimaattilogopng.png");
+    //ui->label_logoTransaction->setPixmap(logo);
+    //ui->label_logoTransaction->setScaledContents(true);
 }
 
 
@@ -152,7 +152,7 @@ void Transactions::dbDataSlot(QNetworkReply *replyData)
 
     //Add data to rows
 
-    //Check length
+    //Check length if shorte
     if(transactionsList.size()<lastindex){
         lastindex=transactionsList.size();
 

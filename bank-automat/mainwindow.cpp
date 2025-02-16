@@ -2,19 +2,12 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-//For a picture
-#include <QPixmap>
-
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-    QPixmap logo("C:/Users/paula/Downloads/riihimaattilogopng.png");
-    ui->label_logoStart->setPixmap(logo);
-    ui->label_logoStart->setScaledContents(true);
 
     //NetworkManager
     MainWindowManager = new QNetworkAccessManager(this);
