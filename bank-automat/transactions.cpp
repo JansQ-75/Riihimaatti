@@ -25,7 +25,7 @@ Transactions::~Transactions()
     delete ui;
 
     //Delete the list
-    qDeleteAll(transactionsList);
+    //qDeleteAll(transactionsList); // crashaa koska yrittää poistaa objektia kahdesti.
     transactionsList.clear();
 
     //Delete the table view
@@ -138,7 +138,12 @@ void Transactions::dbDataSlot(QNetworkReply *replyData)
     }
 
     //Create a table model (10 rows, 4 columns)
-    table_model = new QStandardItemModel(10,4);
+    if (table_model) {
+        delete table_model;
+    }
+    table_model = new QStandardItemModel(10, 4);
+
+    //table_model = new QStandardItemModel(10,4);
 
     //Strech columns
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);

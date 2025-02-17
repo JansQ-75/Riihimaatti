@@ -12,6 +12,14 @@ Balance::Balance(QWidget *parent)
     // timer setup
     BalanceTimer = new QTimer(this);
     connect(BalanceTimer, &QTimer::timeout, this, &Balance::handleTimeout);
+
+    // make list of push buttons
+    QList<QPushButton*> buttons = findChildren<QPushButton*>();
+    //connect button' clicked() signals to slot for reseting timer if necessary
+    for (QPushButton* button : buttons) {
+        connect(button, &QPushButton::pressed, this, &::Balance::anyBtnPressed);
+    }
+
 }
 
 Balance::~Balance()
@@ -31,12 +39,6 @@ void Balance::stopBalanceTimer()
     BalanceTimer->stop();
 }
 
-void Balance::resetBalanceTimer()
-{
-    // restart timer
-    BalanceTimer->start(10000);
-}
-
 void Balance::handleTimeout()
 {
     emit backStartScreen();
@@ -44,7 +46,7 @@ void Balance::handleTimeout()
 
 void Balance::anyBtnPressed()
 {
-    this->resetBalanceTimer();
+    this->stopBalanceTimer();
 }
 
 void Balance::setDualAccountType( const QString &newDualAccountType)
@@ -73,16 +75,16 @@ void Balance::CustomerDataSlot(int idbank_account, QString bank_account_number, 
     ui->labelCustomer->setText("CUSTOMER:\n" + fname + " " + lname + "\n" + address + "\n" + phone);
 
     // conditions for setting account type
-    // if (cardtype== "debit/credit") {
-    //     // if dual card, use selected value
-    //     accountType = dualAccountType;
-    // } else {
-    //     // in case of debit or credit card, use values provided by login
-    //     accountType = account_type;
-    // }
+    if (cardtype == "debit/credit") {
+        // in case of dual card, use values customer has selected
+        accountType = dualAccountType;
+    } else {
+        // in case of debit or credit card, use values provided by login
+        accountType = account_type;
+    }
 
     // different print depending on account type (debit or credit) show balance
-     if (account_type == "debit") {
+     if (accountType == "debit") {
             ui->labelBalance->setText("DEBIT ACCOUNT:\nBalance: " + QString::number(balance) + " €");
         } else {
             ui->labelBalance->setText("CREDIT ACCOUNT:\nAvailable balance: " + QString::number(credit_limit-balance) + " €\nCredit limit: " + QString::number(credit_limit) + " €");
