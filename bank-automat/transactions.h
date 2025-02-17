@@ -32,8 +32,18 @@ public:
     int getCardnumber() const;
     void setCardnumber(int newCardnumber);
 
+    void setDualAccountId(int newDualAccountId); // set account id once customer has selected debit or credit
+
+    void setCardType(const QString &newCardType); // set card type for conditions regarding dual card
+
+    void startTimer(); // timer function for inactivity
+    void stopTimer(); // stop timer function
+
 private:
     Ui::Transactions *ui;
+
+    //timer for inactivity
+    QTimer *inactivityTimer;
 
     QByteArray receivedToken;
 
@@ -56,6 +66,10 @@ private:
     QString bank_account_number;
     int cardnumber;
 
+    // dual card data
+    int dualAccountId;
+    QString cardType;
+
     void updateData(int);
 
 public slots:
@@ -68,8 +82,13 @@ private slots:
     void on_btnUp_clicked();
     void on_btnDown_clicked();
 
+    void onButtonPressed();             // in case of some button is pressed, stop inactivity timer
+    void handleTimeout();               // if timer runs downs, return to main menu
+
+
 signals:
     void backMain();
+    void logoutSignal();    // for logging out after inactivity for 10s
 };
 
 #endif // TRANSACTIONS_H

@@ -45,6 +45,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Logout connections
     connect(objWithdrawal, &Withdrawal::logOutSignal, this, &MainWindow::on_btnLogout_clicked);
+    connect(objTransactions, &Transactions::logoutSignal, this, &MainWindow::on_btnLogout_clicked);
     connect(objLogin, &Login::backStartScreen, this, &MainWindow::on_btnLogout_clicked);
 
 
@@ -155,6 +156,9 @@ void MainWindow::getDualSelections(QString dualAccountType, int dualAccountId)
     objWithdrawal->setDualAccountType(dualAccountType);
     objWithdrawal->setDualAccountId(dualAccountId);
 
+    // set selected values to variables in Transaction
+    objTransactions->setDualAccountId(dualAccountId);
+
     // haetaan tilin tiedot kun on valittu credit tai debit
 
     // API request
@@ -178,6 +182,7 @@ void MainWindow::getDualSelections(QString dualAccountType, int dualAccountId)
 void MainWindow::getDataFromLoginSlot(int idcustomer, int idcard, QString type, QString fname, QString lname)
 {
     emit sendLoginDataWithdrawal(idcard, type); // send login data to withdrawal
+    objTransactions->setCardType(type); // set card type in Transaction
 }
 
 void MainWindow::startMainTimer()
@@ -189,6 +194,7 @@ void MainWindow::stopWidgetTimers()
 {
     objLogin->stopLoginTimer();     // stop inactivitytimer in Login
     objWithdrawal->stopTimer();     // stop inactivitytimer in Withdrawal
+    objTransactions->stopTimer();   // stop inactivitytimer in Transactions
 }
 
 
@@ -216,6 +222,7 @@ void MainWindow::on_btnWithdrawal_clicked()
 void MainWindow::on_btnTransactions_clicked()
 {
     ui->stackedWidget->setCurrentWidget(objTransactions);
+    objTransactions->startTimer();
 }
 
 //Go back button

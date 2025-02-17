@@ -34,9 +34,6 @@ Login::Login(QWidget *parent)
     connect(ui->btnClear,&QPushButton::clicked, this, &Login::pressed_number);
     connect(ui->btnLogin,&QPushButton::clicked, this, &Login::pressed_login);
 
-
-
-
 }
 
 Login::~Login()
@@ -100,12 +97,6 @@ void Login::pressed_number()
         ui->labelPincode->setText(pincodeForLabel);
         iForLogin++;
 
-        /*
-        if(){
-            loginTimer->stop();
-
-        }
-       */
     }
 }
 
