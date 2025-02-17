@@ -39,7 +39,6 @@ private slots:
 
     void onButtonPressed();             // in case of some button is pressed, stop inactivity timer
 
-
     void on_btnStart_clicked();
     void goBackSlot();
     void getTokenSlot(QByteArray customersToken);
