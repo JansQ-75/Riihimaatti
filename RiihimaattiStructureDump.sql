@@ -37,16 +37,6 @@ CREATE TABLE `access_rights` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `access_rights`
---
-
-LOCK TABLES `access_rights` WRITE;
-/*!40000 ALTER TABLE `access_rights` DISABLE KEYS */;
-INSERT INTO `access_rights` VALUES (1,1,1),(2,2,2),(3,3,3),(4,3,4),(5,4,5),(6,5,6),(7,6,7);
-/*!40000 ALTER TABLE `access_rights` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `bank_account`
 --
 
@@ -66,16 +56,6 @@ CREATE TABLE `bank_account` (
   CONSTRAINT `fk_account2customer` FOREIGN KEY (`idcustomer`) REFERENCES `customer` (`idcustomer`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `bank_account`
---
-
-LOCK TABLES `bank_account` WRITE;
-/*!40000 ALTER TABLE `bank_account` DISABLE KEYS */;
-INSERT INTO `bank_account` VALUES (1,'FI11221122','debit',1677.12,0.00,1),(2,'FI44556644','credit',640.00,3000.00,2),(3,'FI66778899','debit',2080.00,0.00,3),(4,'FI55885588','credit',310.00,1000.00,3),(5,'FI45645645','credit',0.00,3000.00,4),(6,'FI44664466','debit',6500.00,0.00,5),(7,'FI9512648','credit',0.00,6000.00,2);
-/*!40000 ALTER TABLE `bank_account` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `card`
@@ -99,16 +79,6 @@ CREATE TABLE `card` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `card`
---
-
-LOCK TABLES `card` WRITE;
-/*!40000 ALTER TABLE `card` DISABLE KEYS */;
-INSERT INTO `card` VALUES (0,0,'$2a$10$Ua1Dr2Cfau8bfv/Q1CdmTeSK/fLYy3m6wN/W5MYvu6rSioVfaVmjm',0,'debit',0),(1,664488,'$2a$10$LJcQBX7QLOmg03lSpoWQhu63N2ADU.s7ozZnj/qtnvIzU83FpyuDa',1,'debit',0),(2,254488,'$2a$10$76wov5DTNrlJNzLPm3sYGepidoOmFitNgiYdv7.bWgJevGxSlSKLi',2,'credit',0),(3,559188,'$2a$10$O8.er0h8bg4NY.S8XWrr5uMT/.5v1Zht7dbqrwrGxQLwyp6kEflIG',3,'debit/credit',0),(4,548988,'$2a$10$MbB3Ki6PvNx1rBqqo.PE7ukrQYMvNf5H5kNF3Uzs6Pb02MQgqcvXO',4,'credit',0),(5,656565,'$2a$10$0r0CWLvTK08HKlguCu2RtOpXnTBdqb2x4v/zs.fkYG9fwVjGWufam',5,'debit',0),(6,787878,'$2a$10$d5osoRsshO6JVibQxxehwe/E8ymXkZi.kCcsvTsXx.TAtpWG17UyG',6,'debit',0);
-/*!40000 ALTER TABLE `card` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `customer`
 --
 
@@ -121,19 +91,10 @@ CREATE TABLE `customer` (
   `lname` varchar(45) NOT NULL,
   `address` varchar(45) NOT NULL,
   `phone` varchar(15) NOT NULL,
+  `picture` varchar(30) DEFAULT 'riihimaattilogo.jpg',
   PRIMARY KEY (`idcustomer`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `customer`
---
-
-LOCK TABLES `customer` WRITE;
-/*!40000 ALTER TABLE `customer` DISABLE KEYS */;
-INSERT INTO `customer` VALUES (0,'Super','Admin','Tiedonvaltatie 1','020202'),(1,'Liisa','Lamminen','Kotikatu 5','0405678673'),(2,'Tiina','Tamminen','Hetkosenkatu 5','040055673'),(3,'Teuvo','Tepponen','Tavistie 15','0507845123'),(4,'Leo','Keihäs','Koivukatu 2','0401245673'),(5,'Hemmo','Kuussalo','Tähtitie 6 B1','0407788673'),(6,'Henna','Himanen','Vilkaskatu 45','05012478673'),(7,'Pekka','Eversti','Uppotukintie 6','0401245787');
-/*!40000 ALTER TABLE `customer` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `transaction`
@@ -153,18 +114,8 @@ CREATE TABLE `transaction` (
   KEY `fk_transaction2card_idx` (`idcard`),
   CONSTRAINT `fk_transaction2account` FOREIGN KEY (`idbank_account`) REFERENCES `bank_account` (`idbank_account`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `fk_transaction2card` FOREIGN KEY (`idcard`) REFERENCES `card` (`idcard`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=108 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `transaction`
---
-
-LOCK TABLES `transaction` WRITE;
-/*!40000 ALTER TABLE `transaction` DISABLE KEYS */;
-INSERT INTO `transaction` VALUES (1,'2025-01-15 18:34:18',20.00,1,NULL),(2,'2025-01-21 08:30:13',20.00,1,1),(3,'2025-01-21 08:31:12',30.00,3,3),(4,'2025-01-21 08:32:12',50.00,3,NULL),(5,'2025-01-21 08:33:09',50.00,3,NULL),(6,'2025-01-21 08:38:12',60.00,3,3),(7,'2025-01-21 09:15:48',40.00,1,1),(8,'2025-01-21 09:24:40',150.00,2,2),(9,'2025-01-21 09:26:57',600.00,1,1),(10,'2025-01-21 09:26:57',150.00,2,2),(11,'2025-01-21 09:27:49',300.00,2,2),(12,'2025-01-28 11:27:12',30.00,2,2),(13,'2025-01-28 11:30:31',30.00,1,1),(14,'2025-01-28 22:13:14',10.00,1,1),(15,'2025-01-28 22:15:35',50.00,1,1),(16,'2025-01-28 22:21:55',30.00,3,3),(17,'2025-01-28 22:25:34',10.00,2,2),(18,'2025-01-29 17:49:01',20.00,1,1),(19,'2025-01-29 18:27:01',10.00,3,3),(20,'2025-01-29 18:37:04',10.00,4,3),(21,'2025-01-30 15:23:32',30.00,4,3),(22,'2025-01-30 21:45:41',40.00,1,1),(23,'2025-01-30 21:46:38',30.00,4,3),(24,'2025-01-30 21:46:38',50.00,1,1),(25,'2025-01-30 21:46:50',50.00,1,1),(26,'2025-01-30 21:47:00',100.00,1,1),(27,'2025-01-30 21:47:08',10.00,1,1),(28,'2025-01-30 21:47:18',60.00,1,1),(29,'2025-01-30 21:50:20',30.00,4,3),(30,'2025-01-30 21:50:20',60.00,1,1),(31,'2025-01-30 21:50:55',30.00,4,3),(32,'2025-01-30 21:50:55',60.00,1,1),(33,'2025-01-30 21:51:05',30.00,4,3),(34,'2025-01-30 21:51:05',60.00,1,1),(35,'2025-01-30 21:59:48',30.00,4,3),(36,'2025-01-30 21:59:48',60.00,1,1),(37,'2025-01-30 22:02:34',30.00,4,3),(38,'2025-01-30 22:02:34',60.00,1,1),(39,'2025-01-30 22:03:33',30.00,4,3),(40,'2025-01-30 22:03:33',60.00,1,1),(41,'2025-02-03 10:30:45',40.00,1,1),(42,'2025-02-03 10:35:57',50.00,1,1),(43,'2025-02-03 10:46:46',30.00,4,3),(44,'2025-02-03 10:46:46',60.00,1,1),(45,'2025-02-03 10:46:46',50.00,1,1),(46,'2025-02-03 10:50:07',30.00,4,3),(47,'2025-02-03 10:50:07',60.00,1,1),(48,'2025-02-03 10:50:07',50.00,1,1),(49,'2025-02-03 11:03:14',20.00,1,1);
-/*!40000 ALTER TABLE `transaction` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Dumping routines for database 'riihimaattidb'
@@ -286,4 +237,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-02-04 14:32:34
+-- Dump completed on 2025-02-17 18:08:24
