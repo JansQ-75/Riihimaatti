@@ -14,6 +14,19 @@ Transactions::Transactions(QWidget *parent)
 {
     ui->setupUi(this);
 
+    // Timer setup
+    inactivityTimer = new QTimer(this);
+
+    // connect signal to timeout (=returning main menu)
+    connect(inactivityTimer, &QTimer::timeout, this, &Transactions::handleTimeout);
+
+    // make list of push buttons
+    QList<QPushButton*> buttons = findChildren<QPushButton*>();
+    //connect button' clicked() signals to slot for reseting timer if necessary
+    for (QPushButton* button : buttons) {
+        connect(button, &QPushButton::pressed, this, &Transactions::onButtonPressed);
+    }
+
     //QPixmap logo("C:/Users/paula/Downloads/riihimaattilogopng.png");
     //ui->label_logoTransaction->setPixmap(logo);
     //ui->label_logoTransaction->setScaledContents(true);
@@ -74,6 +87,27 @@ void Transactions::setCardnumber(int newCardnumber)
     cardnumber = newCardnumber;
 }
 
+void Transactions::setDualAccountId(int newDualAccountId)
+{
+    dualAccountId = newDualAccountId;
+}
+
+void Transactions::setCardType(const QString &newCardType)
+{
+    cardType = newCardType;
+}
+
+void Transactions::startTimer()
+{
+    // logout if customer hasn't pressed any button within 10 seconds
+    inactivityTimer->start(10000); //start timer
+}
+
+void Transactions::stopTimer()
+{
+    inactivityTimer->stop();
+}
+
 void Transactions::getToken(QByteArray token)
 {
     receivedToken = token; //ilman bearer
@@ -81,11 +115,21 @@ void Transactions::getToken(QByteArray token)
 
 void Transactions::CustomerDataSlot(int idbank_account, QString bank_account_number, QString account_type, double balance, double credit_limit, int idcustomer, QString fname, QString lname, QString address, QString phone)
 {
+    int bankAccountId;
     //Customer data to label
     ui->labelCustomer->setText("CUSTOMER:\n" + fname + " " + lname + "\n" + address + "\n" + phone);
 
+    // conditions for setting account type
+    if (cardType == "debit/credit") {
+        // in case of dual card, use value customer has selected
+        bankAccountId = dualAccountId;
+    } else {
+        // in case of debit or credit card, use value provided by login
+        bankAccountId = idbank_account;
+    }
+
     //GET TRANSACTION DATA
-    QString site_url=Environment::base_url()+"/transactions/" + QString::number(idbank_account);
+    QString site_url=Environment::base_url()+"/transactions/" + QString::number(bankAccountId);
     QNetworkRequest request(site_url);
     request.setRawHeader(QByteArray("Authorization"), QByteArray("Bearer " + receivedToken));
     transactionManager = new QNetworkAccessManager(this);
@@ -196,6 +240,18 @@ void Transactions::on_btnDown_clicked()
 {
     //show older
     updateData(2);
+}
+
+void Transactions::onButtonPressed()
+{
+    // restart inactivityTimer
+    inactivityTimer->start(10000); // start 10s timer
+}
+
+void Transactions::handleTimeout()
+{
+    // Logout after inactivity for 10 seconds
+    emit logoutSignal();
 }
 
 void Transactions::updateData(int number)

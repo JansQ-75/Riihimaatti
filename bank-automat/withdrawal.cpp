@@ -96,7 +96,7 @@ void Withdrawal::makeWithdrawal(QString amount)
 
 void Withdrawal::startTimer()
 {
-    // Go back to main menu if customer hasn't pressed any button within 10 seconds
+    // logout if customer hasn't pressed any button within 10 seconds
     inactivityTimer->start(10000); //start timer
 }
 
@@ -112,7 +112,6 @@ void Withdrawal::getToken(QByteArray token)
 
 void Withdrawal::CustomerDataSlot(int idbank_account, QString bank_account_number, QString account_type, double balance, double credit_limit, int idcustomer, QString fname, QString lname, QString address, QString phone)
 {
-
     // print customer information
     ui->label_ownerName->setText("CUSTOMER:\n" + fname + " " + lname + "\n" + address + "\n" + phone);
 
