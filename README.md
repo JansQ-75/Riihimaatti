@@ -24,7 +24,7 @@ The aim of this project was to develop an ATM application, using the knowledge t
 
  :star: The purpose of this project was to create an ATM application which combines SQL database, REST API, Linux server and Qt Creator.
 
- :star: Our goal was to become confident users of technologies, which we used in the project.
+ :star: The aim was to become confident users of technologies, which were used in the project.
 
  :star: We aimed to use the knowledge, which we learnt in previous courses at the Oulu University of Applied Sciences, and apply our knowledge. Moreover, we wanted to expand our knowledge in given fields and technologies. 
 
@@ -59,7 +59,7 @@ For this project we created SQL database with MySQLWorkbench
 
 **Design for our database:**
 - Customer
-    - Columns: firstname, lastname, address, phonenumber
+    - Columns: firstname, lastname, address, phonenumber, profile picture
     - Customer can have multiple accounts and/or cards
 - Card
     - Columns: cardnumber, pin-number, card type, locked status and foreign key for customer
@@ -83,6 +83,7 @@ For this project we created SQL database with MySQLWorkbench
 
 **Logo:** 
 <img src="riihimaattilogo.jpg">
+
 Also available on .png for easy use.
 
 ---

@@ -182,9 +182,6 @@ void Transactions::dbDataSlot(QNetworkReply *replyData)
     }
 
     //Create a table model (10 rows, 4 columns)
-    if (table_model) {
-        delete table_model;
-    }
     table_model = new QStandardItemModel(10, 4);
 
     //table_model = new QStandardItemModel(10,4);
