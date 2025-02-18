@@ -12,6 +12,10 @@ MainWindow::MainWindow(QWidget *parent)
     //NetworkManager
     MainWindowManager = new QNetworkAccessManager(this);
 
+    //Hide buttons
+    ui->btnBack->setVisible(false);
+    ui->btnLogout->setVisible(false);
+
     //Create objects
     objBalance = new Balance(this);
     objLogin = new Login(this);
@@ -94,6 +98,10 @@ void MainWindow::getTokenSlot(QByteArray customersToken)
 
 void MainWindow::getCustomerData(int idcustomer)
 {
+    //Show buttons
+    ui->btnBack->setVisible(true);
+    ui->btnLogout->setVisible(true);
+
     // API request
     QString site_url=Environment::base_url()+"/bank_account/by-customerId/" + QString::number(idcustomer);
     QNetworkRequest request(site_url);
@@ -245,6 +253,10 @@ void MainWindow::on_btnLogout_clicked()
     ui->stackedWidget->setCurrentIndex(2); // logout text for customer
     this->stopWidgetTimers();   // stop inactivity timer in other widgets
     mainTimer->stop();          // stop inactivitytimer in main menu
+
+    //Hide buttons
+    ui->btnBack->setVisible(false);
+    ui->btnLogout->setVisible(false);
 
     qDebug()<<"Kirjauduttu ulos";
 

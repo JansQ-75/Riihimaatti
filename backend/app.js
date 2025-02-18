@@ -4,6 +4,9 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const { authenticateToken } = require('./authentication');
 
+const multer  = require('multer');
+const loadedLogo = multer({dest: 'public/logo/'}); //Set a destination folder
+
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const transactionsRouter = require('./routes/transactions');
