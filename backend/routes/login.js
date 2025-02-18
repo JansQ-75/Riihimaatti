@@ -48,7 +48,7 @@ router.post('/', function (req, res) {
             locked_status: dbResult[0].locked_status + 1,
           },
           (dbError, dbResult) => {
-            return res.sendStatus(401);
+            return res.send(401);
           },
         );
       }

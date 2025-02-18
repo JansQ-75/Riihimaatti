@@ -13,6 +13,7 @@ const connection = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 1,
+  ssl: {},
 });
 
 module.exports = connection;

@@ -1,0 +1,86 @@
+# Modified from 
+# https://medium.com/@TomRvr/continuous-integration-for-a-qt-project-with-github-b19a33b39980
+name: Windows Release
+
+on:
+  push:
+    branches: ['master', "ci/cd"]
+    tags:
+      - 'v*'
+  pull_request:
+    branches:
+    - 'master'
+    - 'continuous-integration'
+
+defaults:
+  run:
+    shell: cmd
+
+env:
+  SOURCE_DIR:   ${{ github.workspace }}\bank-automat
+  QT_VERSION:   6.8.2
+  ARTIFACT:     riihimaatti.exe
+
+jobs:
+  build:
+    runs-on:  windows-latest
+
+    steps:
+      - name: (1) Checkout repo
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: (2) Get all tags for correct version determination
+        working-directory:  ${{ github.workspace }}
+        run: |
+          git fetch --all --tags -f
+      - name: Check Available Qt Versions
+        uses: jurplel/install-qt-action@v4
+        with:
+          version:      ${{ env.QT_VERSION }}
+          host:         windows
+          target:       desktop
+          arch:         win64_msvc2022_64
+          dir:          ${{ runner.temp }}
+          setup-python: false
+
+      - name: (3) Download JOM
+        uses: suisei-cn/actions-download-file@v1
+        with:
+          url:    http://download.qt.io/official_releases/jom/jom.zip
+          target: ${{ runner.temp }}\
+
+      - name: (4) Unzip JOM
+        working-directory: ${{ runner.temp }}
+        run:  |
+              7z x jom.zip -ojom
+              
+      - name: (5) Create build directory
+        run:  mkdir ${{ runner.temp }}\build
+
+      - name: (6) Set up Visual Studio shell
+        uses: egor-tensin/vs-shell@v2
+        with:
+          arch: x64
+
+      - name: (7) Build
+        working-directory: ${{ runner.temp }}\build
+        run:  |
+              qmake -r ${{ env.SOURCE_DIR }}\bank-automat.pro
+              ${{ runner.temp }}\jom\jom -j2
+              cd release
+              windeployqt --release --qmldir ${{ env.SOURCE_DIR }} --compiler-runtime --no-translations --no-system-d3dcompiler riihimaatti.exe
+              mv bank-automat.exe ${{ env.ARTIFACT }}
+              
+      - name: (8) Save build artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: ${{ env.ARTIFACT }}
+          path: ${{ runner.temp }}\build\release\${{ env.ARTIFACT }}
+          
+      - name: Cache Qt installation
+        uses: actions/cache@v3
+        with:
+          path: ${{ runner.temp }}\Qt
+          key: qt-${{ env.QT_VERSION }}-windows
