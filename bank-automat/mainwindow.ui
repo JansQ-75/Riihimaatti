@@ -70,10 +70,10 @@
      <widget class="QLabel" name="label_logoStart">
       <property name="geometry">
        <rect>
-        <x>430</x>
-        <y>40</y>
-        <width>361</width>
-        <height>301</height>
+        <x>500</x>
+        <y>90</y>
+        <width>191</width>
+        <height>171</height>
        </rect>
       </property>
       <property name="text">
@@ -134,14 +134,27 @@
        <string>Tervetuloa</string>
       </property>
      </widget>
+     <widget class="QLabel" name="label_test">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>180</y>
+        <width>421</width>
+        <height>291</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="page_6">
      <widget class="QLabel" name="label_thankYou">
       <property name="geometry">
        <rect>
-        <x>200</x>
+        <x>180</x>
         <y>180</y>
-        <width>411</width>
+        <width>451</width>
         <height>111</height>
        </rect>
       </property>

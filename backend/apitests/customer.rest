@@ -67,3 +67,8 @@ Content-Type: application/json
 Authorization: bearer {{token}}
 
 
+
+
+###
+# @prompt customer
+get http://localhost:3000/profilepictures/{{customer}} HTTP/1.1

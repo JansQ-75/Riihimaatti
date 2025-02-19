@@ -55,6 +55,10 @@ const customer = {
       updates.push('phone = ?');
       values.push(customer_data.phone);
     }
+    if (customer_data.picture) {
+      updates.push('picture = ?');
+      values.push(customer_data.picture);
+    }
 
     values.push(idcustomer);
     return db.query(

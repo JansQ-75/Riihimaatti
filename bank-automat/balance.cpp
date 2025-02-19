@@ -69,7 +69,7 @@ void Balance::setCardtype(const QString &newCardtype)
     cardtype = newCardtype;
 }
 
-void Balance::CustomerDataSlot(int idbank_account, QString bank_account_number, QString account_type, double balance, double credit_limit, int idcustomer, QString fname, QString lname, QString address, QString phone)
+void Balance::CustomerDataSlot(int idbank_account, QString bank_account_number, QString account_type, double balance, double credit_limit, int idcustomer, QString fname, QString lname, QString address, QString phone, QString picture)
 {
     QString accountType;
     ui->labelCustomer->setText("CUSTOMER:\n" + fname + " " + lname + "\n" + address + "\n" + phone);

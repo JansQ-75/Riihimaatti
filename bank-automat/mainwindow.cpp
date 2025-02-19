@@ -2,6 +2,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QPixmap>
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -74,6 +76,13 @@ MainWindow::MainWindow(QWidget *parent)
 
     // for connecting balance to transactions
     connect(objBalance, &Balance::openTransactions, this, &MainWindow::on_btnTransactions_clicked);
+
+    //QPixmap logo(":/images/riihimaattilogopng.png"); // Lataa kuva resurssitiedostosta
+    //ui->label_logoStart->setPixmap(logo.scaled(ui->label_logoStart->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));           // Aseta kuva QLabel-komponenttiin
+
+    QPalette paletti;
+    paletti.setBrush(QPalette::Window, QBrush(QPixmap(":/images/riihimaattilogopng.png")));
+    this->setPalette(paletti);
 }
 
 MainWindow::~MainWindow()
@@ -117,7 +126,6 @@ void MainWindow::getCustomerData(int idcustomer)
         this->receivedCustomerInfo(reply);
         reply->deleteLater();
     });
-
 }
 
 void MainWindow::receivedCustomerInfo(QNetworkReply *reply)
@@ -146,11 +154,40 @@ void MainWindow::receivedCustomerInfo(QNetworkReply *reply)
         if (jsonObj.contains("lname")) lname = jsonObj["lname"].toString();
         if (jsonObj.contains("address")) address = jsonObj["address"].toString();
         if (jsonObj.contains("phone")) phone = jsonObj["phone"].toString();
+        if (jsonObj.contains("picture")) picture = jsonObj["picture"].toString();
 
         ui->labelHeyAndName->setText("Welcome " + fname + " " + lname);
 
+        //Get a profile picture
+        QNetworkAccessManager *pictureManager = new QNetworkAccessManager(this);
+        connect(pictureManager, &QNetworkAccessManager::finished, this, [=](QNetworkReply *replyPicture){
+            if(replyPicture->error() == QNetworkReply::NoError){
+                //Read picture
+                QByteArray data = replyPicture->readAll();
+
+                QPixmap profilepicture;
+                profilepicture.loadFromData(data);
+
+                if(!profilepicture.isNull()){
+                    ui->label_test->setPixmap(profilepicture.scaled(
+                        ui->label_test->size(),
+                        Qt::KeepAspectRatio,
+                        Qt::SmoothTransformation));
+                    //ui->label_test->setScaledContents(true);
+                }
+            }else{
+                qDebug()<<"profilepicture error";
+            }
+            replyPicture->deleteLater();
+        });
+
+        QString imageUrl = Environment::base_url() + "/profilepictures/" + picture;
+        pictureManager->get(QNetworkRequest(QUrl(imageUrl)));
+
+
+
         //Signal to send customer's data to widgets
-        emit sendCustomerData(idbank_account, bank_account_number, account_type, balance, credit_limit, idcustomer, fname, lname, address, phone);
+        emit sendCustomerData(idbank_account, bank_account_number, account_type, balance, credit_limit, idcustomer, fname, lname, address, phone, picture);
 
         //Delete later
         reply->deleteLater();

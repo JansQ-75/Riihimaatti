@@ -76,7 +76,7 @@ private slots:
 
 public slots:
     void getToken(QByteArray token); // receive token
-    void CustomerDataSlot(int, QString, QString, double, double, int, QString, QString, QString, QString);
+    void CustomerDataSlot(int, QString, QString, double, double, int, QString, QString, QString, QString, QString);
     void LoginDataSlot(int, QString);
     void withdrawOtherAmountSlot(QString);
 };

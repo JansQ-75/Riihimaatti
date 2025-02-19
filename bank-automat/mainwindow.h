@@ -83,6 +83,7 @@ private:
     QString lname;
     QString address;
     QString phone;
+    QString picture;
 
 signals:
     // to send Tokens to widgets
@@ -93,7 +94,7 @@ signals:
     void sendLoginDataWithdrawal(int, QString);
 
     // to send customer data to widgets
-    void sendCustomerData(int, QString, QString, double, double, int, QString, QString, QString, QString);
+    void sendCustomerData(int, QString, QString, double, double, int, QString, QString, QString, QString, QString);
 
 };
 #endif // MAINWINDOW_H

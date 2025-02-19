@@ -74,7 +74,7 @@ private:
 
 public slots:
     void getToken(QByteArray token);
-    void CustomerDataSlot(int, QString, QString, double, double, int, QString, QString, QString, QString);
+    void CustomerDataSlot(int, QString, QString, double, double, int, QString, QString, QString, QString, QString);
 
 private slots:
     void dbDataSlot(QNetworkReply *replyData);
