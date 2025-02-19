@@ -26,13 +26,26 @@ Authorization: bearer {{token}}
 ### add an access - admin only
 # @prompt idcard
 # @prompt idbank_account
-POST http://localhost:3000/access_rights/ HTTP/1.1
+POST http://localhost:3000/access_rights HTTP/1.1
 Content-Type: application/json
 Authorization: bearer {{token}}
 
 {
   "idcard": "{{idcard}}",
-  "{{idbank_account}}": "{{idbank_account}}",
+  "idbank_account": "{{idbank_account}}"
+}
+
+### Update access right data - Admin only
+# @prompt accessRightId
+# @prompt idcard
+# @prompt idbank_account
+PUT http://localhost:3000/access_rights/{{accessRightId}} HTTP/1.1
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+"idcard": "{{idcard}}",
+"idbank_account": "{{idbank_account}}"
 }
 
 ### remove access - admin only
