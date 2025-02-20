@@ -36,8 +36,8 @@
      <widget class="QLabel" name="label_7">
       <property name="geometry">
        <rect>
-        <x>180</x>
-        <y>130</y>
+        <x>480</x>
+        <y>190</y>
         <width>301</width>
         <height>81</height>
        </rect>
@@ -57,7 +57,7 @@
      <widget class="QPushButton" name="btnStart">
       <property name="geometry">
        <rect>
-        <x>320</x>
+        <x>540</x>
         <y>270</y>
         <width>150</width>
         <height>50</height>
@@ -67,14 +67,20 @@
        <string>Start</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_logoStart">
+     <widget class="QLabel" name="label_logo">
       <property name="geometry">
        <rect>
-        <x>500</x>
-        <y>90</y>
-        <width>191</width>
-        <height>171</height>
+        <x>0</x>
+        <y>0</y>
+        <width>491</width>
+        <height>471</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Script</family>
+        <bold>true</bold>
+       </font>
       </property>
       <property name="text">
        <string/>
@@ -227,7 +233,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>27</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

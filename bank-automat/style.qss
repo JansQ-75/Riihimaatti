@@ -1,18 +1,25 @@
-/*Stylesheet
-
-jotain esimerkiksi
-
-QLabel {
-
-}
-
-
-QLineEdit {
-
-}
+QWidget {
+    background: #ebf2fa
+    /*background-image: url(":/images/transparentlogo.png");
+        background-repeat: no-repeat;*/
+    }
 
 QPushButton{
-
+    background-color: #ffffff;
+     border-style: outset;
+    border-width: 2px;
+    border-radius: 4px;
+    border-color:#ffffff;
+    font-family: "Footlight MT";
+    font-size: 13px;
+    padding: 2px;
 }
 
-*/
+QPushButton:hover {
+    background-color: #e8e8e8;
+    color: black;
+}
+
+QLabelCardnumber {
+backgound: #ffffff;
+}

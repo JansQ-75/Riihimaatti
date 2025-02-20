@@ -50,6 +50,7 @@
    </property>
    <property name="font">
     <font>
+     <family>Footlight MT</family>
      <pointsize>18</pointsize>
     </font>
    </property>
@@ -81,6 +82,7 @@
    </property>
    <property name="font">
     <font>
+     <family>Footlight MT</family>
      <pointsize>18</pointsize>
     </font>
    </property>
