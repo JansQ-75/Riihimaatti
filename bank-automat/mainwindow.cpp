@@ -77,12 +77,9 @@ MainWindow::MainWindow(QWidget *parent)
     // for connecting balance to transactions
     connect(objBalance, &Balance::openTransactions, this, &MainWindow::on_btnTransactions_clicked);
 
-    //QPixmap logo(":/images/riihimaattilogopng.png"); // Lataa kuva resurssitiedostosta
-    //ui->label_logoStart->setPixmap(logo.scaled(ui->label_logoStart->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));           // Aseta kuva QLabel-komponenttiin
-
-    QPalette paletti;
-    paletti.setBrush(QPalette::Window, QBrush(QPixmap(":/images/riihimaattilogopng.png")));
-    this->setPalette(paletti);
+    //Add a logo without strching the logo
+    QPixmap logo(":/images/riihimaattilogopng.png");
+    ui->label_logoStart->setPixmap(logo.scaled(ui->label_logoStart->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 }
 
 MainWindow::~MainWindow()
@@ -185,7 +182,6 @@ void MainWindow::receivedCustomerInfo(QNetworkReply *reply)
         pictureManager->get(QNetworkRequest(QUrl(imageUrl)));
 
 
-
         //Signal to send customer's data to widgets
         emit sendCustomerData(idbank_account, bank_account_number, account_type, balance, credit_limit, idcustomer, fname, lname, address, phone, picture);
 
@@ -195,7 +191,6 @@ void MainWindow::receivedCustomerInfo(QNetworkReply *reply)
     } else {
         qDebug() << "Error: " << reply->errorString();
     }
-
 }
 
 void MainWindow::getDualSelections(QString dualAccountType, int dualAccountId)
