@@ -227,7 +227,7 @@ void MainWindow::getDataFromLoginSlot(int idcustomer, int idcard, QString type, 
 {
     emit sendLoginDataWithdrawal(idcard, type); // send login data to withdrawal
     objTransactions->setCardType(type); // set card type in Transaction
-    objBalance->setCardtype(type);
+    objBalance->setCardtype(type); // set card type in Balance
 }
 
 void MainWindow::startMainTimer()
@@ -240,7 +240,7 @@ void MainWindow::stopWidgetTimers()
     objLogin->stopLoginTimer();     // stop inactivitytimer in Login
     objWithdrawal->stopTimer();     // stop inactivitytimer in Withdrawal
     objTransactions->stopTimer();   // stop inactivitytimer in Transactions
-    objBalance->stopBalanceTimer(); // in Balance
+    objBalance->stopBalanceTimer(); // stop inactivitytimer in Balance
 }
 
 //Go the login page
