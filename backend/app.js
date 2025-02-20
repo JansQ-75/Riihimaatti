@@ -4,8 +4,9 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const { authenticateToken } = require('./authentication');
 
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+const multer  = require('multer');
+const loadedLogo = multer({dest: 'public/profilepictures/'}); //Set a destination folder
+
 const transactionsRouter = require('./routes/transactions');
 const customerRouter = require('./routes/customer');
 const bank_accountRouter = require('./routes/bank_account');
@@ -22,9 +23,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
 app.use('/login', loginRouter);
-app.use('/users', usersRouter);
 app.use('/transactions', authenticateToken, transactionsRouter);
 app.use('/customer', authenticateToken, customerRouter);
 app.use('/bank_account', authenticateToken, bank_accountRouter);

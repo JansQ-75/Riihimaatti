@@ -2,6 +2,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QPixmap>
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -11,6 +13,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     //NetworkManager
     MainWindowManager = new QNetworkAccessManager(this);
+
+    //Hide buttons
+    ui->btnBack->setVisible(false);
+    ui->btnLogout->setVisible(false);
 
     //Create objects
     objBalance = new Balance(this);
@@ -70,6 +76,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     // for connecting balance to transactions
     connect(objBalance, &Balance::openTransactions, this, &MainWindow::on_btnTransactions_clicked);
+
+    //Add a logo without strching the logo
+    QPixmap logo(":/images/riihimaattilogopng.png");
+    ui->label_logoStart->setPixmap(logo.scaled(ui->label_logoStart->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 }
 
 MainWindow::~MainWindow()
@@ -94,6 +104,10 @@ void MainWindow::getTokenSlot(QByteArray customersToken)
 
 void MainWindow::getCustomerData(int idcustomer)
 {
+    //Show buttons
+    ui->btnBack->setVisible(true);
+    ui->btnLogout->setVisible(true);
+
     // API request
     QString site_url=Environment::base_url()+"/bank_account/by-customerId/" + QString::number(idcustomer);
     QNetworkRequest request(site_url);
@@ -109,7 +123,6 @@ void MainWindow::getCustomerData(int idcustomer)
         this->receivedCustomerInfo(reply);
         reply->deleteLater();
     });
-
 }
 
 void MainWindow::receivedCustomerInfo(QNetworkReply *reply)
@@ -138,11 +151,39 @@ void MainWindow::receivedCustomerInfo(QNetworkReply *reply)
         if (jsonObj.contains("lname")) lname = jsonObj["lname"].toString();
         if (jsonObj.contains("address")) address = jsonObj["address"].toString();
         if (jsonObj.contains("phone")) phone = jsonObj["phone"].toString();
+        if (jsonObj.contains("picture")) picture = jsonObj["picture"].toString();
 
         ui->labelHeyAndName->setText("Welcome " + fname + " " + lname);
 
+        //Get a profile picture
+        QNetworkAccessManager *pictureManager = new QNetworkAccessManager(this);
+        connect(pictureManager, &QNetworkAccessManager::finished, this, [=](QNetworkReply *replyPicture){
+            if(replyPicture->error() == QNetworkReply::NoError){
+                //Read picture
+                QByteArray data = replyPicture->readAll();
+
+                QPixmap profilepicture;
+                profilepicture.loadFromData(data);
+
+                if(!profilepicture.isNull()){
+                    ui->label_test->setPixmap(profilepicture.scaled(
+                        ui->label_test->size(),
+                        Qt::KeepAspectRatio,
+                        Qt::SmoothTransformation));
+                    //ui->label_test->setScaledContents(true);
+                }
+            }else{
+                qDebug()<<"profilepicture error";
+            }
+            replyPicture->deleteLater();
+        });
+
+        QString imageUrl = Environment::base_url() + "/profilepictures/" + picture;
+        pictureManager->get(QNetworkRequest(QUrl(imageUrl)));
+
+
         //Signal to send customer's data to widgets
-        emit sendCustomerData(idbank_account, bank_account_number, account_type, balance, credit_limit, idcustomer, fname, lname, address, phone);
+        emit sendCustomerData(idbank_account, bank_account_number, account_type, balance, credit_limit, idcustomer, fname, lname, address, phone, picture);
 
         //Delete later
         reply->deleteLater();
@@ -150,7 +191,6 @@ void MainWindow::receivedCustomerInfo(QNetworkReply *reply)
     } else {
         qDebug() << "Error: " << reply->errorString();
     }
-
 }
 
 void MainWindow::getDualSelections(QString dualAccountType, int dualAccountId)
@@ -187,7 +227,7 @@ void MainWindow::getDataFromLoginSlot(int idcustomer, int idcard, QString type, 
 {
     emit sendLoginDataWithdrawal(idcard, type); // send login data to withdrawal
     objTransactions->setCardType(type); // set card type in Transaction
-    objBalance->setCardtype(type);
+    objBalance->setCardtype(type); // set card type in Balance
 }
 
 void MainWindow::startMainTimer()
@@ -200,7 +240,7 @@ void MainWindow::stopWidgetTimers()
     objLogin->stopLoginTimer();     // stop inactivitytimer in Login
     objWithdrawal->stopTimer();     // stop inactivitytimer in Withdrawal
     objTransactions->stopTimer();   // stop inactivitytimer in Transactions
-    objBalance->stopBalanceTimer(); // in Balance
+    objBalance->stopBalanceTimer(); // stop inactivitytimer in Balance
 }
 
 //Go the login page
@@ -245,6 +285,10 @@ void MainWindow::on_btnLogout_clicked()
     ui->stackedWidget->setCurrentIndex(2); // logout text for customer
     this->stopWidgetTimers();   // stop inactivity timer in other widgets
     mainTimer->stop();          // stop inactivitytimer in main menu
+
+    //Hide buttons
+    ui->btnBack->setVisible(false);
+    ui->btnLogout->setVisible(false);
 
     qDebug()<<"Kirjauduttu ulos";
 

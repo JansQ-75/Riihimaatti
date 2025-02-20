@@ -113,7 +113,7 @@ void Transactions::getToken(QByteArray token)
     receivedToken = token; //ilman bearer
 }
 
-void Transactions::CustomerDataSlot(int idbank_account, QString bank_account_number, QString account_type, double balance, double credit_limit, int idcustomer, QString fname, QString lname, QString address, QString phone)
+void Transactions::CustomerDataSlot(int idbank_account, QString bank_account_number, QString account_type, double balance, double credit_limit, int idcustomer, QString fname, QString lname, QString address, QString phone, QString picture)
 {
     int bankAccountId;
     //Customer data to label
@@ -156,7 +156,6 @@ void Transactions::dbDataSlot(QNetworkReply *replyData)
 
     //Get objects from array
     for(int i=0; i<jsonArr.size(); i++){
-        //QJsonObject jsonObj0[i] = jsonArr01.at(i).toObject();
 
         transaction_date = jsonArr.at(i).toObject()["transaction_date"].toString();
         //Edit data
@@ -183,8 +182,6 @@ void Transactions::dbDataSlot(QNetworkReply *replyData)
 
     //Create a table model (10 rows, 4 columns)
     table_model = new QStandardItemModel(10, 4);
-
-    //table_model = new QStandardItemModel(10,4);
 
     //Strech columns
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
