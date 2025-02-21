@@ -46,6 +46,7 @@ private slots:
     void receivedCustomerInfo(QNetworkReply *reply);
     void getDualSelections(QString, int);
     void getDataFromLoginSlot(int idcustomer, int idcard, QString type, QString fname, QString lname);
+    void timerLogoutSlot(); // inits logout after timeout
 
 private:
     Ui::MainWindow *ui;
@@ -85,6 +86,7 @@ private:
     QString phone;
     QString picture;
 
+
 signals:
     // to send Tokens to widgets
     void sendTokenToWidget(QByteArray customersToken);
@@ -95,6 +97,9 @@ signals:
 
     // to send customer data to widgets
     void sendCustomerData(int, QString, QString, double, double, int, QString, QString, QString, QString, QString);
+
+    // To logout after timeout
+    void logoutSignal();
 
 };
 #endif // MAINWINDOW_H

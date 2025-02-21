@@ -42,7 +42,7 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     // Timer connections
-    connect(mainTimer, &QTimer::timeout, this, &MainWindow::on_btnLogout_clicked);
+    connect(mainTimer, &QTimer::timeout, this, &MainWindow::timerLogoutSlot);
 
     //Go back -connect
     connect(objLogin,&Login::backMain, this, &MainWindow::goBackSlot);
@@ -50,10 +50,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(objWithdrawal,&Withdrawal::backMainSignal, this, &MainWindow::goBackSlot);
 
     // Logout connections
-    connect(objWithdrawal, &Withdrawal::logOutSignal, this, &MainWindow::on_btnLogout_clicked);
-    connect(objTransactions, &Transactions::logoutSignal, this, &MainWindow::on_btnLogout_clicked);
-    connect(objLogin, &Login::backStartScreen, this, &MainWindow::on_btnLogout_clicked);
-    connect(objBalance, &Balance::backStartScreen, this, &MainWindow::on_btnLogout_clicked);
+    connect(objWithdrawal, &Withdrawal::logOutSignal, this, &MainWindow::timerLogoutSlot);
+    connect(objTransactions, &Transactions::logoutSignal, this, &MainWindow::timerLogoutSlot);
+    connect(objLogin, &Login::backStartScreen, this, &MainWindow::timerLogoutSlot);
+    connect(objBalance, &Balance::backStartScreen, this, &MainWindow::timerLogoutSlot);
+    connect(this, &MainWindow::logoutSignal, this, &MainWindow::on_btnLogout_clicked);
 
     //Bring data
     connect(objLogin,&Login::sendToken, this, &MainWindow::getTokenSlot);
@@ -230,6 +231,25 @@ void MainWindow::getDataFromLoginSlot(int idcustomer, int idcard, QString type, 
     objBalance->setCardtype(type); // set card type in Balance
 }
 
+void MainWindow::timerLogoutSlot()
+{
+    //Hide buttons
+    ui->btnBack->setVisible(false);
+    ui->btnLogout->setVisible(false);
+
+    this->stopWidgetTimers();   // stop inactivity timer in other widgets
+
+    ui->label_logout->setText("Timeout. Logging out...");
+    ui->label_thankYou->setText("");
+    ui->stackedWidget->setCurrentIndex(2); // show logout text for customer
+
+    // after 5 seconds, continue with logout
+    QTimer::singleShot(3000, this, [this](){
+        emit logoutSignal(); // finish logout
+    });
+
+}
+
 void MainWindow::startMainTimer()
 {
     mainTimer->start(30000); //start 30s timer
@@ -282,9 +302,10 @@ void MainWindow::on_btnBack_clicked()
 //Logout button --> go start page
 void MainWindow::on_btnLogout_clicked()
 {
-    ui->stackedWidget->setCurrentIndex(2); // logout text for customer
-    this->stopWidgetTimers();   // stop inactivity timer in other widgets
     mainTimer->stop();          // stop inactivitytimer in main menu
+    ui->label_logout->setText("Logout successful");
+    ui->label_thankYou->setText("Thank you for choosing Riihimaatti!");
+    ui->stackedWidget->setCurrentIndex(2); // show logout text for customer
 
     //Hide buttons
     ui->btnBack->setVisible(false);
@@ -293,7 +314,7 @@ void MainWindow::on_btnLogout_clicked()
     qDebug()<<"Kirjauduttu ulos";
 
     // after 5 seconds, return to start screen
-    QTimer::singleShot(5000, this, [this](){
+    QTimer::singleShot(3000, this, [this](){
         ui->stackedWidget->setCurrentIndex(0);
     });
 
