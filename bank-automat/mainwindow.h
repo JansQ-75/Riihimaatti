@@ -3,6 +3,7 @@
 
 #include "balance.h"
 #include "login.h"
+#include "qlabel.h"
 #include "transactions.h"
 #include "withdrawal.h"
 #include "creditordebit.h"
@@ -29,6 +30,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    QWidget *getlabel_logo_background();
 
 private slots:
     void on_btnBalance_clicked();
@@ -36,7 +38,6 @@ private slots:
     void on_btnWithdrawal_clicked();
     void on_btnBack_clicked();
     void on_btnLogout_clicked();
-
     void onButtonPressed();             // in case of some button is pressed, stop inactivity timer
 
     void on_btnStart_clicked();

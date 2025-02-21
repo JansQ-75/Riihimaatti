@@ -8,6 +8,7 @@ debug/otheramountwithdrawal.o
 debug/statuswithdrawal.o
 debug/transactions.o
 debug/withdrawal.o
+debug/qrc_background.o
 debug/qrc_riihimaattilogopng.o
 debug/moc_balance.o
 debug/moc_creditordebit.o

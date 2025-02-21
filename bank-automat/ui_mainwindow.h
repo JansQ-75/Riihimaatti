@@ -53,15 +53,16 @@ public:
         centralwidget->setObjectName("centralwidget");
         stackedWidget = new QStackedWidget(centralwidget);
         stackedWidget->setObjectName("stackedWidget");
-        stackedWidget->setGeometry(QRect(0, 30, 800, 480));
+        stackedWidget->setGeometry(QRect(-10, 30, 800, 480));
         stackedWidget->setAutoFillBackground(false);
         stackedWidget->setStyleSheet(QString::fromUtf8(""));
         page = new QWidget();
         page->setObjectName("page");
         label_7 = new QLabel(page);
         label_7->setObjectName("label_7");
-        label_7->setGeometry(QRect(480, 190, 301, 81));
+        label_7->setGeometry(QRect(460, 190, 301, 81));
         QFont font;
+        font.setFamilies({QString::fromUtf8("Footlight MT")});
         font.setPointSize(35);
         label_7->setFont(font);
         label_7->setAlignment(Qt::AlignmentFlag::AlignCenter);
@@ -70,7 +71,7 @@ public:
         btnStart->setGeometry(QRect(540, 270, 150, 50));
         label_logo = new QLabel(page);
         label_logo->setObjectName("label_logo");
-        label_logo->setGeometry(QRect(0, 0, 491, 471));
+        label_logo->setGeometry(QRect(-120, -120, 691, 671));
         QFont font1;
         font1.setFamilies({QString::fromUtf8("Script")});
         font1.setBold(true);
@@ -80,19 +81,19 @@ public:
         page_2->setObjectName("page_2");
         btnBalance = new QPushButton(page_2);
         btnBalance->setObjectName("btnBalance");
-        btnBalance->setGeometry(QRect(280, 130, 191, 30));
+        btnBalance->setGeometry(QRect(520, 130, 191, 30));
         btnTransactions = new QPushButton(page_2);
         btnTransactions->setObjectName("btnTransactions");
-        btnTransactions->setGeometry(QRect(280, 280, 211, 30));
+        btnTransactions->setGeometry(QRect(510, 230, 211, 30));
         btnWithdrawal = new QPushButton(page_2);
         btnWithdrawal->setObjectName("btnWithdrawal");
-        btnWithdrawal->setGeometry(QRect(280, 200, 211, 30));
+        btnWithdrawal->setGeometry(QRect(510, 180, 211, 30));
         labelHeyAndName = new QLabel(page_2);
         labelHeyAndName->setObjectName("labelHeyAndName");
-        labelHeyAndName->setGeometry(QRect(270, 60, 411, 21));
+        labelHeyAndName->setGeometry(QRect(20, 90, 411, 21));
         label_test = new QLabel(page_2);
         label_test->setObjectName("label_test");
-        label_test->setGeometry(QRect(320, 180, 421, 291));
+        label_test->setGeometry(QRect(30, 140, 321, 191));
         stackedWidget->addWidget(page_2);
         page_6 = new QWidget();
         page_6->setObjectName("page_6");
@@ -138,7 +139,7 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
-        label_7->setText(QCoreApplication::translate("MainWindow", "Riihimaatti", nullptr));
+        label_7->setText(QCoreApplication::translate("MainWindow", "RIIHIMAATTI", nullptr));
         btnStart->setText(QCoreApplication::translate("MainWindow", "Start", nullptr));
         label_logo->setText(QString());
         btnBalance->setText(QCoreApplication::translate("MainWindow", "Show balance", nullptr));

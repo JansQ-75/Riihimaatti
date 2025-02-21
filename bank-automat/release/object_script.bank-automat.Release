@@ -8,6 +8,7 @@ release/otheramountwithdrawal.o
 release/statuswithdrawal.o
 release/transactions.o
 release/withdrawal.o
+release/qrc_background.o
 release/qrc_riihimaattilogopng.o
 release/moc_balance.o
 release/moc_creditordebit.o

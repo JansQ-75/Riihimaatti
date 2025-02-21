@@ -77,18 +77,16 @@ MainWindow::MainWindow(QWidget *parent)
     // for connecting balance to transactions
     connect(objBalance, &Balance::openTransactions, this, &MainWindow::on_btnTransactions_clicked);
 
-    // //Add a logo without strching the logo
-    QLabel *label_logo = new QLabel(ui->stackedWidget);
-    QPixmap logo(":/images/riihimaattilogopng.png");
-    label_logo->setPixmap(logo);
-    ui->label_logo->setPixmap(logo.scaled(ui->label_logo->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-    label_logo->lower();
-    label_logo->setAttribute(Qt::WA_TransparentForMouseEvents);
-    QGraphicsOpacityEffect *opacityEffect = new QGraphicsOpacityEffect();
-    opacityEffect->setOpacity(0.5);
-    label_logo->setGraphicsEffect(opacityEffect);
-     label_logo->setStyleSheet("background-color: #e2e5e8");
-}
+    //Add a logo without strching the logo
+    // QLabel *label_logo = new QLabel(ui->stackedWidget);
+    // QPixmap logo(":/background/transparentlogo.png");
+    // label_logo->setPixmap(logo);
+    // ui->label_logo->setPixmap(logo.scaled(ui->label_logo->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    // label_logo->lower();
+    // label_logo->setAttribute(Qt::WA_TransparentForMouseEvents);
+
+
+    }
 
 MainWindow::~MainWindow()
 {

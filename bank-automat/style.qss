@@ -1,18 +1,22 @@
-QWidget {
-    background: #ebf2fa
-    /*background-image: url(":/images/transparentlogo.png");
-        background-repeat: no-repeat;*/
+QWidget#stackedWidget {
+    background: #ebf2fa;
+    background-image: url(":/background/transparentlogo.png");
+        background-repeat: no-repeat;
     }
 
 QPushButton{
     background-color: #ffffff;
-     border-style: outset;
+    border-style: outset;
     border-width: 2px;
     border-radius: 4px;
     border-color:#ffffff;
-    font-family: "Footlight MT";
+    font-family: Footlight MT;
     font-size: 13px;
     padding: 2px;
+}
+
+QLabel{
+font-family: "Footlight MT Light" !important;
 }
 
 QPushButton:hover {
@@ -20,6 +24,14 @@ QPushButton:hover {
     color: black;
 }
 
-QLabelCardnumber {
-backgound: #ffffff;
+QLabel#labelCardnumber {
+background: #ffffff;
+}
+
+QLabel#labelPincode {
+background: #ffffff !important;
+}
+
+QWidget#MainWindow{
+background: #ffffff !important;
 }
