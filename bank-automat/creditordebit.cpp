@@ -9,6 +9,17 @@ creditOrDebit::creditOrDebit(QWidget *parent)
 {
     ui->setupUi(this);
     creditOrDebitManager = new QNetworkAccessManager(this);
+    creditOrDebitTimer = new QTimer(this);
+
+    // connect signal to timeout (=returning main menu)
+    connect(creditOrDebitTimer, &QTimer::timeout, this, &creditOrDebit::handleTimeout);
+
+    // make list of push buttons
+    QList<QPushButton*> buttons = findChildren<QPushButton*>();
+    //connect button' clicked() signals to slot for reseting timer if necessary
+    for (QPushButton* button : buttons) {
+        connect(button, &QPushButton::pressed, this, &creditOrDebit::onButtonPressed);
+    }
 
 
 }
@@ -87,6 +98,17 @@ void creditOrDebit::handleResponseSlot()
 
 }
 
+void creditOrDebit::onButtonPressed()
+{
+    this->stopTimer();
+}
+
+void creditOrDebit::handleTimeout()
+{
+    this->close();
+    emit logoutSignal();
+}
+
 void creditOrDebit::setCardnumber(int newCardnumber)
 {
     cardnumber = newCardnumber; // store cardnumber
@@ -107,6 +129,17 @@ void creditOrDebit::searchAccessRights(int cardnumber, QByteArray token)
 
     // connect to slot to handle response
     connect(creditOrDebitManager, &QNetworkAccessManager::finished, this, &creditOrDebit::handleResponseSlot);
+}
+
+void creditOrDebit::startTimer()
+{
+    // logout if customer hasn't pressed any button within 10 seconds
+    creditOrDebitTimer->start(10000); //start timer
+}
+
+void creditOrDebit::stopTimer()
+{
+    creditOrDebitTimer->stop();
 }
 
 

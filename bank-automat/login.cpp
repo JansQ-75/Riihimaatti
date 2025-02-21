@@ -228,10 +228,12 @@ void Login::showDebitOrCreditSlot(QNetworkReply *replyCreditOrDebit)
         //
         creditOrDebit *objCreditOrDebit = new creditOrDebit(this);
         connect(objCreditOrDebit, &creditOrDebit::selectedAccount, this, &Login::getDualCardInfo);
+        connect(objCreditOrDebit, &creditOrDebit::logoutSignal, this, &Login::handleTimeout);
         objCreditOrDebit->setCustomersToken(token);
         objCreditOrDebit->setCustomerName(fname + " " + lname);
         objCreditOrDebit->setCardnumber(cardnumber);
         objCreditOrDebit->open();
+        objCreditOrDebit->startTimer();
     }
 
     //Data to mainwindow
