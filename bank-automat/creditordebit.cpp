@@ -100,13 +100,14 @@ void creditOrDebit::handleResponseSlot()
 
 void creditOrDebit::onButtonPressed()
 {
-    this->stopTimer();
+    this->stopTimer();      // stop timer
 }
 
 void creditOrDebit::handleTimeout()
 {
-    this->close();
-    emit logoutSignal();
+    emit logoutSignal();    // logout after timeout
+    this->stopTimer();      // stop timer
+    this->close();          // close window
 }
 
 void creditOrDebit::setCardnumber(int newCardnumber)
@@ -139,7 +140,7 @@ void creditOrDebit::startTimer()
 
 void creditOrDebit::stopTimer()
 {
-    creditOrDebitTimer->stop();
+    creditOrDebitTimer->stop();     // stop timer
 }
 
 

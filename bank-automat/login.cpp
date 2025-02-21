@@ -121,11 +121,13 @@ void Login::pressed_login()
 
 void Login::onAnyButtonPressed()
 {
+    // reset timer if any button is pressed
     this->resetLoginTimer();
 }
 
 void Login::handleTimeout()
 {
+    // logout after timeout
     emit backStartScreen();
 }
 
@@ -227,12 +229,22 @@ void Login::showDebitOrCreditSlot(QNetworkReply *replyCreditOrDebit)
     if(type=="debit/credit"){
         //
         creditOrDebit *objCreditOrDebit = new creditOrDebit(this);
+
+        // connections..
+        // ...for dualcard data
         connect(objCreditOrDebit, &creditOrDebit::selectedAccount, this, &Login::getDualCardInfo);
+        //... logout caused by timeout
         connect(objCreditOrDebit, &creditOrDebit::logoutSignal, this, &Login::handleTimeout);
+
+        // set values to creditOrDebit
         objCreditOrDebit->setCustomersToken(token);
         objCreditOrDebit->setCustomerName(fname + " " + lname);
         objCreditOrDebit->setCardnumber(cardnumber);
+
+        // open window
         objCreditOrDebit->open();
+
+        // start inactivity timer
         objCreditOrDebit->startTimer();
     }
 
@@ -247,5 +259,6 @@ void Login::showDebitOrCreditSlot(QNetworkReply *replyCreditOrDebit)
 
 void Login::getDualCardInfo(QString dualAccountType, int dualAccountId)
 {
+    // send dualcard selections to Main menu
     emit sendDualInfoToMain(dualAccountType, dualAccountId);
 }

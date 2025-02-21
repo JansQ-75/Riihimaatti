@@ -16,6 +16,9 @@ Withdrawal::Withdrawal(QWidget *parent)
 
     //connect: signal to withdraw other amount
     connect(objOtherAmount, &OtherAmountWithdrawal::withdrawOtherAmount, this, &Withdrawal::withdrawOtherAmountSlot);
+    // connect: timeout from otherAmountTimer, logout signal is emited
+    connect(objOtherAmount, &OtherAmountWithdrawal::logoutSignal, this, &Withdrawal::handleTimeout);
+
     // connect signal to timeout (=returning main menu)
     connect(inactivityTimer, &QTimer::timeout, this, &Withdrawal::handleTimeout);
 
@@ -175,7 +178,8 @@ void Withdrawal::on_btn_100e_clicked()
 void Withdrawal::on_btn_otherAmount_clicked()
 {
     // Open pop up for entering custom amount
-    objOtherAmount->exec();
+    objOtherAmount->open();
+    objOtherAmount->startTimer();
 }
 
 void Withdrawal::onButtonPressed()
@@ -194,5 +198,6 @@ void Withdrawal::withdrawOtherAmountSlot(QString otherAmount)
 {
     // withdraw custom amount entered by customer
     makeWithdrawal(otherAmount);
+    objOtherAmount->stopTimer();
 }
 
