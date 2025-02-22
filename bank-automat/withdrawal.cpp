@@ -113,11 +113,8 @@ void Withdrawal::getToken(QByteArray token)
     receivedToken = token; // store token
 }
 
-void Withdrawal::CustomerDataSlot(int idbank_account, QString bank_account_number, QString account_type, double balance, double credit_limit, int idcustomer, QString fname, QString lname, QString address, QString phone, QString picture)
+void Withdrawal::AccountDataSlot(int idbank_account, QString bank_account_number, QString account_type, double balance, double credit_limit)
 {
-    // print customer information
-    ui->label_ownerName->setText("CUSTOMER:\n" + fname + " " + lname + "\n" + address + "\n" + phone);
-
     // conditions for setting account type
     if (cardType == "debit/credit") {
         // in case of dual card, use values customer has selected
@@ -132,11 +129,17 @@ void Withdrawal::CustomerDataSlot(int idbank_account, QString bank_account_numbe
     // print account info
     // different print depending on account type (debit or credit)
     if (accountType == "debit") {
-    ui->label_balance->setText("DEBIT ACCOUNT:\nBalance: " + QString::number(balance) + " €");
+        ui->label_balance->setText("DEBIT ACCOUNT:\nBalance: " + QString::number(balance) + " €");
     } else {
         ui->label_balance->setText("CREDIT ACCOUNT:\nAvailable balance: " + QString::number(credit_limit-balance) + " €\nCredit limit: " + QString::number(credit_limit) + " €");
     }
 
+}
+
+void Withdrawal::CustomerDataSlot(int idcustomer, QString fname, QString lname, QString address, QString phone, QString picture)
+{
+    // print customer information
+    ui->label_ownerName->setText("CUSTOMER:\n" + fname + " " + lname + "\n" + address + "\n" + phone);
 
 }
 

@@ -224,6 +224,7 @@ void Login::showDebitOrCreditSlot(QNetworkReply *replyCreditOrDebit)
     type = jsonObj2["type"].toString();
     fname = jsonObj2["fname"].toString();
     lname = jsonObj2["lname"].toString();
+    idbankAccount = jsonObj2["idbank_account"].toInt();
 
     //Ask credit or debit if it is necessessary
     if(type=="debit/credit"){
@@ -250,7 +251,8 @@ void Login::showDebitOrCreditSlot(QNetworkReply *replyCreditOrDebit)
 
     //Data to mainwindow
     emit RetrieveCustomerData(idcustomer);
-    emit sendDataToMain(idcustomer, idcard, type, fname, lname);
+    emit RetrieveAccountData(idbankAccount);
+    emit sendDataToMain(idcustomer, idcard, type, fname, lname, idbankAccount);
 
     //Delete later
     replyCreditOrDebit->deleteLater();

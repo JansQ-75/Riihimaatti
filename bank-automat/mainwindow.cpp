@@ -59,6 +59,7 @@ MainWindow::MainWindow(QWidget *parent)
     //Bring data
     connect(objLogin,&Login::sendToken, this, &MainWindow::getTokenSlot);
     connect(objLogin, &Login::RetrieveCustomerData, this, &MainWindow::getCustomerData);
+    connect(objLogin, &Login::RetrieveAccountData, this, &MainWindow::getAccountData);
     connect(objLogin,&Login::sendDataToMain, this, &MainWindow::getDataFromLoginSlot);
     connect(objLogin, &Login::sendDualInfoToMain, this, &MainWindow::getDualSelections);
 
@@ -71,7 +72,13 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, &MainWindow::sendCustomerData, objWithdrawal, &Withdrawal::CustomerDataSlot);
     connect(this, &MainWindow::sendCustomerData, objTransactions, &Transactions::CustomerDataSlot);
     connect(this, &MainWindow::sendCustomerData, objBalance, &Balance::CustomerDataSlot);
-      
+
+    //...account data
+    connect(this, &MainWindow::sendAccountData, objWithdrawal, &Withdrawal::AccountDataSlot);
+    connect(this, &MainWindow::sendAccountData, objTransactions, &Transactions::AccountDataSlot);
+    connect(this, &MainWindow::sendAccountData, objBalance, &Balance::AccountDataSlot);
+
+
     // ...login data
     connect(this, &MainWindow::sendLoginDataWithdrawal, objWithdrawal, &Withdrawal::LoginDataSlot);
 
@@ -110,7 +117,7 @@ void MainWindow::getCustomerData(int idcustomer)
     ui->btnLogout->setVisible(true);
 
     // API request
-    QString site_url=Environment::base_url()+"/bank_account/by-customerId/" + QString::number(idcustomer);
+    QString site_url=Environment::base_url()+"/customer/" + QString::number(idcustomer);
     QNetworkRequest request(site_url);
 
     // Authorization header
@@ -122,6 +129,29 @@ void MainWindow::getCustomerData(int idcustomer)
     // connect to slot for handling response
     connect(reply, &QNetworkReply::finished, this, [this, reply]() {
         this->receivedCustomerInfo(reply);
+        reply->deleteLater();
+    });
+}
+
+void MainWindow::getAccountData(int idBankAccount)
+{
+    //Show buttons
+    ui->btnBack->setVisible(true);
+    ui->btnLogout->setVisible(true);
+
+    // API request
+    QString site_url=Environment::base_url()+"/bank_account/by-id/" + QString::number(idBankAccount);
+    QNetworkRequest request(site_url);
+
+    // Authorization header
+    request.setRawHeader(QByteArray("Authorization"), QByteArray("Bearer " + token));
+
+    // make GET request
+    QNetworkReply *reply = MainWindowManager->get(request);
+
+    // connect to slot for handling response
+    connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+        this->receivedAccountInfo(reply);
         reply->deleteLater();
     });
 }
@@ -142,11 +172,6 @@ void MainWindow::receivedCustomerInfo(QNetworkReply *reply)
         QJsonObject jsonObj = jsonresponse.object();
 
         // Extract data
-        if (jsonObj.contains("idbank_account")) idbank_account = jsonObj["idbank_account"].toInt();
-        if (jsonObj.contains("bank_account_number")) bank_account_number = jsonObj["bank_account_number"].toString();
-        if (jsonObj.contains("account_type")) account_type = jsonObj["account_type"].toString();
-        if (jsonObj.contains("balance")) balance = QString::number(jsonObj["balance"].toString().toDouble(), 'f', 2).toDouble();
-        if (jsonObj.contains("credit_limit")) credit_limit = QString::number(jsonObj["credit_limit"].toString().toDouble(), 'f', 2).toDouble();
         if (jsonObj.contains("idcustomer")) idcustomer = jsonObj["idcustomer"].toInt();
         if (jsonObj.contains("fname")) fname = jsonObj["fname"].toString();
         if (jsonObj.contains("lname")) lname = jsonObj["lname"].toString();
@@ -182,9 +207,41 @@ void MainWindow::receivedCustomerInfo(QNetworkReply *reply)
         QString imageUrl = Environment::base_url() + "/profilepictures/" + picture;
         pictureManager->get(QNetworkRequest(QUrl(imageUrl)));
 
+        //Signal to send customer's data to widgets
+        emit sendCustomerData(idcustomer, fname, lname, address, phone, picture);
+
+        //Delete later
+        reply->deleteLater();
+
+    } else {
+        qDebug() << "Error: " << reply->errorString();
+    }
+}
+
+void MainWindow::receivedAccountInfo(QNetworkReply *reply)
+{
+    if (reply->error() == QNetworkReply::NoError) {
+        QByteArray response_data = reply->readAll();
+
+        QJsonDocument jsonresponse = QJsonDocument::fromJson(response_data);
+
+        if (jsonresponse.isNull() || !jsonresponse.isObject()) {
+            qDebug() << "Error: Invalid JSON response";
+            reply->deleteLater();
+            return;
+        }
+
+        QJsonObject jsonObj = jsonresponse.object();
+
+        // Extract data
+        if (jsonObj.contains("idbank_account")) idbank_account = jsonObj["idbank_account"].toInt();
+        if (jsonObj.contains("bank_account_number")) bank_account_number = jsonObj["bank_account_number"].toString();
+        if (jsonObj.contains("account_type")) account_type = jsonObj["account_type"].toString();
+        if (jsonObj.contains("balance")) balance = QString::number(jsonObj["balance"].toString().toDouble(), 'f', 2).toDouble();
+        if (jsonObj.contains("credit_limit")) credit_limit = QString::number(jsonObj["credit_limit"].toString().toDouble(), 'f', 2).toDouble();
 
         //Signal to send customer's data to widgets
-        emit sendCustomerData(idbank_account, bank_account_number, account_type, balance, credit_limit, idcustomer, fname, lname, address, phone, picture);
+        emit sendAccountData(idbank_account, bank_account_number, account_type, balance, credit_limit);
 
         //Delete later
         reply->deleteLater();
@@ -218,13 +275,13 @@ void MainWindow::getDualSelections(QString dualAccountType, int dualAccountId)
 
     // connect to slot for handling response
     connect(reply, &QNetworkReply::finished, this, [this, reply]() {
-        this->receivedCustomerInfo(reply);
+        this->receivedAccountInfo(reply);
         reply->deleteLater();
     });
 
 }
 
-void MainWindow::getDataFromLoginSlot(int idcustomer, int idcard, QString type, QString fname, QString lname)
+void MainWindow::getDataFromLoginSlot(int idcustomer, int idcard, QString type, QString fname, QString lname, int idbankAccount)
 {
     emit sendLoginDataWithdrawal(idcard, type); // send login data to withdrawal
     objTransactions->setCardType(type); // set card type in Transaction
