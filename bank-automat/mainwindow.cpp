@@ -352,14 +352,15 @@ void MainWindow::on_btnTransactions_clicked()
 void MainWindow::on_btnBack_clicked()
 {
     this->stopWidgetTimers();                     // stop inactivity timer in other widgets
-    this->startMainTimer();                       // restart inactivitytimer in main menu
+    this->startMainTimer();                       // restart inactivity timer in main menu
     ui->stackedWidget->setCurrentIndex(1);        // return to main menu
 }
 
 //Logout button --> go start page
 void MainWindow::on_btnLogout_clicked()
 {
-    mainTimer->stop();          // stop inactivitytimer in main menu
+    this->stopWidgetTimers();   // stop inactivity timer in other widgets
+    mainTimer->stop();          // stop inactivity timer in main menu
     ui->label_logout->setText("Logout successful");
     ui->label_thankYou->setText("Thank you for choosing Riihimaatti!");
     ui->stackedWidget->setCurrentIndex(2); // show logout text for customer
