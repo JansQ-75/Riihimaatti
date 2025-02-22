@@ -88,6 +88,11 @@ private:
     QString phone;
     QString picture;
 
+    // create objects for widgets
+    void createObjects();
+    void destroyObjects();
+
+
 
 signals:
     // to send Tokens to widgets

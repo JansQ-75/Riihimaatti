@@ -42,8 +42,17 @@ Transactions::~Transactions()
     transactionsList.clear();
 
     //Delete the table view
-    delete table_model;
-    table_model=nullptr;
+    // if (table_model) {
+    // delete table_model;
+    // table_model=nullptr;
+    // }
+
+    if (inactivityTimer) {
+        disconnect(this, nullptr, inactivityTimer, nullptr);
+        disconnect(inactivityTimer, nullptr, this, nullptr);
+        delete inactivityTimer;
+        inactivityTimer=nullptr;
+    }
 }
 
 
