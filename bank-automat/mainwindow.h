@@ -42,10 +42,13 @@ private slots:
     void on_btnStart_clicked();
     void goBackSlot();
     void getTokenSlot(QByteArray customersToken);
-    void getCustomerData(int idcustomer);
+    void getCustomerData(int);
+    void getAccountData(int);
     void receivedCustomerInfo(QNetworkReply *reply);
+    void receivedAccountInfo(QNetworkReply *reply);
     void getDualSelections(QString, int);
-    void getDataFromLoginSlot(int idcustomer, int idcard, QString type, QString fname, QString lname);
+    void getDataFromLoginSlot(int idcustomer, int idcard, QString type, QString fname, QString lname, int idbankAccount);
+    void timerLogoutSlot(); // inits logout after timeout
 
 private:
     Ui::MainWindow *ui;
@@ -85,6 +88,7 @@ private:
     QString phone;
     QString picture;
 
+
 signals:
     // to send Tokens to widgets
     void sendTokenToWidget(QByteArray customersToken);
@@ -94,7 +98,13 @@ signals:
     void sendLoginDataWithdrawal(int, QString);
 
     // to send customer data to widgets
-    void sendCustomerData(int, QString, QString, double, double, int, QString, QString, QString, QString, QString);
+    void sendCustomerData(int, QString, QString, QString, QString, QString);
+
+    // to send account data to widgets
+    void sendAccountData(int, QString, QString, double, double);
+
+    // To logout after timeout
+    void logoutSignal();
 
 };
 #endif // MAINWINDOW_H
