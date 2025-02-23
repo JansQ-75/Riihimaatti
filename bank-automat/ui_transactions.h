@@ -48,7 +48,7 @@ public:
         btnUp->setGeometry(QRect(30, 230, 65, 65));
         labelCustomer = new QLabel(Transactions);
         labelCustomer->setObjectName("labelCustomer");
-        labelCustomer->setGeometry(QRect(530, 20, 181, 81));
+        labelCustomer->setGeometry(QRect(530, 30, 181, 81));
 
         retranslateUi(Transactions);
 

@@ -35,6 +35,7 @@ QWidget#MainWindow{
 background: #ffffff !important;
 }
 
+
 QWidget#label_test{
 border-style: inset;
 border-width: 5px;
@@ -77,9 +78,9 @@ background: #ffffff !important;
 QLabel#label_header{
 font-size: 20px;}
 
-/*Credit or debit, TODO*/
+/*Credit or debit*/
 
-QWidget#creditordebit{
+QDialog#creditOrDebit{
     background: #ebf2fa;
     background-image: url(":/background/transparentlogo.png");
         background-repeat: no-repeat;
@@ -87,9 +88,9 @@ QWidget#creditordebit{
         font-family: "Verdana";
         font-size: 13px;}
 
-/*Other amount withdrawal, TODO*/
+/*Other amount withdrawal*/
 
-QWidget#otheramountwithdrawal{
+QDialog#OtherAmountWithdrawal{
     background: #ebf2fa;
     background-image: url(":/background/transparentlogo.png");
         background-repeat: no-repeat;
@@ -97,9 +98,9 @@ QWidget#otheramountwithdrawal{
         font-family: "Verdana";
         font-size: 13px;}
 
-/*status withdrawal, TODO*/
+/*Status withdrawal*/
 
-QWidget#statuswithdrawal{
+QDialog#StatusWithdrawal{
     background: #ebf2fa;
     background-image: url(":/background/transparentlogo.png");
         background-repeat: no-repeat;
@@ -107,7 +108,7 @@ QWidget#statuswithdrawal{
         font-family: "Verdana";
         font-size: 13px;}
 
-/*withdrawal*/
+/*Withdrawal*/
 
 QLabel#label_w_header{
 font-size: 20px !important;}

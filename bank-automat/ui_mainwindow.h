@@ -71,7 +71,7 @@ public:
         btnStart->setGeometry(QRect(490, 260, 150, 40));
         label_logo = new QLabel(page);
         label_logo->setObjectName("label_logo");
-        label_logo->setGeometry(QRect(-120, -120, 691, 671));
+        label_logo->setGeometry(QRect(20, 0, 181, 151));
         QFont font1;
         font1.setFamilies({QString::fromUtf8("Script")});
         font1.setBold(true);
@@ -81,13 +81,13 @@ public:
         page_2->setObjectName("page_2");
         btnBalance = new QPushButton(page_2);
         btnBalance->setObjectName("btnBalance");
-        btnBalance->setGeometry(QRect(570, 120, 211, 30));
+        btnBalance->setGeometry(QRect(490, 120, 211, 30));
         btnTransactions = new QPushButton(page_2);
         btnTransactions->setObjectName("btnTransactions");
-        btnTransactions->setGeometry(QRect(570, 230, 211, 30));
+        btnTransactions->setGeometry(QRect(490, 230, 211, 30));
         btnWithdrawal = new QPushButton(page_2);
         btnWithdrawal->setObjectName("btnWithdrawal");
-        btnWithdrawal->setGeometry(QRect(570, 180, 211, 30));
+        btnWithdrawal->setGeometry(QRect(490, 180, 211, 30));
         labelHeyAndName = new QLabel(page_2);
         labelHeyAndName->setObjectName("labelHeyAndName");
         labelHeyAndName->setGeometry(QRect(80, 30, 411, 21));

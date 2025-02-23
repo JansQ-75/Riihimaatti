@@ -38,10 +38,10 @@ public:
         labelCustomer->setGeometry(QRect(80, 160, 191, 81));
         labelBalance = new QLabel(Balance);
         labelBalance->setObjectName("labelBalance");
-        labelBalance->setGeometry(QRect(570, 170, 171, 61));
+        labelBalance->setGeometry(QRect(490, 170, 171, 61));
         BtnToTransactions = new QPushButton(Balance);
         BtnToTransactions->setObjectName("BtnToTransactions");
-        BtnToTransactions->setGeometry(QRect(570, 320, 190, 31));
+        BtnToTransactions->setGeometry(QRect(490, 320, 190, 31));
 
         retranslateUi(Balance);
 

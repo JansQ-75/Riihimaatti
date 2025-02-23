@@ -28,7 +28,7 @@ public:
         StatusWithdrawal->resize(500, 400);
         label_status = new QLabel(StatusWithdrawal);
         label_status->setObjectName("label_status");
-        label_status->setGeometry(QRect(30, 70, 441, 241));
+        label_status->setGeometry(QRect(50, 80, 401, 201));
         QFont font;
         font.setPointSize(18);
         font.setBold(true);

@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include <QFontDatabase>
 #include <QApplication>
+#include <QDialog>
 
 
 void applyStyleSheet(QApplication &app){
@@ -44,7 +45,6 @@ int main(int argc, char *argv[]){
 
     applyStyleSheet(app);
   // listAvailableFonts();
-
 
     MainWindow w;
     w.show();

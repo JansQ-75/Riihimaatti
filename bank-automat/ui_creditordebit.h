@@ -31,13 +31,13 @@ public:
         creditOrDebit->resize(500, 400);
         btnCredit = new QPushButton(creditOrDebit);
         btnCredit->setObjectName("btnCredit");
-        btnCredit->setGeometry(QRect(170, 290, 150, 50));
+        btnCredit->setGeometry(QRect(160, 270, 150, 50));
         btnDebit = new QPushButton(creditOrDebit);
         btnDebit->setObjectName("btnDebit");
-        btnDebit->setGeometry(QRect(170, 210, 150, 50));
+        btnDebit->setGeometry(QRect(160, 210, 150, 50));
         labelChooseName = new QLabel(creditOrDebit);
         labelChooseName->setObjectName("labelChooseName");
-        labelChooseName->setGeometry(QRect(60, 50, 401, 91));
+        labelChooseName->setGeometry(QRect(50, 50, 401, 91));
         QFont font;
         font.setPointSize(16);
         labelChooseName->setFont(font);
