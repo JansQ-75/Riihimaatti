@@ -3,7 +3,7 @@
 
 ---
 
-### Table of contents
+## Table of contents
 
 - *Project introduction*
 - *Project goals*
@@ -14,13 +14,13 @@
 
 ---
 
-### Project introduction
+## Project introduction
 
 The aim of this project was to develop an ATM application, using the knowledge the student-developers learned on previous courses while studying software development at Oulu University of Applied Scienses.
 
 ---
 
-### Project goals
+## Project goals
 
  :star: The purpose of this project was to create an ATM application which combines SQL database, REST API, Linux server and Qt Creator.
 
@@ -30,24 +30,59 @@ The aim of this project was to develop an ATM application, using the knowledge t
 
 ---
 
-### Usage instructions
+## Usage instructions
 
-*Jotain fiksua tähän* 
+### Development
 
----
+#### Database
 
-### Documentation
----
-### Backend
+This application requires MySQL server. Some suggestions for development use: [UniServer zero](https://www.uniformserver.com/), [Docker image](https://hub.docker.com/_/mysql/). Use LTS version 8.4.X unless you have particular reason why you shouldn't.
+
+Repository provides two files to kickstart your database, use them to initialize your database with data.
+
+- `RiihimaattiStructureDump.sql`
+- `RiihimaattiDataDump.sql`
+
+#### Backend
+
+For backend development you should have Node.js with version 20.x installed ([nodejs.org](https://nodejs.org/)) and MySQL server available. 
+
+Copy file `backend/.template.env` as `backend/.env` and fill in your data. `PORT` defaults to 3001 if not given and `SQL_SERVER_PASSWORD` to `''` (no password).
+
+Then in root of project folder:
 
 ```sh
 cd backend
 npm install
 npm run dev
 ```
-### API??
+
+Folder `backend/apitests` has lot's of ready to go api calls ready. Usage requires _REST Client_ extension by Huachao Mao in VS Code. [Read more and install.](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
+
+#### Client application
+
+Client application is implemented with Qt. To install student/community licensed applications, visit [Qt download portal](https://www.qt.io/download-dev).
+
 ---
-### Server/Linux??
+
+### Deployment
+
+Server application runs on Node.js (currently 20.x) and should be platform-agnostic. Set environment parameters on your environment. Refer to platform/OS provider for best practices. Install dependencies with `npm install`. Server starts with `npm start`. Make sure your server provider runs this (and preferrably `npm install`) command on system start.
+
+Client software curretly requires manual transfer to target device. Automatic updates are on roadmap and are available soon™️.
+
+#### Database
+
+Make sure your database-instace contains database named in your `SQL_SERVER_DATABASE`. On first run, initialize database structure with `RiihimaattiStructureDump.sql`.
+
+## Documentation
+
+### Deployment
+
+Project uses Github actions to deploy latest update of backend server to Azure. Application runs as Web App with MySQL flexible server in same Resource group. Backend service is available at [riihimaatti.azurewebsites.net](https://riihimaatti.azurewebsites.net).
+
+For now at least, client software must be manually taken to target device. Target device must have supported and updated Windows installation (Linux should technically work, but not tested). Github Action currently compiles client application on pull request for any compile time errors but doesn't provide standalone application.
+
 ---
 ### Database
 
@@ -82,6 +117,7 @@ For this project we created SQL database with MySQLWorkbench
 ### Frontend
 
 **Logo:** 
+
 <img src="riihimaattilogo.jpg">
 
 Also available on .png for easy use.
