@@ -41,7 +41,6 @@ Login::~Login()
     delete ui;
 
     if (loginTimer) {
-        //disconnect(this, nullptr, loginTimer, nullptr);
         disconnect(loginTimer, nullptr, this, nullptr);
         delete loginTimer;
         loginTimer=nullptr;

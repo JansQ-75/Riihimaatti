@@ -20,7 +20,7 @@ void StatusWithdrawal::setStatusText(QString amount)
     ui->label_status->setText("Withdrawal was successful\n\nHere is " + amount + " € for you");
 
     // timer for closing popup
-    QTimer::singleShot(5000, this, &QWidget::close);
+    QTimer::singleShot(3000, this, &QWidget::close);
 
 }
 
@@ -28,14 +28,14 @@ void StatusWithdrawal::setErrorText()
 {
     ui->label_status->setText("Not enough balance\n\nWithdrawal failed");
 
-    QTimer::singleShot(5000, this, &QWidget::close);
+    QTimer::singleShot(3000, this, &QWidget::close);
 }
 
 void StatusWithdrawal::setNetworkError()
 {
     ui->label_status->setText("Network error occurred");
 
-    QTimer::singleShot(5000, this, &QWidget::close);
+    QTimer::singleShot(3000, this, &QWidget::close);
 }
 
 void StatusWithdrawal::setAmount(const QString &newAmount)
