@@ -1,7 +1,11 @@
+/*All stacks*/
+
 QWidget#stackedWidget {
     background: #ebf2fa;
     background-image: url(":/background/transparentlogo.png");
         background-repeat: no-repeat;
+        background-position: top left;
+        font-family: "Verdana";
     }
 
 QPushButton{
@@ -10,13 +14,14 @@ QPushButton{
     border-width: 2px;
     border-radius: 4px;
     border-color:#ffffff;
-    font-family: Footlight MT;
+    font-family: "Verdana";
     font-size: 13px;
     padding: 2px;
 }
 
 QLabel{
-font-family: "Footlight MT Light" !important;
+font-family: "Verdana" !important;
+font-size: 13px;
 }
 
 QPushButton:hover {
@@ -24,14 +29,85 @@ QPushButton:hover {
     color: black;
 }
 
+/*MainWindow*/
+
+QWidget#MainWindow{
+background: #ffffff !important;
+}
+
+QWidget#label_test{
+border-style: inset;
+border-width: 5px;
+border-radius: 6px;
+border-color:#ffffff;
+}
+
+QWidget#labelHeyAndName{
+font-size: 20px;}
+
+QWidget#label_7{
+font-family: "Footlight MT Light" !important;
+font-size: 60px !important;
+color: #082d54;}
+
+QWidget#label_logout{
+font-size: 20px;}
+
+
+/*Login*/
+
 QLabel#labelCardnumber {
-background: #ffffff;
+background: #ffffff !important;
+}
+
+QLabel#label_9{
+font-size: 15px;
+}
+
+QLabel#label_10{
+font-size: 15px;
 }
 
 QLabel#labelPincode {
 background: #ffffff !important;
 }
 
-QWidget#MainWindow{
-background: #ffffff !important;
-}
+/*Balance*/
+
+QLabel#label_header{
+font-size: 20px;}
+
+/*Credit or debit, TODO*/
+
+QWidget#creditordebit{
+    background: #ebf2fa;
+    background-image: url(":/background/transparentlogo.png");
+        background-repeat: no-repeat;
+        background-position: top left;
+        font-family: "Verdana";
+        font-size: 13px;}
+
+/*Other amount withdrawal, TODO*/
+
+QWidget#otheramountwithdrawal{
+    background: #ebf2fa;
+    background-image: url(":/background/transparentlogo.png");
+        background-repeat: no-repeat;
+        background-position: top left;
+        font-family: "Verdana";
+        font-size: 13px;}
+
+/*status withdrawal, TODO*/
+
+QWidget#statuswithdrawal{
+    background: #ebf2fa;
+    background-image: url(":/background/transparentlogo.png");
+        background-repeat: no-repeat;
+        background-position: top left;
+        font-family: "Verdana";
+        font-size: 13px;}
+
+/*withdrawal*/
+
+QLabel#label_w_header{
+font-size: 20px !important;}

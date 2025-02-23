@@ -22,21 +22,20 @@ QT_BEGIN_NAMESPACE
 class Ui_Transactions
 {
 public:
-    QLabel *label;
+    QLabel *label_header;
     QTableView *tableView;
     QPushButton *btnDown;
     QPushButton *btnUp;
     QLabel *labelCustomer;
-    QLabel *label_logoTransaction;
 
     void setupUi(QWidget *Transactions)
     {
         if (Transactions->objectName().isEmpty())
             Transactions->setObjectName("Transactions");
         Transactions->resize(800, 480);
-        label = new QLabel(Transactions);
-        label->setObjectName("label");
-        label->setGeometry(QRect(280, 30, 181, 21));
+        label_header = new QLabel(Transactions);
+        label_header->setObjectName("label_header");
+        label_header->setGeometry(QRect(80, 30, 251, 71));
         tableView = new QTableView(Transactions);
         tableView->setObjectName("tableView");
         tableView->setGeometry(QRect(130, 130, 631, 331));
@@ -49,10 +48,7 @@ public:
         btnUp->setGeometry(QRect(30, 230, 65, 65));
         labelCustomer = new QLabel(Transactions);
         labelCustomer->setObjectName("labelCustomer");
-        labelCustomer->setGeometry(QRect(30, 60, 141, 81));
-        label_logoTransaction = new QLabel(Transactions);
-        label_logoTransaction->setObjectName("label_logoTransaction");
-        label_logoTransaction->setGeometry(QRect(580, 10, 161, 111));
+        labelCustomer->setGeometry(QRect(530, 20, 181, 81));
 
         retranslateUi(Transactions);
 
@@ -62,11 +58,10 @@ public:
     void retranslateUi(QWidget *Transactions)
     {
         Transactions->setWindowTitle(QCoreApplication::translate("Transactions", "Form", nullptr));
-        label->setText(QCoreApplication::translate("Transactions", "Transactions", nullptr));
+        label_header->setText(QCoreApplication::translate("Transactions", "Transactions", nullptr));
         btnDown->setText(QCoreApplication::translate("Transactions", "DOWN", nullptr));
         btnUp->setText(QCoreApplication::translate("Transactions", "UP", nullptr));
         labelCustomer->setText(QCoreApplication::translate("Transactions", "Customer", nullptr));
-        label_logoTransaction->setText(QCoreApplication::translate("Transactions", "TextLabel", nullptr));
     } // retranslateUi
 
 };

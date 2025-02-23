@@ -20,7 +20,7 @@ QT_BEGIN_NAMESPACE
 class Ui_Balance
 {
 public:
-    QLabel *label;
+    QLabel *label_header;
     QLabel *labelCustomer;
     QLabel *labelBalance;
     QPushButton *BtnToTransactions;
@@ -30,18 +30,18 @@ public:
         if (Balance->objectName().isEmpty())
             Balance->setObjectName("Balance");
         Balance->resize(800, 480);
-        label = new QLabel(Balance);
-        label->setObjectName("label");
-        label->setGeometry(QRect(110, 60, 63, 21));
+        label_header = new QLabel(Balance);
+        label_header->setObjectName("label_header");
+        label_header->setGeometry(QRect(80, 30, 241, 61));
         labelCustomer = new QLabel(Balance);
         labelCustomer->setObjectName("labelCustomer");
-        labelCustomer->setGeometry(QRect(90, 100, 191, 81));
+        labelCustomer->setGeometry(QRect(80, 160, 191, 81));
         labelBalance = new QLabel(Balance);
         labelBalance->setObjectName("labelBalance");
-        labelBalance->setGeometry(QRect(430, 110, 171, 61));
+        labelBalance->setGeometry(QRect(570, 170, 171, 61));
         BtnToTransactions = new QPushButton(Balance);
         BtnToTransactions->setObjectName("BtnToTransactions");
-        BtnToTransactions->setGeometry(QRect(430, 210, 191, 31));
+        BtnToTransactions->setGeometry(QRect(570, 320, 190, 31));
 
         retranslateUi(Balance);
 
@@ -51,7 +51,7 @@ public:
     void retranslateUi(QWidget *Balance)
     {
         Balance->setWindowTitle(QCoreApplication::translate("Balance", "Form", nullptr));
-        label->setText(QCoreApplication::translate("Balance", "Balance", nullptr));
+        label_header->setText(QCoreApplication::translate("Balance", "Balance", nullptr));
         labelCustomer->setText(QCoreApplication::translate("Balance", "Customer info", nullptr));
         labelBalance->setText(QCoreApplication::translate("Balance", "Balance", nullptr));
         BtnToTransactions->setText(QCoreApplication::translate("Balance", "View Transactions", nullptr));

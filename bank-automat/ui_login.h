@@ -51,7 +51,7 @@ public:
         btn4->setGeometry(QRect(470, 180, 65, 65));
         label_9 = new QLabel(Login);
         label_9->setObjectName("label_9");
-        label_9->setGeometry(QRect(60, 170, 200, 60));
+        label_9->setGeometry(QRect(70, 150, 200, 60));
         QFont font;
         font.setFamilies({QString::fromUtf8("Footlight MT")});
         font.setPointSize(18);
@@ -61,11 +61,11 @@ public:
         btn3->setGeometry(QRect(610, 110, 65, 65));
         label_10 = new QLabel(Login);
         label_10->setObjectName("label_10");
-        label_10->setGeometry(QRect(60, 250, 200, 60));
+        label_10->setGeometry(QRect(70, 220, 200, 60));
         label_10->setFont(font);
         labelPincode = new QLabel(Login);
         labelPincode->setObjectName("labelPincode");
-        labelPincode->setGeometry(QRect(290, 250, 111, 61));
+        labelPincode->setGeometry(QRect(290, 230, 130, 40));
         btn9 = new QPushButton(Login);
         btn9->setObjectName("btn9");
         btn9->setGeometry(QRect(610, 250, 65, 65));
@@ -89,7 +89,7 @@ public:
         btn6->setGeometry(QRect(610, 180, 65, 65));
         labelCardnumber = new QLabel(Login);
         labelCardnumber->setObjectName("labelCardnumber");
-        labelCardnumber->setGeometry(QRect(290, 180, 131, 61));
+        labelCardnumber->setGeometry(QRect(290, 170, 130, 40));
         QFont font1;
         font1.setPointSize(9);
         labelCardnumber->setFont(font1);

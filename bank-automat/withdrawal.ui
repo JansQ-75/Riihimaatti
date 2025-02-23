@@ -22,8 +22,8 @@
   <widget class="QLabel" name="label_w_header">
    <property name="geometry">
     <rect>
-     <x>300</x>
-     <y>10</y>
+     <x>80</x>
+     <y>30</y>
      <width>191</width>
      <height>71</height>
     </rect>
@@ -31,20 +31,17 @@
    <property name="font">
     <font>
      <pointsize>22</pointsize>
-     <bold>true</bold>
+     <bold>false</bold>
     </font>
    </property>
    <property name="text">
     <string>Withdrawal</string>
    </property>
-   <property name="alignment">
-    <set>Qt::AlignmentFlag::AlignCenter</set>
-   </property>
   </widget>
   <widget class="QPushButton" name="btn_20e">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>80</x>
      <y>280</y>
      <width>150</width>
      <height>60</height>
@@ -68,7 +65,7 @@
   <widget class="QPushButton" name="btn_60e">
    <property name="geometry">
     <rect>
-     <x>610</x>
+     <x>570</x>
      <y>210</y>
      <width>150</width>
      <height>60</height>
@@ -92,7 +89,7 @@
   <widget class="QPushButton" name="btn_otherAmount">
    <property name="geometry">
     <rect>
-     <x>610</x>
+     <x>570</x>
      <y>370</y>
      <width>150</width>
      <height>60</height>
@@ -116,7 +113,7 @@
   <widget class="QPushButton" name="btn_100e">
    <property name="geometry">
     <rect>
-     <x>610</x>
+     <x>570</x>
      <y>290</y>
      <width>150</width>
      <height>60</height>
@@ -140,7 +137,7 @@
   <widget class="QPushButton" name="btn_40e">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>80</x>
      <y>360</y>
      <width>150</width>
      <height>60</height>
@@ -164,10 +161,10 @@
   <widget class="QLabel" name="label_balance">
    <property name="geometry">
     <rect>
-     <x>270</x>
+     <x>570</x>
      <y>120</y>
-     <width>331</width>
-     <height>151</height>
+     <width>341</width>
+     <height>61</height>
     </rect>
    </property>
    <property name="font">
@@ -176,7 +173,7 @@
     </font>
    </property>
    <property name="text">
-    <string>tilin saldo</string>
+    <string>Tilin saldo</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
@@ -185,7 +182,7 @@
   <widget class="QLabel" name="label_ownerName">
    <property name="geometry">
     <rect>
-     <x>30</x>
+     <x>80</x>
      <y>120</y>
      <width>221</width>
      <height>131</height>
