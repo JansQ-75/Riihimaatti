@@ -25,6 +25,13 @@ Balance::Balance(QWidget *parent)
 Balance::~Balance()
 {
     delete ui;
+
+    if (BalanceTimer) {
+        disconnect(this, nullptr, BalanceTimer, nullptr);
+        disconnect(BalanceTimer, nullptr, this, nullptr);
+        delete BalanceTimer;
+        BalanceTimer=nullptr;
+    }
 }
 
 void Balance::startBalanceTimer()

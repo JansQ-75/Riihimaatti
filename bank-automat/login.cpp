@@ -39,6 +39,14 @@ Login::Login(QWidget *parent)
 Login::~Login()
 {
     delete ui;
+
+    if (loginTimer) {
+        //disconnect(this, nullptr, loginTimer, nullptr);
+        disconnect(loginTimer, nullptr, this, nullptr);
+        delete loginTimer;
+        loginTimer=nullptr;
+    }
+
 }
 
 void Login::startLoginTimer()
@@ -263,4 +271,5 @@ void Login::getDualCardInfo(QString dualAccountType, int dualAccountId)
 {
     // send dualcard selections to Main menu
     emit sendDualInfoToMain(dualAccountType, dualAccountId);
+
 }

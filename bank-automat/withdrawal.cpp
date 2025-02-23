@@ -36,14 +36,27 @@ Withdrawal::~Withdrawal()
 
     WithdrawalManager->deleteLater();
 
-    delete objOtherAmount;
-    objOtherAmount=nullptr;
+    if (objOtherAmount) {
+        disconnect(this, nullptr, objOtherAmount, nullptr);
+        disconnect(objOtherAmount, nullptr, this, nullptr);
+        delete objOtherAmount;
+        objOtherAmount=nullptr;
+    }
 
-    delete objStatus;
-    objStatus=nullptr;
+    if (objStatus) {
+        disconnect(this, nullptr, objStatus, nullptr);
+        disconnect(objStatus, nullptr, this, nullptr);
+        delete objStatus;
+        objStatus=nullptr;
+    }
 
-    delete inactivityTimer;
-    inactivityTimer=nullptr;
+    if (inactivityTimer) {
+        disconnect(this, nullptr, inactivityTimer, nullptr);
+        disconnect(inactivityTimer, nullptr, this, nullptr);
+        delete inactivityTimer;
+        inactivityTimer=nullptr;
+    }
+
 }
 
 void Withdrawal::setDualAccountType(const QString &newDualAccountType)

@@ -27,6 +27,14 @@ creditOrDebit::creditOrDebit(QWidget *parent)
 creditOrDebit::~creditOrDebit()
 {
     delete ui;
+
+    if (creditOrDebitTimer) {
+        disconnect(this, nullptr, creditOrDebitTimer, nullptr);
+        disconnect(creditOrDebitTimer, nullptr, this, nullptr);
+        delete creditOrDebitTimer;
+        creditOrDebitTimer=nullptr;
+    }
+
 }
 
 

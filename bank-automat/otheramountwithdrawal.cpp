@@ -41,6 +41,13 @@ OtherAmountWithdrawal::OtherAmountWithdrawal(QWidget *parent)
 OtherAmountWithdrawal::~OtherAmountWithdrawal()
 {
     delete ui;
+
+    if (OtherAmountTimer) {
+        disconnect(this, nullptr, OtherAmountTimer, nullptr);
+        disconnect(OtherAmountTimer, nullptr, this, nullptr);
+        delete OtherAmountTimer;
+        OtherAmountTimer=nullptr;
+    }
 }
 
 void OtherAmountWithdrawal::startTimer()

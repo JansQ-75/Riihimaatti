@@ -14,80 +14,8 @@ MainWindow::MainWindow(QWidget *parent)
     //NetworkManager
     MainWindowManager = new QNetworkAccessManager(this);
 
-    //Hide buttons
-    ui->btnBack->setVisible(false);
-    ui->btnLogout->setVisible(false);
+    createObjects();
 
-    //Create objects
-    objBalance = new Balance(this);
-    objLogin = new Login(this);
-    objTransactions = new Transactions(this);
-    objWithdrawal = new Withdrawal(this);
-
-    // Timer
-    mainTimer = new QTimer(this);
-
-    // other screenviews
-    ui->stackedWidget->addWidget(objBalance);
-    ui->stackedWidget->addWidget(objLogin);
-    ui->stackedWidget->addWidget(objTransactions);
-    ui->stackedWidget->addWidget(objWithdrawal);
-
-    // make list of push buttons of stacked widget page 1
-    QWidget *page = ui->stackedWidget->widget(1);
-    QList<QPushButton*> menuButtons = page->findChildren<QPushButton*>();
-    //connect button' clicked() signals to slot for reseting timer if necessary
-    for (QPushButton* button : menuButtons) {
-        connect(button, &QPushButton::pressed, this, &MainWindow::onButtonPressed);
-    }
-
-    // Timer connections
-    connect(mainTimer, &QTimer::timeout, this, &MainWindow::timerLogoutSlot);
-
-    //Go back -connect
-    connect(objLogin,&Login::backMain, this, &MainWindow::goBackSlot);
-    connect(objTransactions,&Transactions::backMain, this, &MainWindow::goBackSlot);
-    connect(objWithdrawal,&Withdrawal::backMainSignal, this, &MainWindow::goBackSlot);
-
-    // Logout connections
-    connect(objWithdrawal, &Withdrawal::logOutSignal, this, &MainWindow::timerLogoutSlot);
-    connect(objTransactions, &Transactions::logoutSignal, this, &MainWindow::timerLogoutSlot);
-    connect(objLogin, &Login::backStartScreen, this, &MainWindow::timerLogoutSlot);
-    connect(objBalance, &Balance::backStartScreen, this, &MainWindow::timerLogoutSlot);
-    connect(this, &MainWindow::logoutSignal, this, &MainWindow::on_btnLogout_clicked);
-
-    //Bring data
-    connect(objLogin,&Login::sendToken, this, &MainWindow::getTokenSlot);
-    connect(objLogin, &Login::RetrieveCustomerData, this, &MainWindow::getCustomerData);
-    connect(objLogin, &Login::RetrieveAccountData, this, &MainWindow::getAccountData);
-    connect(objLogin,&Login::sendDataToMain, this, &MainWindow::getDataFromLoginSlot);
-    connect(objLogin, &Login::sendDualInfoToMain, this, &MainWindow::getDualSelections);
-
-    //Send...
-    //...tokens
-    connect(this, &MainWindow::sendTokenToWidget, objWithdrawal, &Withdrawal::getToken);
-    connect(this, &MainWindow::sendTokenToWidget, objTransactions, &Transactions::getToken);
-
-    //...customer data
-    connect(this, &MainWindow::sendCustomerData, objWithdrawal, &Withdrawal::CustomerDataSlot);
-    connect(this, &MainWindow::sendCustomerData, objTransactions, &Transactions::CustomerDataSlot);
-    connect(this, &MainWindow::sendCustomerData, objBalance, &Balance::CustomerDataSlot);
-
-    //...account data
-    connect(this, &MainWindow::sendAccountData, objWithdrawal, &Withdrawal::AccountDataSlot);
-    connect(this, &MainWindow::sendAccountData, objTransactions, &Transactions::AccountDataSlot);
-    connect(this, &MainWindow::sendAccountData, objBalance, &Balance::AccountDataSlot);
-
-
-    // ...login data
-    connect(this, &MainWindow::sendLoginDataWithdrawal, objWithdrawal, &Withdrawal::LoginDataSlot);
-
-    // for connecting balance to transactions
-    connect(objBalance, &Balance::openTransactions, this, &MainWindow::on_btnTransactions_clicked);
-
-    //Add a logo without strching the logo
-    QPixmap logo(":/images/riihimaattilogopng.png");
-    ui->label_logoStart->setPixmap(logo.scaled(ui->label_logoStart->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 }
 
 MainWindow::~MainWindow()
@@ -320,6 +248,144 @@ void MainWindow::stopWidgetTimers()
     objBalance->stopBalanceTimer(); // stop inactivitytimer in Balance
 }
 
+void MainWindow::createObjects()
+{
+    //Create objects
+    objBalance = new Balance(this);
+    objLogin = new Login(this);
+    objTransactions = new Transactions(this);
+    objWithdrawal = new Withdrawal(this);
+
+    // Timer
+    mainTimer = new QTimer(this);
+
+    //Hide buttons
+    ui->btnBack->setVisible(false);
+    ui->btnLogout->setVisible(false);
+
+    // other screenviews
+    ui->stackedWidget->addWidget(objBalance);
+    ui->stackedWidget->addWidget(objLogin);
+    ui->stackedWidget->addWidget(objTransactions);
+    ui->stackedWidget->addWidget(objWithdrawal);
+
+    // make list of push buttons of stacked widget page 1
+    QWidget *page = ui->stackedWidget->widget(1);
+    QList<QPushButton*> menuButtons = page->findChildren<QPushButton*>();
+    //connect button' clicked() signals to slot for reseting timer if necessary
+    for (QPushButton* button : menuButtons) {
+        connect(button, &QPushButton::pressed, this, &MainWindow::onButtonPressed);
+    }
+
+    // Timer connections
+    connect(mainTimer, &QTimer::timeout, this, &MainWindow::timerLogoutSlot);
+
+    //Go back -connect
+    connect(objLogin,&Login::backMain, this, &MainWindow::goBackSlot);
+    connect(objTransactions,&Transactions::backMain, this, &MainWindow::goBackSlot);
+    connect(objWithdrawal,&Withdrawal::backMainSignal, this, &MainWindow::goBackSlot);
+
+    // Logout connections
+    connect(objWithdrawal, &Withdrawal::logOutSignal, this, &MainWindow::timerLogoutSlot);
+    connect(objTransactions, &Transactions::logoutSignal, this, &MainWindow::timerLogoutSlot);
+    connect(objLogin, &Login::backStartScreen, this, &MainWindow::timerLogoutSlot);
+    connect(objBalance, &Balance::backStartScreen, this, &MainWindow::timerLogoutSlot);
+    connect(this, &MainWindow::logoutSignal, this, &MainWindow::on_btnLogout_clicked);
+
+    //Bring data
+    connect(objLogin,&Login::sendToken, this, &MainWindow::getTokenSlot);
+    connect(objLogin, &Login::RetrieveCustomerData, this, &MainWindow::getCustomerData);
+    connect(objLogin, &Login::RetrieveAccountData, this, &MainWindow::getAccountData);
+    connect(objLogin,&Login::sendDataToMain, this, &MainWindow::getDataFromLoginSlot);
+    connect(objLogin, &Login::sendDualInfoToMain, this, &MainWindow::getDualSelections);
+
+    //Send...
+    //...tokens
+    connect(this, &MainWindow::sendTokenToWidget, objWithdrawal, &Withdrawal::getToken);
+    connect(this, &MainWindow::sendTokenToWidget, objTransactions, &Transactions::getToken);
+
+    //...customer data
+    connect(this, &MainWindow::sendCustomerData, objWithdrawal, &Withdrawal::CustomerDataSlot);
+    connect(this, &MainWindow::sendCustomerData, objTransactions, &Transactions::CustomerDataSlot);
+    connect(this, &MainWindow::sendCustomerData, objBalance, &Balance::CustomerDataSlot);
+
+    //...account data
+    connect(this, &MainWindow::sendAccountData, objWithdrawal, &Withdrawal::AccountDataSlot);
+    connect(this, &MainWindow::sendAccountData, objTransactions, &Transactions::AccountDataSlot);
+    connect(this, &MainWindow::sendAccountData, objBalance, &Balance::AccountDataSlot);
+
+
+    // ...login data
+    connect(this, &MainWindow::sendLoginDataWithdrawal, objWithdrawal, &Withdrawal::LoginDataSlot);
+
+    // for connecting balance to transactions
+    connect(objBalance, &Balance::openTransactions, this, &MainWindow::on_btnTransactions_clicked);
+
+    //Add a logo without strching the logo
+    QPixmap logo(":/images/riihimaattilogopng.png");
+    ui->label_logoStart->setPixmap(logo.scaled(ui->label_logoStart->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+}
+
+void MainWindow::destroyObjects()
+{
+    if (objBalance) {
+        disconnect(this, nullptr, objBalance, nullptr);
+        disconnect(objBalance, nullptr, this, nullptr);
+        delete objBalance;
+        objBalance = nullptr;
+    }
+
+    if (objLogin) {
+        disconnect(this, nullptr, objLogin, nullptr);
+        disconnect(objLogin, nullptr, this, nullptr);
+        delete objLogin;
+        objLogin = nullptr;
+    }
+
+    if (objTransactions) {
+        disconnect(this, nullptr, objTransactions, nullptr);
+        disconnect(objTransactions, nullptr, this, nullptr);
+        delete objTransactions;
+        objTransactions = nullptr;
+    }
+
+    if (objWithdrawal) {
+        disconnect(this, nullptr, objWithdrawal, nullptr);
+        disconnect(objWithdrawal, nullptr, this, nullptr);
+        delete objWithdrawal;
+        objWithdrawal = nullptr;
+    }
+
+    if (mainTimer) {
+        disconnect(this, nullptr, mainTimer, nullptr);
+        disconnect(mainTimer, nullptr, this, nullptr);
+        delete mainTimer;
+        mainTimer = nullptr;
+    }
+
+    // Clear customer data
+
+    this->token.clear();
+
+    this->response_data.clear();
+
+
+    this->idcard = 0;
+    this->type = "";
+
+    this->idbank_account = 0;
+    this->bank_account_number = "";
+    this->account_type = "";
+    this->balance = 0;
+    this->credit_limit = 0;
+    this->idcustomer = 0;
+    this->fname = "";
+    this->lname = "";
+    this->address = "";
+    this->phone = "";
+    this->picture = "";
+}
+
 //Go the login page
 void MainWindow::on_btnStart_clicked()
 {
@@ -374,6 +440,8 @@ void MainWindow::on_btnLogout_clicked()
     // after 5 seconds, return to start screen
     QTimer::singleShot(3000, this, [this](){
         ui->stackedWidget->setCurrentIndex(0);
+        destroyObjects();
+        createObjects();
     });
 
 }
