@@ -148,6 +148,10 @@
         <y>120</y>
         <width>181</width>
         <height>191</height>
+        <x>540</x>
+        <y>120</y>
+        <width>221</width>
+        <height>221</height>
        </rect>
       </property>
       <property name="text">

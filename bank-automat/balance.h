@@ -38,8 +38,8 @@ private:
     QString cardtype;
 
 public slots:
-    void CustomerDataSlot(int, QString, QString, double, double, int, QString, QString, QString, QString, QString);
-
+    void CustomerDataSlot(int, QString, QString, QString, QString, QString);
+    void AccountDataSlot(int, QString, QString, double, double);
 
 private slots:
     void on_BtnToTransactions_clicked();

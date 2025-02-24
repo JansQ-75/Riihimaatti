@@ -25,6 +25,13 @@ Balance::Balance(QWidget *parent)
 Balance::~Balance()
 {
     delete ui;
+
+    if (BalanceTimer) {
+        disconnect(this, nullptr, BalanceTimer, nullptr);
+        disconnect(BalanceTimer, nullptr, this, nullptr);
+        delete BalanceTimer;
+        BalanceTimer=nullptr;
+    }
 }
 
 void Balance::startBalanceTimer()
@@ -37,6 +44,27 @@ void Balance::stopBalanceTimer()
 {
     //stop timer
     BalanceTimer->stop();
+}
+
+void Balance::AccountDataSlot(int idbank_account, QString bank_account_number, QString account_type, double balance, double credit_limit)
+{
+    QString accountType;
+
+    // conditions for setting account type
+    if (cardtype == "debit/credit") {
+        // in case of dual card, use values customer has selected
+        accountType = dualAccountType;
+    } else {
+        // in case of debit or credit card, use values provided by login
+        accountType = account_type;
+    }
+
+    // different print depending on account type (debit or credit) show balance
+    if (accountType == "debit") {
+        ui->labelBalance->setText("DEBIT ACCOUNT:\nBalance: " + QString::number(balance) + " €");
+    } else {
+        ui->labelBalance->setText("CREDIT ACCOUNT:\nAvailable balance: " + QString::number(credit_limit-balance) + " €\nCredit limit: " + QString::number(credit_limit) + " €");
+    }
 }
 
 void Balance::handleTimeout()
@@ -69,27 +97,12 @@ void Balance::setCardtype(const QString &newCardtype)
     cardtype = newCardtype;
 }
 
-void Balance::CustomerDataSlot(int idbank_account, QString bank_account_number, QString account_type, double balance, double credit_limit, int idcustomer, QString fname, QString lname, QString address, QString phone, QString picture)
+void Balance::CustomerDataSlot(int idcustomer, QString fname, QString lname, QString address, QString phone, QString picture)
 {
-    QString accountType;
+
     ui->labelCustomer->setText("CUSTOMER:\n" + fname + " " + lname + "\n" + address + "\n" + phone);
 
-    // conditions for setting account type
-    if (cardtype == "debit/credit") {
-        // in case of dual card, use values customer has selected
-        accountType = dualAccountType;
-    } else {
-        // in case of debit or credit card, use values provided by login
-        accountType = account_type;
-    }
-
-    // different print depending on account type (debit or credit) show balance
-     if (accountType == "debit") {
-            ui->labelBalance->setText("DEBIT ACCOUNT:\nBalance: " + QString::number(balance) + " €");
-        } else {
-            ui->labelBalance->setText("CREDIT ACCOUNT:\nAvailable balance: " + QString::number(credit_limit-balance) + " €\nCredit limit: " + QString::number(credit_limit) + " €");
-        }
-    }
+}
 
 void Balance::on_BtnToTransactions_clicked()
 {

@@ -42,8 +42,17 @@ Transactions::~Transactions()
     transactionsList.clear();
 
     //Delete the table view
-    delete table_model;
-    table_model=nullptr;
+    // if (table_model) {
+    // delete table_model;
+    // table_model=nullptr;
+    // }
+
+    if (inactivityTimer) {
+        disconnect(this, nullptr, inactivityTimer, nullptr);
+        disconnect(inactivityTimer, nullptr, this, nullptr);
+        delete inactivityTimer;
+        inactivityTimer=nullptr;
+    }
 }
 
 
@@ -113,12 +122,9 @@ void Transactions::getToken(QByteArray token)
     receivedToken = token; //ilman bearer
 }
 
-void Transactions::CustomerDataSlot(int idbank_account, QString bank_account_number, QString account_type, double balance, double credit_limit, int idcustomer, QString fname, QString lname, QString address, QString phone, QString picture)
+void Transactions::AccountDataSlot(int idbank_account, QString bank_account_number, QString account_type, double balance, double credit_limit)
 {
     int bankAccountId;
-    //Customer data to label
-    ui->labelCustomer->setText("CUSTOMER:\n" + fname + " " + lname + "\n" + address + "\n" + phone);
-
     // conditions for setting account type
     if (cardType == "debit/credit") {
         // in case of dual card, use value customer has selected
@@ -127,7 +133,6 @@ void Transactions::CustomerDataSlot(int idbank_account, QString bank_account_num
         // in case of debit or credit card, use value provided by login
         bankAccountId = idbank_account;
     }
-
     //GET TRANSACTION DATA
     QString site_url=Environment::base_url()+"/transactions/" + QString::number(bankAccountId);
     QNetworkRequest request(site_url);
@@ -135,6 +140,13 @@ void Transactions::CustomerDataSlot(int idbank_account, QString bank_account_num
     transactionManager = new QNetworkAccessManager(this);
     connect(transactionManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(dbDataSlot(QNetworkReply*)));
     replyData=transactionManager->get(request);
+
+}
+
+void Transactions::CustomerDataSlot(int idcustomer, QString fname, QString lname, QString address, QString phone, QString picture)
+{
+    //Customer data to label
+    ui->labelCustomer->setText("CUSTOMER:\n" + fname + " " + lname + "\n" + address + "\n" + phone);
 
 }
 

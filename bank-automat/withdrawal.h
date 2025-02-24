@@ -24,14 +24,15 @@ public:
     explicit Withdrawal(QWidget *parent = nullptr);
     ~Withdrawal();
 
-    // setters for account type and id
+    // DUALCARD: setters for account type and id
     void setDualAccountType(const QString &newDualAccountType);
     void setDualAccountId(int newDualAccountId);
 
-    void makeWithdrawal(QString); // function for making withdrawal
-
+    //TIMER
     void startTimer(); // timer function for inactivity
     void stopTimer(); // stop timer function
+
+    void makeWithdrawal(QString); // function for making withdrawal
 
 private:
     Ui::Withdrawal *ui;
@@ -43,7 +44,7 @@ private:
     StatusWithdrawal *objStatus;
     OtherAmountWithdrawal *objOtherAmount;
 
-
+    // HTTP
     QNetworkAccessManager *WithdrawalManager;   // NetworkAccess Manager
     QByteArray response_Withdrawal;             //variable for response data
 
@@ -76,7 +77,8 @@ private slots:
 
 public slots:
     void getToken(QByteArray token); // receive token
-    void CustomerDataSlot(int, QString, QString, double, double, int, QString, QString, QString, QString, QString);
+    void CustomerDataSlot(int, QString, QString, QString, QString, QString);
+    void AccountDataSlot(int, QString, QString, double, double);
     void LoginDataSlot(int, QString);
     void withdrawOtherAmountSlot(QString);
 };

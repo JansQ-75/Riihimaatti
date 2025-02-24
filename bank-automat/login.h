@@ -51,6 +51,7 @@ private:
     QString type;
     QString fname;
     QString lname;
+    int idbankAccount;
 
 private slots:
     void pressed_number();
@@ -71,9 +72,10 @@ signals:
     void backMain();
     void backStartScreen();
     void sendToken(QByteArray customersToken);
-    void RetrieveCustomerData(int idcustomer);
+    void RetrieveCustomerData(int);
+    void RetrieveAccountData(int);
     void sendDualInfoToMain(QString, int);
-    void sendDataToMain(int idcustomer, int idcard, QString type, QString fname, QString lname);
+    void sendDataToMain(int idcustomer, int idcard, QString type, QString fname, QString lname, int idbankAccount);
 };
 
 #endif // LOGIN_H
