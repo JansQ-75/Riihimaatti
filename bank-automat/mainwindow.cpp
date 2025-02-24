@@ -381,6 +381,7 @@ void MainWindow::destroyObjects()
     this->address = "";
     this->phone = "";
     this->picture = "";
+    ui->label_test->clear();
 }
 
 //Go the login page

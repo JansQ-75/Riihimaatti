@@ -100,7 +100,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Your pin code</string>
+    <string> Your pin code</string>
    </property>
   </widget>
   <widget class="QPushButton" name="btn9">
@@ -212,7 +212,7 @@
     <string notr="true"/>
    </property>
    <property name="text">
-    <string>Your card number</string>
+    <string> Your card number</string>
    </property>
   </widget>
   <widget class="QPushButton" name="btn5">
