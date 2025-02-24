@@ -22,11 +22,42 @@ OtherAmountWithdrawal::OtherAmountWithdrawal(QWidget *parent)
     connect(ui->btnClear,&QPushButton::clicked, this, &OtherAmountWithdrawal::pressed_number);
     connect(ui->btnOK,&QPushButton::clicked, this, &OtherAmountWithdrawal::pressed_OK);
 
+    // TIMER
+    OtherAmountTimer = new QTimer(this);
+
+    // connect signal to timeout (=returning main menu)
+    connect(OtherAmountTimer, &QTimer::timeout, this, &OtherAmountWithdrawal::handleTimeout);
+
+    // make list of all push buttons
+    QList<QPushButton*> buttons = findChildren<QPushButton*>();
+    //connect button' clicked() signals to slot for reseting timer if necessary
+    for (QPushButton* button : buttons) {
+        connect(button, &QPushButton::pressed, this, &OtherAmountWithdrawal::onButtonPressed);
+    }
+
+
 }
 
 OtherAmountWithdrawal::~OtherAmountWithdrawal()
 {
     delete ui;
+
+    if (OtherAmountTimer) {
+        disconnect(this, nullptr, OtherAmountTimer, nullptr);
+        disconnect(OtherAmountTimer, nullptr, this, nullptr);
+        delete OtherAmountTimer;
+        OtherAmountTimer=nullptr;
+    }
+}
+
+void OtherAmountWithdrawal::startTimer()
+{
+    OtherAmountTimer->start(10000); // start timer
+}
+
+void OtherAmountWithdrawal::stopTimer()
+{
+    OtherAmountTimer->stop();   // stop timer
 }
 
 void OtherAmountWithdrawal::pressed_number()
@@ -63,11 +94,27 @@ void OtherAmountWithdrawal::pressed_OK()
         emit withdrawOtherAmount(amountForLineEdit);
         amountForLineEdit.clear();  //clear variable
         ui->textAmount->clear();    //clears written amount
-        this->close();
+        this->close();              // close window
+        this->stopTimer();          // stop timer
     } else {
         ui->label_errorText->setText("The amount can not be\nwithdrawn from account.\n\nPlease select a new amount.\n\nRemember that the smallest\n bill in automat is 10€");
         ui->textAmount->clear();    //clears written amount
         amountForLineEdit.clear();  //clear variable
     }
+
+}
+
+void OtherAmountWithdrawal::onButtonPressed()
+{
+    //restart timer if any button is pressed
+    this->startTimer();
+}
+
+void OtherAmountWithdrawal::handleTimeout()
+{
+    // signal for logout after timeout
+    emit logoutSignal();
+    this->stopTimer();  // ensure stopping timer
+    this->close();      // close window
 
 }
