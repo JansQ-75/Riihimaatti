@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     MainWindowManager = new QNetworkAccessManager(this);
     createObjects();
 
-   // Add a logo without streching the logo
+    // Add a logo without streching the logo
     QPixmap logo(":/images/riihimaattilogopng.png");
     ui->label_logo->setPixmap(logo.scaled(ui->label_logo->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
     }
@@ -126,7 +126,6 @@ void MainWindow::receivedCustomerInfo(QNetworkReply *reply)
                         ui->label_test->size(),
                         Qt::KeepAspectRatio,
                         Qt::SmoothTransformation));
-
                 }
             }else{
                 qDebug()<<"profilepicture error";
@@ -191,7 +190,7 @@ void MainWindow::getDualSelections(QString dualAccountType, int dualAccountId)
     // set selected values to variables in Transaction
     objTransactions->setDualAccountId(dualAccountId);
 
-    // haetaan tilin tiedot kun on valittu credit tai debit
+    // Get the data of the bank account, after selection debit or credit
 
     // API request
     QString site_url=Environment::base_url()+"/bank_account/by-id/" + QString::number(dualAccountId);
