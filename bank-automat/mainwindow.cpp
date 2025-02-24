@@ -15,10 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     MainWindowManager = new QNetworkAccessManager(this);
     createObjects();
 
-    // for connecting balance to transactions
-    connect(objBalance, &Balance::openTransactions, this, &MainWindow::on_btnTransactions_clicked);
-
-   // Add a logo without strching the logo
+   // Add a logo without streching the logo
     QPixmap logo(":/images/riihimaattilogopng.png");
     ui->label_logo->setPixmap(logo.scaled(ui->label_logo->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
     }
