@@ -18,6 +18,9 @@
 
 The aim of this project was to develop an ATM application, using the knowledge the student-developers learned on previous courses while studying software development at Oulu University of Applied Scienses.
 
+[Riihimaatti_ProjectPoster](PosterRiihimaatti.jpg)
+
+
 ---
 
 ## Project goals
@@ -130,11 +133,17 @@ First, the app opens a login interface. The ATM app asks customer's card number 
 - The "Show balance" button shows the balance of the logged in customer's bank account. 
 - The "Make a withdrawal" button opens a new interface where customer can choose the desired amount for withdrawal.
 - The "Browse transactions" button lists 10 transactions to a new interface where customer can browse previous transactions.
-- The button for logout.
+- The "logout" button is visible in every interface after successfull login. Logout deletes and resets all objects needed to run ATM.
 
 ---
 
 ### Project outcome
+
+The application meets all the design requirements and functions efficiently, as intended. All components work together as planned. The software demonstrates stability with no critical errors or crashes during testing.
+
+We divided the work equally among the group, and everyone participated in all aspects of the project. The development process was completed successfully with minimal challenges.​
+
+Further development of the project would have focused on strengthening security features, such as data protection.​
 
 ---
 
