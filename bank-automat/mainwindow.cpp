@@ -126,7 +126,7 @@ void MainWindow::receivedCustomerInfo(QNetworkReply *reply)
                         ui->label_test->size(),
                         Qt::KeepAspectRatio,
                         Qt::SmoothTransformation));
-                    //ui->label_test->setScaledContents(true);
+
                 }
             }else{
                 qDebug()<<"profilepicture error";
@@ -382,6 +382,7 @@ void MainWindow::destroyObjects()
     this->address = "";
     this->phone = "";
     this->picture = "";
+    ui->label_test->clear();
 }
 
 //Go the login page
