@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     MainWindowManager = new QNetworkAccessManager(this);
     createObjects();
 
-   // Add a logo without streching the logo
+    // Add a logo without streching the logo
     QPixmap logo(":/images/riihimaattilogopng.png");
     ui->label_logo->setPixmap(logo.scaled(ui->label_logo->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
     }
@@ -126,7 +126,6 @@ void MainWindow::receivedCustomerInfo(QNetworkReply *reply)
                         ui->label_test->size(),
                         Qt::KeepAspectRatio,
                         Qt::SmoothTransformation));
-                    //ui->label_test->setScaledContents(true);
                 }
             }else{
                 qDebug()<<"profilepicture error";
