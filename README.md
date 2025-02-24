@@ -145,6 +145,8 @@ We divided the work equally among the group, and everyone participated in all as
 
 Further development of the project would have focused on strengthening security features, such as data protection.​
 
+<img src="riihimaattikollaasi.png">
+
 ---
 
 ### Contributors
