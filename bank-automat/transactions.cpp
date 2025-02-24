@@ -5,9 +5,6 @@
 //For a table view
 #include <QStandardItemModel>
 
-//For a picture
-//#include <QPixmap>
-
 Transactions::Transactions(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Transactions)
@@ -122,6 +119,7 @@ void Transactions::AccountDataSlot(int idbank_account, QString bank_account_numb
         // in case of debit or credit card, use value provided by login
         bankAccountId = idbank_account;
     }
+
     //GET TRANSACTION DATA
     QString site_url=Environment::base_url()+"/transactions/" + QString::number(bankAccountId);
     QNetworkRequest request(site_url);
@@ -204,6 +202,7 @@ void Transactions::dbDataSlot(QNetworkReply *replyData)
         ui->btnUp->setEnabled(false);
 
     }
+    
     for (int row = startingIndex; row < lastindex; ++row) {
 
         QStandardItem *itemtransaction_date = new QStandardItem(transactionsList[row]->getTransaction_date());
