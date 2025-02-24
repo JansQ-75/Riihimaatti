@@ -314,16 +314,12 @@ void MainWindow::createObjects()
     connect(this, &MainWindow::sendAccountData, objTransactions, &Transactions::AccountDataSlot);
     connect(this, &MainWindow::sendAccountData, objBalance, &Balance::AccountDataSlot);
 
-
     // ...login data
     connect(this, &MainWindow::sendLoginDataWithdrawal, objWithdrawal, &Withdrawal::LoginDataSlot);
 
     // for connecting balance to transactions
     connect(objBalance, &Balance::openTransactions, this, &MainWindow::on_btnTransactions_clicked);
 
-    //Add a logo without strching the logo
-    QPixmap logo(":/images/riihimaattilogopng.png");
-    ui->label_logoStart->setPixmap(logo.scaled(ui->label_logoStart->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 }
 
 void MainWindow::destroyObjects()
@@ -440,8 +436,8 @@ void MainWindow::on_btnLogout_clicked()
     // after 5 seconds, return to start screen
     QTimer::singleShot(3000, this, [this](){
         ui->stackedWidget->setCurrentIndex(0);
-        destroyObjects();
-        createObjects();
+        destroyObjects();   // delete objects, disconnect connections and clear customer data
+        createObjects();    // recreate objects for new login
     });
 
 }

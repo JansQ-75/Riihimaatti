@@ -27,9 +27,6 @@ Transactions::Transactions(QWidget *parent)
         connect(button, &QPushButton::pressed, this, &Transactions::onButtonPressed);
     }
 
-    //QPixmap logo("C:/Users/paula/Downloads/riihimaattilogopng.png");
-    //ui->label_logoTransaction->setPixmap(logo);
-    //ui->label_logoTransaction->setScaledContents(true);
 }
 
 
@@ -37,15 +34,7 @@ Transactions::~Transactions()
 {
     delete ui;
 
-    //Delete the list
-    //qDeleteAll(transactionsList); // crashaa koska yrittää poistaa objektia kahdesti.
     transactionsList.clear();
-
-    //Delete the table view
-    // if (table_model) {
-    // delete table_model;
-    // table_model=nullptr;
-    // }
 
     if (inactivityTimer) {
         disconnect(this, nullptr, inactivityTimer, nullptr);
@@ -108,8 +97,8 @@ void Transactions::setCardType(const QString &newCardType)
 
 void Transactions::startTimer()
 {
-    // logout if customer hasn't pressed any button within 10 seconds
-    inactivityTimer->start(10000); //start timer
+    // logout if customer hasn't pressed any button within 15 seconds
+    inactivityTimer->start(15000); //start timer
 }
 
 void Transactions::stopTimer()
@@ -119,7 +108,7 @@ void Transactions::stopTimer()
 
 void Transactions::getToken(QByteArray token)
 {
-    receivedToken = token; //ilman bearer
+    receivedToken = token; // without bearer
 }
 
 void Transactions::AccountDataSlot(int idbank_account, QString bank_account_number, QString account_type, double balance, double credit_limit)
@@ -159,7 +148,7 @@ void Transactions::dbDataSlot(QNetworkReply *replyData)
 
     //Check whether it is empty and array
     if (jsonresponse.isNull() || !jsonresponse.isArray()) {
-        qDebug() << "Error";
+        qDebug() << "Error or retrieving data from dual card";
         return;
     }
 
@@ -251,7 +240,7 @@ void Transactions::on_btnDown_clicked()
 void Transactions::onButtonPressed()
 {
     // restart inactivityTimer
-    inactivityTimer->start(10000); // start 10s timer
+    inactivityTimer->start(15000); // start 15s timer
 }
 
 void Transactions::handleTimeout()
