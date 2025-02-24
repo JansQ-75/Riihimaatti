@@ -190,7 +190,7 @@ void MainWindow::getDualSelections(QString dualAccountType, int dualAccountId)
     // set selected values to variables in Transaction
     objTransactions->setDualAccountId(dualAccountId);
 
-    // haetaan tilin tiedot kun on valittu credit tai debit
+    // Get the data of the bank account, after selection debit or credit
 
     // API request
     QString site_url=Environment::base_url()+"/bank_account/by-id/" + QString::number(dualAccountId);
