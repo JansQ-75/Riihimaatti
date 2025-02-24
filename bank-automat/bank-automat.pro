@@ -51,4 +51,5 @@ DISTFILES += \
     style.qss
 
 RESOURCES += \
+    background.qrc \
     riihimaattilogopng.qrc

@@ -1,6 +1,9 @@
 backend/node_modules
 bank-automat/build
+bank-automat/.qtc_clangd
 bank-automat/bank-automat.pro.user
 bank-automat/bank-automat.pro.user.*
 build-bank-automat*
 */.env
+bank-automat/debug
+bank-automat/release

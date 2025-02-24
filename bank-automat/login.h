@@ -3,7 +3,6 @@
 
 #include "creditordebit.h"
 
-
 #include <QWidget>
 
 namespace Ui {

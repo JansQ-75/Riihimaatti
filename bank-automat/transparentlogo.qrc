@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/background"/>
+    <file>transparentlogo.png</file>
+    </qresource>
+</RCC>

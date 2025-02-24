@@ -16,8 +16,8 @@
   <widget class="QPushButton" name="btnCredit">
    <property name="geometry">
     <rect>
-     <x>170</x>
-     <y>290</y>
+     <x>160</x>
+     <y>270</y>
      <width>150</width>
      <height>50</height>
     </rect>
@@ -29,7 +29,7 @@
   <widget class="QPushButton" name="btnDebit">
    <property name="geometry">
     <rect>
-     <x>170</x>
+     <x>160</x>
      <y>210</y>
      <width>150</width>
      <height>50</height>
@@ -42,7 +42,7 @@
   <widget class="QLabel" name="labelChooseName">
    <property name="geometry">
     <rect>
-     <x>60</x>
+     <x>50</x>
      <y>50</y>
      <width>401</width>
      <height>91</height>

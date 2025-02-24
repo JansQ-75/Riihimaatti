@@ -1,20 +1,25 @@
 #include "mainwindow.h"
-
+#include <QFontDatabase>
 #include <QApplication>
+#include <QDialog>
 
-int main(int argc, char *argv[])
-{
-    QApplication a(argc, argv);
 
-    /*
-    QFile file("suora osoite .qss tiedoston");
+void applyStyleSheet(QApplication &app){
+    QFile file("style.qss");
     file.open(QFile::ReadOnly);
     QString styleSheet = QLatin1String(file.readAll());
+    QTextStream in(&file);
+    app.setStyleSheet(styleSheet);
+    file.close();
+}
 
-    a.setStyleSheet(styleSheet);
-     */
+int main(int argc, char *argv[]){
+    QApplication app(argc, argv);
+
+    applyStyleSheet(app);
 
     MainWindow w;
     w.show();
-    return a.exec();
+    return app.exec();
+
 }

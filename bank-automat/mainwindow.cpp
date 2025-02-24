@@ -1,8 +1,8 @@
 #include "environment.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
 #include <QPixmap>
+#include <QGraphicsOpacityEffect>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -13,10 +13,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     //NetworkManager
     MainWindowManager = new QNetworkAccessManager(this);
-
     createObjects();
 
-}
+   // Add a logo without streching the logo
+    QPixmap logo(":/images/riihimaattilogopng.png");
+    ui->label_logo->setPixmap(logo.scaled(ui->label_logo->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    }
 
 MainWindow::~MainWindow()
 {
