@@ -132,8 +132,8 @@ Also available on .png for easy use.
 First, the app opens a login interface. The ATM app asks customer's card number and pin code. After successful authentification, it opens the main interface of the ATM app. There are four buttons in the ATM app's main interface. 
 - The "Show balance" button shows the balance of the logged in customer's bank account. 
 - The "Make a withdrawal" button opens a new interface where customer can choose the desired amount for withdrawal.
-- The "Browse transactions" button lists 10 transactions to a new interface where customer can browse previous transactions.
-- The "logout" button is visible in every interface after successfull login. Logout deletes and resets all objects needed to run ATM.
+- The "Browse transactions" button lists 10 transactions to a new interface where customer can browse transactions.
+- The "Logout" button is visible in every interface after successfull login. Logout deletes and resets all objects needed to run ATM.
 
 ---
 
