@@ -149,6 +149,8 @@ void MainWindow::receivedCustomerInfo(QNetworkReply *reply)
 
 void MainWindow::receivedAccountInfo(QNetworkReply *reply)
 {
+    startMainTimer(); // start main timer
+
     if (reply->error() == QNetworkReply::NoError) {
         QByteArray response_data = reply->readAll();
 
@@ -229,9 +231,23 @@ void MainWindow::timerLogoutSlot()
     ui->label_thankYou->setText("");
     ui->stackedWidget->setCurrentIndex(2); // show logout text for customer
 
-    // after 5 seconds, continue with logout
+    // after 3 seconds, continue with logout
     QTimer::singleShot(3000, this, [this](){
         emit logoutSignal(); // finish logout
+    });
+
+}
+
+void MainWindow::loginTimeoutSlot()
+{
+    stopWidgetTimers(); // stop widget timers
+    ui->label_logout->setText("Timeout...");
+    ui->label_thankYou->setText("Returning to the start screen, please wait");
+    ui->stackedWidget->setCurrentIndex(2); // shows timeout text to customer
+
+    // after 3 seconds, return to start screen
+    QTimer::singleShot(3000, this, [this](){
+        ui->stackedWidget->setCurrentIndex(0);
     });
 
 }
@@ -289,7 +305,7 @@ void MainWindow::createObjects()
     // Logout connections
     connect(objWithdrawal, &Withdrawal::logOutSignal, this, &MainWindow::timerLogoutSlot);
     connect(objTransactions, &Transactions::logoutSignal, this, &MainWindow::timerLogoutSlot);
-    connect(objLogin, &Login::backStartScreen, this, &MainWindow::timerLogoutSlot);
+    connect(objLogin, &Login::backStartScreen, this, &MainWindow::loginTimeoutSlot);
     connect(objBalance, &Balance::backStartScreen, this, &MainWindow::timerLogoutSlot);
     connect(this, &MainWindow::logoutSignal, this, &MainWindow::on_btnLogout_clicked);
 
@@ -432,8 +448,6 @@ void MainWindow::on_btnLogout_clicked()
     //Hide buttons
     ui->btnBack->setVisible(false);
     ui->btnLogout->setVisible(false);
-
-    qDebug()<<"Kirjauduttu ulos";
 
     // after 5 seconds, return to start screen
     QTimer::singleShot(3000, this, [this](){

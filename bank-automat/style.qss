@@ -32,7 +32,7 @@ QPushButton:hover {
 /*MainWindow*/
 
 QWidget#MainWindow{
-background: #ffffff !important;
+background: #ebf2fa !important;
 }
 
 

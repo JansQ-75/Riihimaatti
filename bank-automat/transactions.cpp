@@ -146,7 +146,7 @@ void Transactions::dbDataSlot(QNetworkReply *replyData)
 
     //Check whether it is empty and array
     if (jsonresponse.isNull() || !jsonresponse.isArray()) {
-        qDebug() << "Error or retrieving data from dual card";
+        qDebug() << "Please wait. Retrieving data from dual card";
         return;
     }
 
