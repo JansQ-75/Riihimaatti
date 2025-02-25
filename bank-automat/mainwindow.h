@@ -50,6 +50,7 @@ private slots:
     void getDualSelections(QString, int);
     void getDataFromLoginSlot(int idcustomer, int idcard, QString type, QString fname, QString lname, int idbankAccount);
     void timerLogoutSlot(); // inits logout after timeout
+    void loginTimeoutSlot(); // goes back to start screen
 
 private:
     Ui::MainWindow *ui;

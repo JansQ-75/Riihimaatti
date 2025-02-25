@@ -134,9 +134,20 @@ void Login::onAnyButtonPressed()
 
 void Login::handleTimeout()
 {
-    // logout after timeout
+    // Return to start screen after timeout
+
+    // clear cardnumber
+    cardnumberForLabel = "";
+    ui->labelCardnumber->setText("Your card number");
+    //clear pincode
+    pincodeForLabel = "";
+    ui->labelPincode->setText("Your pin code");
+    // set iForLogin back to 0
+    iForLogin=0;
+    // emit signal for return to start screen
     emit backStartScreen();
 }
+
 
 
 void Login::loginSlot(QNetworkReply *reply)
