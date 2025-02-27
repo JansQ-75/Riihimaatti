@@ -5,7 +5,7 @@
 
 
 void applyStyleSheet(QApplication &app){
-    QFile file("style.qss");
+    QFile file("../style.qss");
     file.open(QFile::ReadOnly);
     QString styleSheet = QLatin1String(file.readAll());
     QTextStream in(&file);

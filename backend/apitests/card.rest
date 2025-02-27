@@ -36,13 +36,6 @@ Authorization: bearer {{token}}
   "locked_status": 0
 }
 
-
-### Update card. Requires admin priviledges
-GET http://localhost:3000/card HTTP/1.1
-Content-Type: application/json
-Authorization: bearer {{token}}
-
-
 ### Update card. Requires admin priviledges
 # @prompt cardid
 # @prompt cardnumber

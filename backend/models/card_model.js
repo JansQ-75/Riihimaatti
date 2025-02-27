@@ -122,8 +122,8 @@ const card = {
             card_data.pin ? hashed_pin : previous.pin,
             card_data.idcustomer || previous.idcustomer,
             card_data.type || previous.type,
-            idcard,
             card_data.locked_status || previous.locked_status,
+            idcard,
           ],
           function (err, result) {
             if (err) {
